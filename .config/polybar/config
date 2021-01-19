@@ -51,12 +51,14 @@ pading = 0
 ;tray-background = ${color.bgs}
 
 
-font-0 = "Terminus:pixelsize=12;3"
+
+font-0 = "Terminus(TTF):pixelsize=12;3"
 font-1 = "Iosevka Nerd Font:pixelsize=12;3"
-font-2 = "Font Awesome 5 Free:pixelsize=12;3"
-font-3 = "Terminus:pixelsize=23;5"
+font-2 = "ForkAwesome:pixelsize=12;3"
+
+font-3 = "Terminus(TTF):pixelsize=23;5"
 font-4 = "Iosevka Nerd Font:pixelsize=23;5"
-font-5 = "Font Awesome 5 Free:pixelsize=23;5"
+font-5 = "ForkAwesome:pixelsize=23;5"
 
 
 enable-ipc = true
@@ -107,12 +109,13 @@ tray-pading = 6
 tray-background = ${color.alpha}
 
 
-font-0 = "Terminus:pixelsize=12;3"
+font-0 = "Terminus(TTF):pixelsize=12;3"
 font-1 = "Iosevka Nerd Font:pixelsize=12;3"
-font-2 = "Font Awesome 5 Free:pixelsize=12;3"
-font-3 = "Terminus:pixelsize=23;5"
+font-2 = "ForkAwesome:pixelsize=12;3"
+
+font-3 = "Terminus(TTF):pixelsize=23;5"
 font-4 = "Iosevka Nerd Font:pixelsize=23;5"
-font-5 = "Font Awesome 5 Free:pixelsize=23;5"
+font-5 = "ForkAwesome:pixelsize=23;5"
 
 
 modules-left = rounded-left workspaces rounded-right
