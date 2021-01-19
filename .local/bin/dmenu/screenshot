@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+case "$(printf "a selected area\\ncurrent screen\\nfull screen" | dmenu -fn 'Fira Code' -l 6 -i -p "Screenshot which area?")" in
+	"a selected area") flameshot gui ;;
+	"current screen") flameshot screen -p ~/Pictures/screenshots ;;
+	"full screen") flameshot full -p ~/Pictures/screenshots ;;
+esac
+

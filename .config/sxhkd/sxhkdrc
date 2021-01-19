@@ -1,112 +1,219 @@
-#
-# wm independent hotkeys
-#
+#--
+#-- ──────────────────────────────────────────────────────────────────────────────────── I ──────────
+#--   :::::: W M   I N D E P E N D E N T   H O T K E Y S : :  :   :    :     :        :          :
+#-- ──────────────────────────────────────────────────────────────────────────────────────────────
+#--
 
-# terminal emulator
+# Restart hotkey damon
+super + shift + x
+  killandnotify "sxhkd" "Config reloaded" && sxhkd &
+
+# Reboot / Shutdown computer
+super + shift + {r, d}
+  prompt {"Are you sure you would like to reboot?" "sudo reboot now", "Are you sure you would like to shutdown" "sudo shutdown now"}
+
+# Lock screen
+#super + shift + b
+	#betterlockscreen -l
+
+# Suspend the system and betterlockscreen
+#super + shift + e
+	#betterlockscreen -s
+
+
+# Master volume control
+# Use pactl to adjust volume in PulseAudio.
+# Increase volume
+super + alt + equal
+	pactl set-sink-volume @DEFAULT_SINK@ +10%
+
+# Decrease volume
+super + alt + minus
+	pactl set-sink-volume @DEFAULT_SINK@ -10%
+
+
+# Mount a USB drive or Android device
+super + F9
+	dmenumount
+
+# Unmount a USB drive or Android device
+super + F10
+	dmenuunmount
+
+# copy emoji
+super + grave
+	dmenuunicode
+
+# Take screenshot
+Print
+	flameshot gui -p ~/Pictures/screenshots
+
+# Pick screenshot type
+shift + Print
+	screenshot
+
+#--
+#-- ──────────────────────────────────────────────────────────────────────── I ──────────
+#--   :::::: P R O G R A M   L A U N C H E R : :  :   :    :     :        :          :
+#-- ──────────────────────────────────────────────────────────────────────────────────
+#--
+
+# Open st 'suckless terminal'
+# $TERMINAL -e tmux new-session -A -s primary
 super + Return
-	kitty
+	 kitty
 
-# program launcher
-super + @space
-	dmenu_run
+# super + shift + Return
+# 	$TERMINAL -e tmux new-session -A -s secondary
 
-# make sxhkd reload its configuration files:
-super + Escape
-	pkill -USR1 -x sxhkd
+# Run demnu_runaaa
+super + space
+	dmenu_run -fn "Fira Code:bold:pixelsize=18"
 
-#
-# bspwm hotkeys
-#
+# open music player in terminal
+super + m
+	$TERMINAL -e ncmpcpp
 
-# quit/restart bspwm
+# Open bc 'terminal based calculator'
+super + u
+  togglebc
+# open nautilus file manager
+
+
+
+# open  freelancer.com dekstop app
+#super + o; f
+#  /opt/freelancer-desktop-app/bin/freelancer-desktop-app
+
+
+super + o; {B,f,c,n,b,F}
+  {openbooks,firefox,google-chrome-stable,nautilus,brave,/opt/freelancer-desktop-app/bin/freelancer-desktop-app}
+
+super + d; {s,b,v}
+  {bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/shell.pdf,bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/bspwm.pdf,bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/nvim.pdf}
+
+super + t; {p, l, t, h, v, c, j}
+  $TERMINAL -e {pulsemixer; pkill -RTMIN+10 i3blocks, lf, transmission-remote-cli, htop, nvim, calcurse -D ~/.config/calcurse, nvim ~/vimwiki/index.wiki}
+
+#--
+#-- ────────────────────────────────────────────────────────────────── I ──────────
+#--   :::::: B S P W M   H O T K E Y S : :  :   :    :     :        :          :
+#-- ────────────────────────────────────────────────────────────────────────────
+#--
+
+# Quit / Restart bspwm
 super + alt + {q,r}
 	bspc {quit,wm -r}
 
-# close and kill
-super + {_,shift + }w
-	bspc node -{c,k}
+# Close a window
+super + q
+	bspc node -c
 
-# alternate between the tiled and monocle layout
-super + m
-	bspc desktop -l next
+# Kill a window
+super + shift + q
+	bspc node -k
 
-# send the newest marked node to the newest preselected node
-super + y
-	bspc node newest.marked.local -n newest.!automatic.local
+#--
+#-- ─── INCREASE / DECREASE GAP ──────────────────────────────────────────────────────
+#--
 
-# swap the current node and the biggest window
-super + g
-	bspc node -s biggest.window
+# change window gap at run time
+super + s
+  bspc config -d focused window_gap $((`bspc config -d focused window_gap` + 5 ))
 
-#
-# state/flags
-#
+super + shift + s
+  bspc config -d focused window_gap $((`bspc config -d focused window_gap` - 5 ))
 
-# set the window state
-super + {t,shift + t,s,f}
-	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+# Restore original gap
+super + equal
+  bspc config -d focused window_gap 15
 
-# set the node flags
-super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
+# Remove gap
+super + shift + 0
+  bspc config -d focused window_gap 0
 
-#
-# focus/swap
-#
+
+#--
+#-- ─── FOCUS / SWAP ──────────────────────────────────────────────────────────────
+#--
+
+# Focus last focused window
+super + Tab
+  bspc node focused -f last
+" Focus last floating window
+super + shift + Tab
+  bspc node last.floating -f
+# swap the current node and the biggest node
+super + b
+	bspc node -s biggest.local
+
+# Circulate the leaves of the tree
+super + {_,shift + }c
+	bspc node @/ --circulate {backward,forward
 
 # focus the node in the given direction
 super + {_,shift + }{h,j,k,l}
 	bspc node -{f,s} {west,south,north,east}
 
-# focus the node for the given path jump
-super + {p,b,comma,period}
-	bspc node -f @{parent,brother,first,second}
-
-# focus the next/previous window in the current desktop
-super + {_,shift + }c
-	bspc node -f {next,prev}.local.!hidden.window
-
-# focus the next/previous desktop in the current monitor
-super + bracket{left,right}
-	bspc desktop -f {prev,next}.local
-
-# focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
-
-# focus the older or newer node in the focus history
-super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
-
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
-#
-# preselect
-#
+# focust left/right monitor
+alt + { h, l}
+	bspc monitor {west,east} -f
+
+# move current node to left,right monitor
+alt+ shift + {h, l}
+	bspc node -m {west,east} --follow
+
+
+
+#--
+#-- ─── RECEPTACLE ───────────────────────────────────────────────────────────────────
+#--
+
+# Close all receptacle
+super + shift + i
+  for win in `bspc query -N -n .leaf.\!window`; do bspc node $win -k; done;
+
+# Insert receptacle
+super + i; {h,j,k,l}
+  bspc node --presel-dir {west,south,north,east} -i
+
+# Move to receptacle
+super + r
+  bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+
+# Balance nodes
+super + e
+  bspc node @/ -B
+
+
+
+#--
+#-- ─── PRESELET ───────────────────────────────────────────────────────────────────
+#--
 
 # preselect the direction
-super + ctrl + {h,j,k,l}
-	bspc node -p {west,south,north,east}
+#super + ctrl + {h,j,k,l}
+# bspc node -p {west,south,north,east}
 
 # preselect the ratio
-super + ctrl + {1-9}
-	bspc node -o 0.{1-9}
+#super + ctrl + {1-9}
+# bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
 super + ctrl + space
-	bspc node -p cancel
+# bspc node -p cancel
 
 # cancel the preselection for the focused desktop
 super + ctrl + shift + space
-	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+# bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
-#
-# move/resize
-#
+#--
+#-- ─── MOVE / RESIZE ─────────────────────────────────────────────────────────────
+#--
 
 # expand a window by moving one of its side outward
 super + alt + {h,j,k,l}
@@ -116,6 +223,26 @@ super + alt + {h,j,k,l}
 super + alt + shift + {h,j,k,l}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
-# move a floating window
-super + {Left,Down,Up,Right}
-	bspc node -v {-20 0,0 20,0 -20,20 0}
+# Rotate the tree from the current nodes parent
+super +  ctrl + {Right, Left}
+  bspc node @parent -C {forward, backward}
+
+# Flip the tree from the current nodes parent
+super + ctrl + {h,j,k,l}
+  bspc node @parent -F {vertical,horizontal,horizontal,vertical}
+
+#--
+#-- ─── FLOATING / FULLSCREEN ─────────────────────────────────────────────────────────────
+#--
+
+# Toggle fullscreen on and off
+super + f
+  bspfullscreen
+
+# Toggle floating on and off
+super + shift + f
+  bspc node focused.tiled -t floating || bspc node focused.floating -t tiled
+
+# Move a floating window
+ctrl + alt + {h,l,k,j}
+	bspc node -v {-20 0,20 0,0 -20,0 20}

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+[ ! -d "~/Documents/books" >/dev/null ] || exit
+
+chosen=$(rg --files ~/Documents/books -tpdf | dmenu -fn 'Fira Code' -i -l 20)
+
+[ "$chosen" != "" ] || exit
+
+bspc rule -a Zathura -o state=tiled & zathura "$chosen"

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+id=$(xdo id -a "bc")
+
+if xprop -id $id | grep -q "Normal"; then
+  xdo hide -a "bc"
+elif xprop -id $id | grep -q "Withdrawn"; then
+  bspc rule -a St -o state=floating && xdo show -a "bc"
+else
+  bspc rule -a St -o state=floating && $TERMINAL -e bc &
+fi
+
