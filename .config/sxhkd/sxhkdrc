@@ -12,13 +12,16 @@ super + shift + x
 super + shift + {r, d}
   prompt {"Are you sure you would like to reboot?" "sudo reboot now", "Are you sure you would like to shutdown" "sudo shutdown now"}
 
+
+# generate image for betterlockscreen
+# betterlockscreen -u Pictures/wallpapers/wallpapersden.com_kame-house-dragon-ball-z_2560x1440.jpg -b 1.0
 # Lock screen
-#super + shift + b
-	#betterlockscreen -l
+super + shift + b
+	betterlockscreen -l
 
 # Suspend the system and betterlockscreen
-#super + shift + e
-	#betterlockscreen -s
+super + shift + e
+	betterlockscreen -s
 
 
 # Master volume control
