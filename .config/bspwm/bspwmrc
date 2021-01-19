@@ -70,3 +70,6 @@ bspc rule -a qBittorrent desktop=$WS9 follow=on
 bspc rule -a Transmission-gtk desktop=$WS9 follow=on
 bspc rule -a Upwork desktop=$WS7 state=floating follow=on
 bspc rule -a "com.freelancer.workspace.launcher.Bootstrap" desktop=$WS7 state=floating
+
+
+autostart
