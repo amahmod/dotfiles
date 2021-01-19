@@ -50,6 +50,7 @@ fi
 
 setxkbmap us &
 $HOME/.screenlayout/display.sh
+nitrogen --restore &
 xsetroot -cursor_name left_ptr
 picom -f &
 exec bspwm
