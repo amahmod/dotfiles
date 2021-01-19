@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+alias ka="killall"
+alias gd="cd ~/Downloads"
+alias gD="cd ~/Documents"
+alias gp="cd ~/Projects"
+alias gP="cd ~/Pictures"
+alias h="cd ~/"
+alias c="calcurse -D ~/.config/calcurse"
+alias mkd="mkdir -pv"
+alias p="sudo pacman"
+alias f="$FILE"
+alias g="git"
+alias e="$EDITOR"
+alias v="$EDITOR"
+alias x="sxiv -ft *"
+alias eb="e ~/.config/bspwm/bspwmrc"
+alias es="e ~/.config/sxhkd/sxhkdrc"
+alias sdn="sudo shutdown -h now"
+alias ls="ls -hN --color=auto --group-directories-first"
+alias grep="grep --color=auto"
+alias diff="diff --color=auto"
+alias ccat="highlight --out-format=ansi"
+alias yt="youtube-dl --add-metadata -i -o '%(upload_date)s-%(title)s.%(ext)s'"
+alias yt3="youtube-dl --extract-audio --audio-format=mp3"
+alias yta="yt -x -f bestaudio/best"
+alias cst="config status"
+alias cf='/usr/bin/git --git-dir=/home/amahmod/.cfg --work-tree=/home/amahmod'
+
+# open file in default editor ( nvim in my case )
+fe() { fzf | xargs -r -I % $EDITOR % ;}
+# open file in defult program
+fo() { fzf | xargs -r -I % xdg-open %;}
