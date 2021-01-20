@@ -5,6 +5,7 @@ xset r rate 300 50 &
 unclutter &
 picom &
 dunst &
+ibus-daemon &
 xsetroot -cursor_name left_ptr
 $HOME/.screenlayout/display.sh
 
