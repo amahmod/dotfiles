@@ -48,9 +48,6 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
  unset f
 fi
 
-setxkbmap us &
-$HOME/.screenlayout/display.sh
-nitrogen --restore &
-xsetroot -cursor_name left_ptr
-picom -f &
+
+[ -f "$HOME/.xprofile" ] && . ~/.xprofile
 exec bspwm

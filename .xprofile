@@ -1,0 +1,11 @@
+setbg &
+sxhkd &
+setxkbmap us &
+xset r rate 300 50 &
+unclutter &
+picom -f &
+dunst &
+xsetroot -cursor_name left_ptr
+$HOME/.screenlayout/display.sh
+
+# nitrogen --restore &
