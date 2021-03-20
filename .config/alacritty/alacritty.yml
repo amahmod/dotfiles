@@ -68,7 +68,8 @@ scrolling:
 # Font configuration
 font:
   normal:
-    family: "Bitstream Vera Sans Mono"
+    # family: "Bitstream Vera Sans Mono"
+    family: "JetBrainsMono"
   #bold:
     #family: JetBrains Mono
     #style:
