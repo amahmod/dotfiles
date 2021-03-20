@@ -12,16 +12,16 @@ WS2=
 WS3=
 WS4=
 
-WS6=
-WS7=
-WS8=
-WS9=
-WS0=
+WS5=
+WS6=
+WS7=
+WS8=
+WS9=
 
 
 ###---MONITORS---###
-bspc monitor DP-1 -d $WS1 $WS2 $WS4
-bspc monitor HDMI-0 -d $WS6 $WS7 $WS8 $WS9 $WS0
+bspc monitor DP-1 -d $WS1 $WS2 $WS3 $WS4
+bspc monitor HDMI-0 -d $WS5 $WS6 $WS7 $WS8 $WS9
 
 
 ###---Global Settings---###
@@ -56,14 +56,14 @@ bspc config window_gap 10
 
 
 ## -------- Rules ----------------------##
-bspc rule -a Skype  desktop=$WS0 state=tiled
-bspc rule -a Mailspring desktop=$WS0 state=tiled follow=on
-bspc rule -a Thunderbird desktop=$WS0
+bspc rule -a Skype  desktop=$WS9 state=tiled
+bspc rule -a Mailspring desktop=$WS9 state=tiled follow=on
+bspc rule -a Thunderbird desktop=$WS9
 
-bspc rule -a qBittorrent desktop=$WS9 follow=on
-bspc rule -a Transmission-gtk desktop=$WS9 follow=on
-bspc rule -a Upwork desktop=$WS7 state=floating follow=on
-bspc rule -a "com.freelancer.workspace.launcher.Bootstrap" desktop=$WS7 state=floating
+bspc rule -a qBittorrent desktop=$WS8 follow=on
+bspc rule -a Transmission-gtk desktop=$WS8 follow=on
+bspc rule -a Upwork desktop=$WS6 state=floating follow=on
+bspc rule -a "com.freelancer.workspace.launcher.Bootstrap" desktop=$WS6 state=floating
 
 
 autostart
