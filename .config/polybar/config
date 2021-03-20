@@ -52,13 +52,14 @@ pading = 0
 
 
 
-font-0 = "Terminus(TTF):pixelsize=12;3"
-font-1 = "Iosevka Nerd Font:pixelsize=12;3"
-font-2 = "ForkAwesome:pixelsize=12;3"
+font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-1 = "Terminus(TTF):pixelsize=12;3"
+font-2 = "Iosevka Nerd Font:pixelsize=12;3"
+font-3 = "ForkAwesome:pixelsize=12;3"
 
-font-3 = "Terminus(TTF):pixelsize=23;5"
-font-4 = "Iosevka Nerd Font:pixelsize=23;5"
-font-5 = "ForkAwesome:pixelsize=23;5"
+font-4 = "Terminus(TTF):pixelsize=23;5"
+font-5 = "Iosevka Nerd Font:pixelsize=23;5"
+font-6 = "ForkAwesome:pixelsize=23;5"
 
 
 enable-ipc = true
@@ -108,14 +109,14 @@ tray-position = right
 tray-pading = 6
 tray-background = ${color.alpha}
 
+font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-1 = "Terminus(TTF):pixelsize=12;3"
+font-2 = "Iosevka Nerd Font:pixelsize=12;3"
+font-3 = "ForkAwesome:pixelsize=12;3"
 
-font-0 = "Terminus(TTF):pixelsize=12;3"
-font-1 = "Iosevka Nerd Font:pixelsize=12;3"
-font-2 = "ForkAwesome:pixelsize=12;3"
-
-font-3 = "Terminus(TTF):pixelsize=23;5"
-font-4 = "Iosevka Nerd Font:pixelsize=23;5"
-font-5 = "ForkAwesome:pixelsize=23;5"
+font-4 = "Terminus(TTF):pixelsize=23;5"
+font-5 = "Iosevka Nerd Font:pixelsize=23;5"
+font-6 = "ForkAwesome:pixelsize=23;5"
 
 
 modules-left = rounded-left workspaces rounded-right
@@ -173,7 +174,7 @@ time =  %I:%M%p
 [module/wlan]
 type = internal/network
 interface = enp7s0
-interval = 3.0
+interval = 2.0
 format-connected = <ramp-signal> <label-connected>
 format-disconnected = <label-disconnected>
 format-disconnected-background = ${color.bg}
@@ -181,9 +182,10 @@ format-connected-background = ${color.bg}
 label-connected-foreground = ${color.txt}
 format-connected-padding = 1
 format-disconnected-padding = 1
-tail = true
+;tail = true
+udspeed-minwidth = 3
 
-label-connected =   %downspeed%  %upspeed% 
+label-connected =  %downspeed% %upspeed% 
 label-disconnected = 睊 NA
 
 ramp-signal-0 =
@@ -321,22 +323,22 @@ content-padding = 1
 
 [module/rounded-left]
 type = custom/text
-content = %{T5}%{T-}
+content = %{T6}%{T-}
 content-foreground = ${color.bg}
 
 [module/rounded-right]
 type = custom/text
-content = %{T5}%{T-}
+content = %{T6}%{T-}
 content-foreground = ${color.bg}
 
 [module/rounded-right-colored]
 type = custom/text
-content = %{T5}%{T-}
+content = %{T6}%{T-}
 content-foreground = ${color.bgs}
 
 [module/rounded-left-colored]
 type = custom/text
-content = %{T5}%{T-}
+content = %{T6}%{T-}
 content-foreground = ${color.bgs}
 
 [module/memory]

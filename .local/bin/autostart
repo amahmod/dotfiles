@@ -9,8 +9,12 @@ fi
 if [ -x /usr/bin/skypeforlinux ]; then
     ! pidof skypeforlinux >/dev/null && skypeforlinux
 fi
-if [ -x /usr/bin/mailspring ]; then
-    ! pidof mailspring >/dev/null && mailspring
+# if [ -x /usr/bin/mailspring ]; then
+#     ! pidof mailspring >/dev/null && mailspring
+# fi
+
+if [ -x /usr/bin/thunderbird ]; then
+    ! pidof thunderbird >/dev/null && thunderbird
 fi
 
 if [ -x /usr/bin/stretchly ]; then

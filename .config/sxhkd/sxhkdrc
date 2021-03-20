@@ -62,12 +62,11 @@ shift + Print
 #--
 
 # Open st 'suckless terminal'
-# $TERMINAL -e tmux new-session -A -s primary
 super + Return
-	 kitty
+  $TERMINAL -e tmux new-session -A -s primary
 
-# super + shift + Return
-# 	$TERMINAL -e tmux new-session -A -s secondary
+super + shift + Return
+	$TERMINAL -e tmux new-session -A -s secondary
 
 # Run demnu_runaaa
 super + space
@@ -76,7 +75,6 @@ super + space
 # open music player in terminal
 super + m
 	$TERMINAL -e ncmpcpp
-
 # Open bc 'terminal based calculator'
 super + u
   togglebc
@@ -89,8 +87,8 @@ super + u
 #  /opt/freelancer-desktop-app/bin/freelancer-desktop-app
 
 
-super + o; {B,f,c,t,b,F}
-  {openbooks,firefox,google-chrome-stable,thunar,brave,/opt/freelancer-desktop-app/bin/freelancer-desktop-app}
+super + o; {B,f,c,n,b,F}
+  {openbooks,firefox,google-chrome-stable,nautilus,brave,/opt/freelancer-desktop-app/bin/freelancer-desktop-app}
 
 super + d; {s,b,v}
   {bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/shell.pdf,bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/bspwm.pdf,bspc rule -a Zathura -o center=true state=floating rectangle=1200x1000+0+0 && zathura ~/docs/nvim.pdf}

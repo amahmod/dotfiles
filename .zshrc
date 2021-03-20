@@ -150,6 +150,8 @@ bindkey -s "^n" "fzf-cd-widget\n"
 NPM_PACKAGES="${HOME}/.npm-packages"
 
 export PATH="$PATH:$NPM_PACKAGES/bin"
+export GOPATH=/home/$USER/go
+export PATH=/home/$USER/go/bin:$PATH
 
 # Preserve MANPATH if you already defined it somewhere in your config.
 # Otherwise, fall back to `manpath` so we can inherit from `/etc/manpath`.

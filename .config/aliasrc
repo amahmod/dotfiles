@@ -5,6 +5,7 @@ alias gd="cd ~/Downloads"
 alias gD="cd ~/Documents"
 alias gp="cd ~/Projects"
 alias gP="cd ~/Pictures"
+alias gw="cd ~/workspace"
 alias h="cd ~/"
 alias c="calcurse -D ~/.config/calcurse"
 alias mkd="mkdir -pv"
@@ -26,8 +27,11 @@ alias yt3="youtube-dl --extract-audio --audio-format=mp3"
 alias yta="yt -x -f bestaudio/best"
 alias cst="config status"
 alias cf='/usr/bin/git --git-dir=/home/amahmod/.cfg --work-tree=/home/amahmod'
-
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
 # open file in default editor ( nvim in my case )
 fe() { fzf | xargs -r -I % $EDITOR % ;}
 # open file in defult program
 fo() { fzf | xargs -r -I % xdg-open %;}
+
+# Temp
+alias mongo201='mongosh "mongodb+srv://amahmod:1234@freeecluster.ucsbu.mongodb.net/m201"'
