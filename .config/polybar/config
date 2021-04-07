@@ -124,7 +124,6 @@ modules-center = rounded-left uptime septime cpu septime memory rounded-right
 modules-right = 
 
 [bar/main]
-monitor = VGA-1
 width = 96%
 height = 37.5
 offset-x = 2%
