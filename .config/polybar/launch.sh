@@ -6,11 +6,12 @@ killall -q polybar
 # Wait until the processes have been shut down
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 
-# Launch bar
-polybar  left &
-
-my_laptop_external_monitor=$(xrandr --query | grep 'HDMI-0')
-if [[ $my_laptop_external_monitor = *connected* ]]; then
+connected_monitor_count=$(xrandr | grep " connected " | awk "{ print$1 }" | wc -l )
+echo $connected_monitor_count
+if [ $connected_monitor_count -gt 1 ]; then
+    polybar left &
     polybar right &
+else
+  polybar main &
 fi
 echo "Bars launched..."

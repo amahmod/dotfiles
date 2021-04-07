@@ -123,6 +123,53 @@ modules-left = rounded-left workspaces rounded-right
 modules-center = rounded-left uptime septime cpu septime memory rounded-right
 modules-right = 
 
+[bar/main]
+monitor = VGA-1
+width = 96%
+height = 37.5
+offset-x = 2%
+offset-y = 0.5%
+bottom = false
+fixed-center = true
+line-size = 2
+
+background = ${color.alpha}
+foreground = ${color.fg}
+
+radius = 0
+
+spacing = 0
+module-margin-left = 0
+module-margin-right = 0
+pading = 0
+
+;tray-detached = false
+;tray-offset-x = 0
+;tray-offset-y = 0
+;tray-padding = 2
+;tray-maxsize = 20
+;tray-scale = 1.0
+;tray-position = right
+;tray-background = ${color.bgs}
+tray-position = right
+tray-pading = 6
+tray-background = ${color.alpha}
+
+font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-1 = "Terminus(TTF):pixelsize=12;3"
+font-2 = "Iosevka Nerd Font:pixelsize=12;3"
+font-3 = "ForkAwesome:pixelsize=12;3"
+
+font-4 = "Terminus(TTF):pixelsize=23;5"
+font-5 = "Iosevka Nerd Font:pixelsize=23;5"
+font-6 = "ForkAwesome:pixelsize=23;5"
+
+
+modules-left = rounded-left workspaces rounded-right
+modules-center = rounded-left uptime septime cpu septime memory rounded-right
+modules-right = rounded-left time  date wlan volume battery xkeyboard  rounded-right
+
+
 [module/workspaces]
 type = internal/xworkspaces
 pin-workspaces = true
