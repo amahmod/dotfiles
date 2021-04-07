@@ -9,6 +9,8 @@
 ,sxhkd,manage keyboard shortcuts
 ,xclip,allows for copying and pasting from the command line.
 ,lightdm,is display manager
+,lightdm-webkit2-greeter,is greeter that uses WebKit2 for theming via HTML/JavaScript.
+A,lightdm-webkit-theme-aether,"is a sleek, customizable Archlinux theme for lightdm."
 ,zsh,A very advanced and programmable command interpreter (shell) for UNIX
 A,oh-my-zsh-git,is for managing zsh configurations.
 ,nodejs,Evented I/O for V8 javascript
