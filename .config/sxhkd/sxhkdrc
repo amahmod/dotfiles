@@ -62,11 +62,14 @@ shift + Print
 #--
 
 # Open st 'suckless terminal'
+# super + Return
+#   $TERMINAL
+
 super + Return
-  $TERMINAL -e tmux new-session -A -s primary
+  $TERMINAL
 
 super + shift + Return
-	$TERMINAL -e tmux new-session -A -s secondary
+  $TERMINAL -e tmux new-session -A -s primary
 
 # Run demnu_runaaa
 super + space
