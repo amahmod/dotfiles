@@ -18,11 +18,15 @@ WS7=
 WS8=
 WS9=
 
-
 ###---MONITORS---###
-bspc monitor DP-1 -d $WS1 $WS2 $WS3 $WS4
-bspc monitor HDMI-0 -d $WS5 $WS6 $WS7 $WS8 $WS9
+connected_monitor_count=$(xrandr | grep " connected " | awk "{ print$1 }" | wc -l )
 
+if [ $connected_monitor_count -gt 1 ]; then
+  bspc monitor DP-1 -d $WS1 $WS2 $WS3 $WS4
+  bspc monitor HDMI-0 -d $WS5 $WS6 $WS7 $WS8 $WS9
+else
+  bspc monitor -d $WS1 $WS2 $WS3 $WS4 $WS5 $WS6 $WS7 $WS8 $WS9
+fi
 
 ###---Global Settings---###
 bspc config automatic_scheme alternate
