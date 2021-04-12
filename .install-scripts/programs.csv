@@ -13,11 +13,12 @@
 A,lightdm-webkit-theme-aether,"is a sleek, customizable Archlinux theme for lightdm."
 ,zsh,A very advanced and programmable command interpreter (shell) for UNIX
 A,oh-my-zsh-git,is for managing zsh configurations.
+,zsh-syntax-highlighting,Fish shell like syntax highlighting for Zsh
+,zsh-autosuggestions,Fish-like autosuggestions for zsh
+,tmux,A terminal multiplexer
 ,nodejs,Evented I/O for V8 javascript
 ,npm,Node.js package manager
 ,yarn,Another node.js package manager
-,zsh-syntax-highlighting,Fish shell like syntax highlighting for Zsh
-,zsh-autosuggestions,Fish-like autosuggestions for zsh
 ,dmenu,Generic menu for X
 ,picom,X compositor that may fix tearing issues
 ,dunst,is a suckless notification system.
