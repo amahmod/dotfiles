@@ -29,6 +29,7 @@ A,oh-my-zsh-git,is for managing zsh configurations.
 ,pulsemixer,is an intuitive ncurses audio controller.
 ,alsa-utils,Advanced Linux Sound Architecture - Utilities
 ,zathura,aids with resolution determination and screen recording.
+A,zathura-pdf-mupdf,"PDF support for Zathura (MuPDF backend) (Supports PDF, ePub, and OpenXPS)"
 ,unrar,extracts rar's.
 ,zip, Compress files
 ,unzip,unzips zips.
