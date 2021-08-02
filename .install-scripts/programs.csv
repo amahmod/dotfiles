@@ -56,3 +56,6 @@ A,stretchly-bin,The break time reminder app
 A,brave-bin,Default web browser
 A,lf-bin,Terminal based file manager
 A,dragon-drag-and-drop, SImple drag-and-drop source for X
+,ibus,Next Generation Input Bus for Linux
+,ibus-m17n,M17N engine for IBus
+A,ibus-avro-git,Avro Phonetic Bangla typing for Linux
