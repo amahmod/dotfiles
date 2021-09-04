@@ -147,6 +147,7 @@ map nf mkfile
 map nr sudomkfile
 map nd mkdir
 map ns $mkscript
+map nn $nautilus "$f" &
 map ch chmod
 map bg setwallpaper
 map r rename
