@@ -69,41 +69,41 @@ scrolling:
 font:
   normal:
     # family: "Bitstream Vera Sans Mono"
-    family: "JetBrainsMono"
+    family: "JetBrains Mono"
   #bold:
-    #family: JetBrains Mono
-    #style:
+  #family: JetBrains Mono
+  #style:
 
   # Italic font face
   #italic:
-    # Font family
-    #
-    # If the italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
+  # Font family
+  #
+  # If the italic family is not specified, it will fall back to the
+  # value specified for the normal font.
+  #family: monospace
 
-    # The `style` can be specified to pick a specific face.
-    #style: Italic
+  # The `style` can be specified to pick a specific face.
+  #style: Italic
 
   # Bold italic font face
   #bold_italic:
-    # Font family
-    #
-    # If the bold italic family is not specified, it will fall back to the
-    # value specified for the normal font.
-    #family: monospace
+  # Font family
+  #
+  # If the bold italic family is not specified, it will fall back to the
+  # value specified for the normal font.
+  #family: monospace
 
-    # The `style` can be specified to pick a specific face.
-    #style: Bold Italic
+  # The `style` can be specified to pick a specific face.
+  #style: Bold Italic
 
   # Point size
-  size: 11
+  size: 13
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
-  # offset:
-  #   x: -1
-  #   y: -1
+  offset:
+    #   x: -1
+    y: 5
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increasing `x` moves the glyph to the right,
@@ -119,8 +119,8 @@ draw_bold_text_with_bright_colors: true
 colors:
   # Default colors
   primary:
-    background: '#073642'
-    foreground: '#d8dee9'
+    background: "#073642"
+    foreground: "#d8dee9"
 
     # Bright and dim foreground colors
     #
@@ -135,8 +135,8 @@ colors:
   # Colors which should be used to draw the terminal cursor. If these are unset,
   # the cursor color will be the inverse of the cell color.
   cursor:
-    text: '#191919'
-    cursor: '#d8dee9'
+    text: "#191919"
+    cursor: "#d8dee9"
 
   # Selection colors
 
@@ -144,8 +144,8 @@ colors:
   # background is unset, selection color will be the inverse of the cell colors.
   # If only text is unset the cell text color will remain he same.
   selection:
-    text: '#191919'
-    background: '#f6e58d'
+    text: "#191919"
+    background: "#f6e58d"
 
   # Normal colors
   # normal:
@@ -214,13 +214,13 @@ colors:
 bell:
   animation: EaseOutExpo
   duration: 0
-  color: '#ffffff'
+  color: "#ffffff"
 
 # Background opacity
 #
 # Window opacity as a floating point number from `0.0` to `1.0`.
 # The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.9
+background_opacity: 1
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
@@ -426,15 +426,15 @@ mouse_bindings:
 key_bindings:
   # (Windows, Linux, and BSD only)
   #- { key: P,        mods: Control,       action: Paste            }
-  - { key: Insert,   mods: Shift,         action: Paste            }
-  - { key: Slash,    mods: Control,       chars: "gc"              }
- #- { key: T,        mods: Control,       command: "alacritty"     }
-  - { key: Y,        mods: Control,       action: Copy             }
-  - { key: Key0,     mods: Control,       action: ResetFontSize    }
-  - { key: Equals,   mods: Control,       action: IncreaseFontSize }
+  - { key: Insert, mods: Shift, action: Paste }
+  - { key: Slash, mods: Control, chars: "gc" }
+  #- { key: T,        mods: Control,       command: "alacritty"     }
+  - { key: Y, mods: Control, action: Copy }
+  - { key: Key0, mods: Control, action: ResetFontSize }
+  - { key: Equals, mods: Control, action: IncreaseFontSize }
   # - { key: Add,      mods: Control,       action: IncreaseFontSize }
   # - { key: Subtract, mods: Control,       action: DecreaseFontSize }
-  - { key: Minus,    mods: Control,       action: DecreaseFontSize }
+  - { key: Minus, mods: Control, action: DecreaseFontSize }
 
 debug:
   # Display the time it takes to redraw each frame.
