@@ -63,13 +63,13 @@ shift + Print
 
 # Open st 'suckless terminal'
 # super + Return
-#   $TERMINAL
+  #  $TERMINAL
 
 super + Return
-  $TERMINAL
+  $TERMINAL -e tmux new-session -A -s primary
 
 super + shift + Return
-  $TERMINAL -e tmux new-session -A -s primary
+  $TERMINAL 
 
 # Run demnu_runaaa
 super + space
@@ -82,12 +82,6 @@ super + m
 super + u
   togglebc
 # open nautilus file manager
-
-
-
-# open  freelancer.com dekstop app
-#super + o; f
-#  /opt/freelancer-desktop-app/bin/freelancer-desktop-app
 
 
 super + o; {B,f,c,n,b,F}
