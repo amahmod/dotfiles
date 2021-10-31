@@ -65,7 +65,7 @@ bspc rule -a Mailspring desktop=$WS9 state=tiled follow=on
 bspc rule -a Thunderbird desktop=$WS9
 
 bspc rule -a qBittorrent desktop=$WS8 follow=on
-bspc rule -a "xdman-Main" desktop=$WS8 follow=on
+# bspc rule -a "xdman-Main" desktop=$WS8 follow=on
 bspc rule -a Transmission-gtk desktop=$WS8 follow=on
 bspc rule -a Upwork desktop=$WS6 state=floating follow=on
 bspc rule -a "com.freelancer.workspace.launcher.Bootstrap" desktop=$WS6 state=floating
