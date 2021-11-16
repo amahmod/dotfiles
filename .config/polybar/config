@@ -52,7 +52,7 @@ pading = 0
 
 
 
-font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-0 = "Cascadia Code PL:pixelsize=12;3"
 font-1 = "Terminus(TTF):pixelsize=12;3"
 font-2 = "Iosevka Nerd Font:pixelsize=12;3"
 font-3 = "ForkAwesome:pixelsize=12;3"
@@ -109,7 +109,7 @@ tray-position = right
 tray-pading = 6
 tray-background = ${color.alpha}
 
-font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-0 = "Cascadia Code PL:pixelsize=12;3"
 font-1 = "Terminus(TTF):pixelsize=12;3"
 font-2 = "Iosevka Nerd Font:pixelsize=12;3"
 font-3 = "ForkAwesome:pixelsize=12;3"
@@ -154,7 +154,7 @@ tray-position = right
 tray-pading = 6
 tray-background = ${color.alpha}
 
-font-0 = "Bitstream Vera Sans Mono:pixelsize=12;3"
+font-0 = "Cascadia Code PL:pixelsize=12;3"
 font-1 = "Terminus(TTF):pixelsize=12;3"
 font-2 = "Iosevka Nerd Font:pixelsize=12;3"
 font-3 = "ForkAwesome:pixelsize=12;3"
