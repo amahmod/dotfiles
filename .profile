@@ -4,7 +4,7 @@
 # Adds `~/.local/bin/` and all subdirectories to $PATH
 export PATH="$PATH:$(find -L "$HOME/.local/bin/"  -type d | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
 export EDITOR="nvim"
-export TERMINAL="alacritty"
+export TERMINAL="kitty"
 export BROWSER="brave"
 export READER="zathura"
 export FILE="lf"
