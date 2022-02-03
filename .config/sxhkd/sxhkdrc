@@ -66,10 +66,10 @@ shift + Print
   #  $TERMINAL
 
 super + Return
-  $TERMINAL -e tmux new-session -A -s primary
+  $TERMINAL
 
 super + shift + Return
-  $TERMINAL 
+  $TERMINAL -e tmux new-session -A -s primary
 
 # Run demnu_runaaa
 super + space
