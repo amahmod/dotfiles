@@ -133,7 +133,6 @@ bindkey -s '^z' 'fg\n'
 
 alias config='/usr/bin/git --git-dir=/home/amahmod/.cfg/ --work-tree=/home/amahmod'
 
-
 [ -f "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && source "$ZSH_PLUGINS/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 [ -f "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && source "$ZSH_PLUGINS/zsh-autosuggestions/zsh-autosuggestions.zsh"
 
@@ -215,3 +214,5 @@ RPS1='%F{cyan}${prompt_elapsed_time}%F{none}'
 # Remove username and hostname from prompt
 prompt_context() {}
 
+
+alias gs='ssh root@23.92.65.7 -i ~/.ssh/groupsetter'
