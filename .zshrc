@@ -17,7 +17,7 @@ plugins=(
     yarn
     docker
     copyfile
-    copydir
+    copypath
     colorize
     docker-compose
     web-search
