@@ -50,9 +50,6 @@ A,zathura-pdf-mupdf,"PDF support for Zathura (MuPDF backend) (Supports PDF, ePub
 A,jmtpfs,mtpfs with better support for Android
 A,polybar,A fast and easy-to-use status bar
 A,betterlockscreen,A simple lock script for i3lock-color
-A,siji-git,Iconic bitmap font based on stlarch with additional glyphs
-A,ttf-fira-code,monospaced font with programming ligatures.
-,ttf-jetbrains-mono,Typeface for developers by JetBrains
 A,lf-bin,Terminal based file manager
 A,dragon-drag-and-drop, SImple drag-and-drop source for X
 ,ibus,Next Generation Input Bus for Linux
