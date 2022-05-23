@@ -58,3 +58,7 @@ A,dragon-drag-and-drop, SImple drag-and-drop source for X
 ,ibus,Next Generation Input Bus for Linux
 ,ibus-m17n,M17N engine for IBus
 A,ibus-avro-git,Avro Phonetic Bangla typing for Linux
+,ffmpegthumbnailer,(neovim note taking telekasten.nvim) Lightweight video thumbnailer that can be used by file managers
+,ueberzug, (neovim note taking telekasten.nvim) display images in the terminal
+,yamllint, (neovim) lint yaml file in neovim
+A,nerd-fonts-complete, Nerd fonts for terminal, programming and symbols
