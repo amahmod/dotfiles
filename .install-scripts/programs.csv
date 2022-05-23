@@ -46,7 +46,7 @@ A,zathura-pdf-mupdf,"PDF support for Zathura (MuPDF backend) (Supports PDF, ePub
 ,nautilus,GTK3 file manager
 ,neofecth,display system information in terminal
 ,mpv,is the patrician's choice video player.
-,alacritty,A cross-platform GPU-accelerated terminal emulator
+,kitty,A cross-platform GPU-accelerated terminal emulator
 A,jmtpfs,mtpfs with better support for Android
 A,polybar,A fast and easy-to-use status bar
 A,betterlockscreen,A simple lock script for i3lock-color
