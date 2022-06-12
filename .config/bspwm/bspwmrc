@@ -1,7 +1,28 @@
 #!/usr/bin/env bash
 
+wmname LG3D
+export _JAVA_AWT_WM_NONREPARENTING=1
+
 xrdb -merge $HOME/.Xdefaults &
 xrdb -merge $HOME/.Xresources &
+
+## Get colors from .Xresources -------------------------------#
+xrdb ~/.Xresources
+
+getcolors() {
+	FOREGROUND=$(xrdb -query | grep 'foreground:'| awk '{print $NF}')
+	BACKGROUND=$(xrdb -query | grep 'background:'| awk '{print $NF}')
+	BLACK=$(xrdb -query | grep 'color0:'| awk '{print $NF}')
+	RED=$(xrdb -query | grep 'color1:'| awk '{print $NF}')
+	GREEN=$(xrdb -query | grep 'color2:'| awk '{print $NF}')
+	YELLOW=$(xrdb -query | grep 'color3:'| awk '{print $NF}')
+	BLUE=$(xrdb -query | grep 'color4:'| awk '{print $NF}')
+	MAGENTA=$(xrdb -query | grep 'color5:'| awk '{print $NF}')
+	CYAN=$(xrdb -query | grep 'color6:'| awk '{print $NF}')
+	WHITE=$(xrdb -query | grep 'color7:'| awk '{print $NF}')
+}
+getcolors
+
 
 (ps x | grep bspswallow | grep -v grep) || bspswallow &
 
@@ -11,17 +32,16 @@ xrdb -merge $HOME/.Xresources &
 # WS2=
 # WS3=
 # WS4=
-WS1=1
-WS2=2
-WS3=3
-WS4=4
-
 # WS5=
 # WS6=
 # WS7=
 # WS8=
 # WS9=
 
+WS1=1
+WS2=2
+WS3=3
+WS4=4
 WS5=5
 WS6=6
 WS7=7
@@ -32,42 +52,34 @@ WS9=9
 connected_monitor_count=$(xrandr | grep " connected " | awk "{ print$1 }" | wc -l )
 
 # if [ $connected_monitor_count -gt 1 ]; then
-    bspc monitor DP-1 -d $WS1 $WS2 $WS3 $WS4 $WS5 
-    bspc monitor HDMI-0 -d $WS6 $WS7 $WS8 $WS9
+    bspc monitor HDMI-0 -d $WS1 $WS2 $WS3 $WS4
+    bspc monitor DP-1 -d $WS5 $WS6 $WS7 $WS8 $WS9
 # else
     # bspc monitor -d $WS1 $WS2 $WS3 $WS4 $WS5 $WS6 $WS7 $WS8 $WS9
 # fi
 
 #### BSPWM configuration ####
-# bspc config border_radius               8
-bspc config border_width                  1
-bspc config window_gap                    5
-bspc config top_padding                   0
-bspc config bottom_padding                0
-bspc config left_padding                  0
-bspc config right_padding                 0
-bspc config single_monocle                false
-bspc config click_to_focus                true
-bspc config split_ratio                   0.50
-bspc config borderless_monocle            true
-bspc config gapless_monocle               true
-bspc config focus_by_distance             true
-bspc config focus_follows_pointer         true
-bspc config history_aware_focus           true
-bspc config remove_disabled_monitors      true
-bspc config merge_overlapping_monitors    true
+
+bspc config border_width 1
+bspc config window_gap 10
+bspc config split_ratio 0.50
+
 bspc config pointer_modifier mod4
 bspc config pointer_action1 move
 bspc config pointer_action2 resize_side
 bspc config pointer_action3 resize_corner
 
 #### BSPWM coloring ####
-bspc config normal_border_color		      "#4c566a"
-bspc config active_border_color	          "#1e1e1e"
-bspc config focused_border_color	      "#5e81ac"
-bspc config presel_feedback_color	      "#5e81ac"
-bspc config urgent_border_color 	      "#dd2727"
+bspc config focused_border_color "$BLUE"
+bspc config normal_border_color "$BACKGROUND"
+bspc config active_border_color "$MAGENTA"
+bspc config presel_feedback_color "$GREEN"
 
+bspc config borderless_monocle true
+bspc config gapless_monocle true
+bspc config paddingless_monocle true
+bspc config single_monocle false
+bspc config focus_follows_pointer true
 
 #polybar hidden when fullscreen for vlc, youtube, mpv ...
 #find out the name of your monitor with xrandr
@@ -75,16 +87,32 @@ xdo below -t $(xdo id -n root) $(xdo id -a polybar-left_DP-1)
 xdo below -t $(xdo id -n root) $(xdo id -a polybar-right_HDMI-0)
 
 ## -------- Rules ----------------------##
-bspc rule -a Skype  desktop=$WS9 state=tiled
-bspc rule -a Mailspring desktop=$WS9 state=tiled follow=on
-bspc rule -a Thunderbird desktop=$WS9
-
-bspc rule -a qBittorrent desktop=$WS8 follow=on
-# bspc rule -a "xdman-Main" desktop=$WS8 follow=on
-bspc rule -a Transmission-gtk desktop=$WS8 follow=on
-# bspc rule -a Upwork desktop=$WS5 follow=on
-bspc rule -a "com.freelancer.workspace.launcher.Bootstrap" desktop=$WS5
-bspc rule -a Hubstaff desktop=$WS5 state=floating follow=on
+# remove all rules first
+bspc rule -r *:*
 
 
-autostart
+#  Work
+declare -a work=(Upwork com.freelancer.workspace.launcher.Bootstrap)
+for i in ${work[@]}; do
+   bspc rule -a $i desktop='^4' state=floating follow=on focus=on; done
+
+
+#  Communication
+declare -a communication=(qBittorrent Transmission-gtk)
+for i in ${communication[@]}; do
+   bspc rule -a $i desktop='^7' state=floating follow=on focus=on; done
+
+
+#  Communication
+declare -a communication=(Mailspring Thunderbird)
+for i in ${communication[@]}; do
+   bspc rule -a $i desktop='^8' state=floating follow=on focus=on; done
+
+
+#  Messaging
+declare -a media=(Skype Slack Telegram)
+for i in ${media[@]}; do
+   bspc rule -a $i desktop='^9' state=floating follow=on focus=on; done
+
+
+autostart &
