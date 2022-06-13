@@ -115,4 +115,18 @@ for i in ${media[@]}; do
    bspc rule -a $i desktop='^9' state=floating follow=on focus=on; done
 
 
+killall -9 sxhkd dunst picom
+
+
+sxhkd &
+setxkbmap us &
+xset r rate 300 50 &
+unclutter &
+setbg &
+picom &
+dunst &
+ibus-daemon &
+xsetroot -cursor_name left_ptr
+$HOME/.screenlayout/display.sh &
+
 autostart &

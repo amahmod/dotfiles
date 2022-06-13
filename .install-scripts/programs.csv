@@ -59,3 +59,5 @@ A,ibus-avro-git,Avro Phonetic Bangla typing for Linux
 ,ueberzug, (neovim note taking telekasten.nvim) display images in the terminal
 ,yamllint, (neovim) lint yaml file in neovim
 A,nerd-fonts-complete, Nerd fonts for programming and symbols in terminal
+,nitrogen,Background browser and setter for x windows
+,rofi,A window switcher; application launcher and dmenu replacement
