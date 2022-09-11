@@ -1,0 +1,47 @@
+- name: Clone Yay repo
+  ansible.builtin.git:
+    repo: 'https://aur.archlinux.org/yay.git'
+    dest: "{{ lookup('env', 'HOME') }}/.yay"
+  tags:
+    - install
+    - core
+    - neovim
+
+- name: Install Yay
+  shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
+  tags:
+    - install
+    - core
+    - neovim
+
+- name: Install ansible aur helper
+  shell: ansible-galaxy collection install kewlfft.aur
+  tags:
+    - core
+    - install
+    - neovim
+
+- name: Install pacman packages
+  become: true
+  community.general.pacman:
+    name:
+      - curl
+      - git
+      - zip
+      - unzip
+    state: present
+  tags:
+    - core
+    - install
+    - neovim
+
+- name: Install Yay packages
+  kewlfft.aur.aur:
+    use: yay
+    name:
+      - pod2man
+    state: present
+  tags:
+    - core
+    - install
+    - neovim

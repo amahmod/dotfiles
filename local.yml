@@ -13,6 +13,7 @@
         - install
         - core
   tasks:
+    - ansible.builtin.import_tasks: tasks/core.yml
     - ansible.builtin.import_tasks: tasks/ssh.yml
     - ansible.builtin.import_tasks: tasks/git.yml
     - ansible.builtin.import_tasks: tasks/node.yml
