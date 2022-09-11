@@ -1,0 +1,56 @@
+- name: Install node 16
+  become: true
+  community.general.pacman:
+    name: nodejs-lts-gallium
+    state: present
+  tags:
+    - install
+    - node
+
+- name: Install npm
+  become: true
+  community.general.pacman:
+    name: npm
+    state: present
+  tags:
+    - install
+    - node
+
+- name: npmjs prefix
+  file:
+    path: ~/.local/.npm-packages
+    state: directory
+  tags:
+    - install
+    - node
+
+- name: npmjs global settings
+  shell: npm config set prefix '~/.local/.npm-packages'
+  tags:
+    - install
+    - node
+
+- name: add npm global to PATH
+  shell: export PATH=~/.local/.npm-packages/bin:$PATH
+  tags:
+    - install
+    - node
+    - npm-path
+
+- name: Install global npm packages
+  npm:
+    global: yes
+    name: '{{ item }}'
+  with_items:
+    - nodemon
+    - neovim
+    - yarn
+    - typescript
+    - ts-node
+    - '@fsouza/prettierd'
+    - live-server
+    - prettier
+
+  tags:
+    - install
+    - node

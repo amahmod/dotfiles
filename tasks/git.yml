@@ -1,0 +1,29 @@
+- name: Install git
+  become: true
+  community.general.pacman:
+    name: git
+    state: present
+  tags:
+    - dotfiles
+    - install
+    - git
+
+- name: Git personal setup email
+  git_config:
+    name: user.email
+    scope: global
+    value: 'dev.amahmod@gmail.com'
+  tags:
+    - dotfiles
+    - install
+    - git
+
+- name: Git personal setup name
+  git_config:
+    name: user.name
+    scope: global
+    value: 'Mohammad Apel Mahmod'
+  tags:
+    - dotfiles
+    - install
+    - git

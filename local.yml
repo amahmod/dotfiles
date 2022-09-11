@@ -1,0 +1,20 @@
+- hosts: localhost
+  vars:
+    source_key: '{{ playbook_dir }}/.keys/id_rsa'
+    dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_rsa"
+    username: '{{ ansible_user_id }}'
+  pre_tasks:
+    - name: Update packages
+      become: true
+      community.general.pacman:
+        update_cache: yes
+        upgrade: yes
+      tags:
+        - install
+        - core
+  tasks:
+    - ansible.builtin.import_tasks: tasks/ssh.yml
+    - ansible.builtin.import_tasks: tasks/git.yml
+    - ansible.builtin.import_tasks: tasks/node.yml
+    - ansible.builtin.import_tasks: tasks/zsh.yml
+    - ansible.builtin.import_tasks: tasks/nvim.yml
