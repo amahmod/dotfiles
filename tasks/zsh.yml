@@ -31,7 +31,7 @@
   tags: *tags_for_zsh_tasks
 
 - name: Oh-My-Zsh
-  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer
+  shell: curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh > ~/.oh-my-installer && chmod +x ~/.oh-my-installer && ~/.oh-my-installer && rm ~/.oh-my-installer
   tags: *tags_for_zsh_tasks
   when: oh_my_stats.stat.exists == False
   become_user: amahmod
