@@ -1,0 +1,66 @@
+- name: Install wm packages
+  become: true
+  community.general.pacman:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - xorg
+    - xorg-xinit
+    - nvidia
+    - nvidia-utils
+    - arandr
+    - bspwm
+    - sxhkd
+    - dmenu
+    - picom
+    - feh
+    - dunst
+    - libnotify
+    - flameshot
+    - zathura
+    - calcurse
+    - unclutter
+    - ripgrep
+    - fzf
+    - trash-cli
+    - redshift
+    - thunar
+    - neofetch
+    - polybar
+    - ibus
+    - ibus-m17n
+    - rofi
+    - wezterm
+  tags:
+    - install
+    - wm
+
+- name: Install media apps
+  become: true
+  community.general.pacman:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - ffmpeg
+    - sxiv
+    - mpv
+    - pulsemixer
+    - alsa-utils
+  tags:
+    - install
+    - wm
+
+- name: Install aur packages
+  kewlfft.aur.aur:
+    use: yay
+    state: present
+    name: '{{ item }}'
+  with_items:
+    - zathura-pdf-mupdf
+    - jmtpfs
+    - lf-bin
+    - ibus-avro-git
+    - nerd-fonts-jetbrains-mono
+  tags:
+    - install
+    - wm
