@@ -1,3 +1,11 @@
+- name: Install tree-sitter
+  community.general.pacman:
+    name: tree-sitter
+    state: present
+  tags:
+    - install
+    - neovim
+
 - name: 'Check if nvim is installed'
   shell:
     cmd: nvim -version 2>&1 | head -1 | cut -d '"' -f 2
