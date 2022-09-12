@@ -3,7 +3,7 @@
   community.general.pacman:
     name: curl
     state: present
-  tags: &tags_for_zsh_tasks ['install', 'productivity', 'dotfiles', 'zsh']
+  tags: &tags_for_zsh_tasks ['install', 'productivity', 'zsh']
 
 - name: Install ZSH
   become: true
