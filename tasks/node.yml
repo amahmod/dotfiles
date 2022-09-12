@@ -3,39 +3,28 @@
   community.general.pacman:
     name: nodejs-lts-gallium
     state: present
-  tags:
-    - install
-    - node
+  tags: &tags_for_node ['install', 'node', 'neovim']
 
 - name: Install npm
   become: true
   community.general.pacman:
     name: npm
     state: present
-  tags:
-    - install
-    - node
+  tags: *tags_for_node
 
 - name: npmjs prefix
   file:
     path: ~/.local/.npm-packages
     state: directory
-  tags:
-    - install
-    - node
+  tags: *tags_for_node
 
 - name: npmjs global settings
   shell: npm config set prefix '~/.local/.npm-packages'
-  tags:
-    - install
-    - node
+  tags: *tags_for_node
 
 - name: add npm global to PATH
   shell: export PATH=~/.local/.npm-packages/bin:$PATH
-  tags:
-    - install
-    - node
-    - npm-path
+  tags: *tags_for_node
 
 - name: Install global npm packages
   npm:
@@ -50,7 +39,4 @@
     - '@fsouza/prettierd'
     - live-server
     - prettier
-
-  tags:
-    - install
-    - node
+  tags: *tags_for_node
