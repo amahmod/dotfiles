@@ -8,6 +8,11 @@
 
 - name: Install neovim
   block:
+    - name: Install Cmake
+      community.general.pacman:
+        name:
+          - cmake
+
     - name: Remove neovim
       shell: rm -rf ~/neovim
 
