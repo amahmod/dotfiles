@@ -14,22 +14,22 @@
     - core
     - neovim
 
-- name: Install ansible aur helper
-  shell: ansible-galaxy collection install kewlfft.aur
-  tags:
-    - core
-    - install
-    - neovim
-
 - name: Install pacman packages
   become: true
   community.general.pacman:
-    name:
-      - curl
-      - git
-      - zip
-      - unzip
+    name: '{{ item }}'
     state: present
+  with_items:
+    - curl
+    - git
+    - zip
+    - unzip
+    - fontconfig
+    - tree
+    - bat
+    - unrar
+    - htop
+    - xclip
   tags:
     - core
     - install
