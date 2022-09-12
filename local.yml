@@ -19,4 +19,5 @@
     - ansible.builtin.import_tasks: tasks/node.yml
     - ansible.builtin.import_tasks: tasks/zsh.yml
     - ansible.builtin.import_tasks: tasks/nvim.yml
+    - ansible.builtin.import_tasks: tasks/wm.yml
     - ansible.builtin.import_tasks: tasks/dotfiles.yml
