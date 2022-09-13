@@ -1,3 +1,19 @@
+- name: Create user directories
+  file:
+    path: '{{ item }}'
+    state: directory
+  with_items:
+    - "{{ lookup('env', 'HOME') }}/Desktop"
+    - "{{ lookup('env', 'HOME') }}/Downloads"
+    - "{{ lookup('env', 'HOME') }}/Documents/books"
+    - "{{ lookup('env', 'HOME') }}/Pictures/screenshot"
+    - "{{ lookup('env', 'HOME') }}/wokspace/client"
+    - "{{ lookup('env', 'HOME') }}/wokspace/personal"
+    - "{{ lookup('env', 'HOME') }}/wokspace/learning"
+  tags:
+    - install
+    - wm
+
 - name: Install wm packages
   become: true
   community.general.pacman:
