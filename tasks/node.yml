@@ -39,4 +39,5 @@
     - '@fsouza/prettierd'
     - live-server
     - prettier
+    - eslint_d
   tags: *tags_for_node

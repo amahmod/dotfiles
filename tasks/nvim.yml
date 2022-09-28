@@ -46,3 +46,22 @@
   tags:
     - install
     - neovim
+
+- name: Install required packages for neovim
+  kewlfft.aur.aur:
+    use: yay
+    name: '{{ item }}'
+    with_items:
+      - luacheck-git
+      - stylua-git
+      - shellcheck
+      - prettierd
+      - shfmt
+      - yamllint
+      - rust-git
+      - rust-analyzer
+
+    state: present
+  tags:
+    - install
+    - neovim
