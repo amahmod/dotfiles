@@ -41,6 +41,7 @@
     - trash-cli
     - redshift
     - thunar
+    - thunar-archive-plugin
     - neofetch
     - polybar
     - ibus
