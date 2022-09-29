@@ -42,12 +42,15 @@
     - redshift
     - thunar
     - thunar-archive-plugin
+    - tumbler
+    - ffmpegthumbnailer
     - neofetch
     - polybar
     - ibus
     - ibus-m17n
     - rofi
     - wezterm
+    - ttf-roboto
   tags:
     - install
     - wm
@@ -78,6 +81,9 @@
     - lf-bin
     - ibus-avro-git
     - nerd-fonts-jetbrains-mono
+    - gtk-theme-numix-solarized
+    - luv-icon-theme-git
+    - xcursor-numix
   tags:
     - install
     - wm
