@@ -27,3 +27,13 @@
     - dotfiles
     - install
     - git
+
+- name: Git set default branch to "main"
+  git_config:
+    name: init.defaultBranch
+    scope: global
+    value: 'main'
+  tags:
+    - dotfiles
+    - install
+    - git

@@ -82,7 +82,7 @@
     - ibus-avro-git
     - nerd-fonts-jetbrains-mono
     - gtk-theme-numix-solarized
-    - luv-icon-theme-git
+    - numix-circle-icon-theme-git
     - xcursor-numix
   tags:
     - install
