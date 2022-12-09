@@ -1,39 +1,39 @@
 - name: Install git
   become: true
-  community.general.pacman:
-    name: git
-    state: present
+  apt:
+      name: git
+      state: present
   tags:
-    - dotfiles
-    - install
-    - git
+      - dotfiles
+      - install
+      - git
 
 - name: Git personal setup email
   git_config:
-    name: user.email
-    scope: global
-    value: 'dev.amahmod@gmail.com'
+      name: user.email
+      scope: global
+      value: 'dev.amahmod@gmail.com'
   tags:
-    - dotfiles
-    - install
-    - git
+      - dotfiles
+      - install
+      - git
 
 - name: Git personal setup name
   git_config:
-    name: user.name
-    scope: global
-    value: 'Mohammad Apel Mahmod'
+      name: user.name
+      scope: global
+      value: 'Mohammad Apel Mahmod'
   tags:
-    - dotfiles
-    - install
-    - git
+      - dotfiles
+      - install
+      - git
 
 - name: Git set default branch to "main"
   git_config:
-    name: init.defaultBranch
-    scope: global
-    value: 'main'
+      name: init.defaultBranch
+      scope: global
+      value: 'main'
   tags:
-    - dotfiles
-    - install
-    - git
+      - dotfiles
+      - install
+      - git

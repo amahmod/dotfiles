@@ -1,21 +1,19 @@
-- name: Install node 16
+- name: Setup node 16 source
   become: true
-  community.general.pacman:
-    name: nodejs-lts-gallium
-    state: present
+  shell: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
   tags: &tags_for_node ['install', 'node', 'neovim']
 
-- name: Install npm
+- name: Install nodejs and npm
   become: true
-  community.general.pacman:
-    name: npm
-    state: present
+  apt:
+      name: ['nodejs']
+      state: present
   tags: *tags_for_node
 
 - name: npmjs prefix
   file:
-    path: ~/.local/.npm-packages
-    state: directory
+      path: ~/.local/.npm-packages
+      state: directory
   tags: *tags_for_node
 
 - name: npmjs global settings
@@ -28,16 +26,13 @@
 
 - name: Install global npm packages
   npm:
-    global: yes
-    name: '{{ item }}'
+      global: yes
+      name: '{{ item }}'
   with_items:
-    - nodemon
-    - neovim
-    - yarn
-    - typescript
-    - ts-node
-    - '@fsouza/prettierd'
-    - live-server
-    - prettier
-    - eslint_d
+      - n
+      - nodemon
+      - yarn
+      - typescript
+      - ts-node
+      - live-server
   tags: *tags_for_node

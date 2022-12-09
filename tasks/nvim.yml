@@ -1,65 +1,61 @@
-- name: Install tree-sitter
+- name: Install luarocks
   become: true
-  community.general.pacman:
-    name: tree-sitter
-    state: present
+  apt:
+      name: luarocks
+      state: present
   tags:
-    - install
-    - neovim
+      - install
+      - neovim
 
-- name: 'Check if nvim is installed'
+- name: Install tree-sitter
+  npm:
+      name: tree-sitter
+      state: present
+      global: yes
+  tags:
+      - install
+      - neovim
+
+- name: Check if nvim is installed
   shell:
-    cmd: nvim -version 2>&1 | head -1 | cut -d '"' -f 2
+      cmd: nvim -version 2>&1 | head -1 | cut -d '"' -f 2
   register: nvim_version
-  check_mode: false
-  changed_when: false
   failed_when: nvim_version.rc != 0 and nvim_version.rc != 127
 
+- name: Remove neovim
+  shell: rm -rf ~/neovim
+
+- name: Get Packer
+  ansible.builtin.git:
+      repo: 'https://github.com/wbthomason/packer.nvim'
+      dest: "{{ lookup('env', 'HOME') }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
+
+- name: Clone Neovim
+  ansible.builtin.git:
+      repo: 'https://github.com/neovim/neovim.git'
+      dest: "{{ lookup('env', 'HOME') }}/neovim"
+
+- name: Build neovim
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make -j 20"
+
 - name: Install neovim
-  block:
-    - name: Install Cmake
-      become: true
-      community.general.pacman:
-        name:
-          - cmake
-
-    - name: Remove neovim
-      shell: rm -rf ~/neovim
-
-    - name: Get Packer
-      ansible.builtin.git:
-        repo: 'https://github.com/wbthomason/packer.nvim'
-        dest: "{{ lookup('env', 'HOME') }}/.local/share/nvim/site/pack/packer/start/packer.nvim"
-
-    - name: Clone Neovim
-      ansible.builtin.git:
-        repo: 'https://github.com/neovim/neovim.git'
-        dest: "{{ lookup('env', 'HOME') }}/neovim"
-
-    - name: Build neovim
-      shell: "cd {{ lookup('env', 'HOME') }}/neovim && make CMAKE_BUILD_TYPE=RelWithDebInfo"
-
-    - name: Install neovim
-      become: true
-      shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
-  when: "'command not found' in nvim_version.stdout"
+  become: true
+  shell: "cd {{ lookup('env', 'HOME') }}/neovim && make install"
   tags:
-    - install
-    - neovim
+      - install
+      - neovim
 
 - name: Install required packages for neovim
-  kewlfft.aur.aur:
-    use: yay
-    name: '{{ item }}'
-    state: present
+  npm:
+      global: yes
+      name: '{{ item }}'
   with_items:
-    - luacheck-git
-    - stylua-git
-    - shellcheck
-    - yamllint
-    - prettierd
-    - shfmt
-    - rust-analyzer
+      - neovim
+      - typescript
+      - '@fsouza/prettierd'
+      - prettier
+      - eslint_d
+      - luacheck
   tags:
-    - install
-    - neovim
+      - install
+      - neovim
