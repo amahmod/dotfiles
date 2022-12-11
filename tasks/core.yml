@@ -1,49 +1,66 @@
 - name: Clone Yay repo
   ansible.builtin.git:
-    repo: 'https://aur.archlinux.org/yay.git'
-    dest: "{{ lookup('env', 'HOME') }}/.yay"
+      repo: 'https://aur.archlinux.org/yay.git'
+      dest: "{{ lookup('env', 'HOME') }}/.yay"
   tags:
-    - install
-    - core
-    - neovim
+      - install
+      - core
+      - neovim
 
 - name: Install Yay
   shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
   tags:
-    - install
-    - core
-    - neovim
+      - install
+      - core
+      - neovim
 
 - name: Install pacman packages
   become: true
   community.general.pacman:
-    name: '{{ item }}'
-    state: present
+      name: '{{ item }}'
+      state: present
   with_items:
-    - stow
-    - base-devel
-    - curl
-    - git
-    - zip
-    - unzip
-    - fontconfig
-    - tree
-    - bat
-    - unrar
-    - htop
-    - xclip
+      - stow
+      - base-devel
+      - curl
+      - git
+      - zip
+      - unzip
+      - fontconfig
+      - tree
+      - bat
+      - unrar
+      - htop
+      - xclip
   tags:
-    - core
-    - install
-    - neovim
+      - core
+      - install
+      - neovim
 
 - name: Install Yay packages
   kewlfft.aur.aur:
-    use: yay
-    name:
-      - pod2man
-    state: present
+      use: yay
+      name:
+          - pod2man
+      state: present
   tags:
-    - core
-    - install
-    - neovim
+      - core
+      - install
+      - neovim
+
+- name: Install fonts
+  ansible.builtin.git:
+      accept_hostkey: true
+      repo: git@github.com:amahmod/fonts.git
+      dest: ~/.local/share/fonts
+  tags:
+      - install
+      - core
+      - fonts
+
+- name: Update font cache
+  shell: fc-cache -fv
+  tags:
+      - install
+      - core
+      - fonts
