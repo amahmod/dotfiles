@@ -20,6 +20,7 @@
     name: '{{ item }}'
     state: present
   with_items:
+    - stow
     - base-devel
     - curl
     - git
