@@ -81,6 +81,7 @@
     - lf-bin
     - ibus-avro-git
     - nerd-fonts-jetbrains-mono
+    - otf-symbola
     - gtk-theme-numix-solarized
     - numix-circle-icon-theme-git
     - xcursor-numix
