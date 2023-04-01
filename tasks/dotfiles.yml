@@ -19,6 +19,12 @@
     - install
     - dotfiles
 
+- name: Remove old .zshrc
+  shell: mv ~/.zshrc ~/.zshrc.bak
+  tags:
+    - install
+    - dotfiles
+
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./install
   tags:
