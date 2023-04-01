@@ -1,18 +1,25 @@
-- name: Clone Yay repo
-  ansible.builtin.git:
-      repo: 'https://aur.archlinux.org/yay.git'
-      dest: "{{ lookup('env', 'HOME') }}/.yay"
-  tags:
-      - install
-      - core
-      - neovim
+- name: 'Check if yay is installed'
+  shell:
+      cmd: yay --version 2>&1 | head -1 | cut -d '"' -f 2
+  register: yay_version
+  check_mode: false
+  changed_when: false
+  failed_when: yay_version.rc != 0 and yay_version.rc != 127
 
-- name: Install Yay
-  shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
+- name: Install yay
+  block:
+      - name: Clone Yay repo
+        ansible.builtin.git:
+            repo: 'https://aur.archlinux.org/yay.git'
+            dest: "{{ lookup('env', 'HOME') }}/.yay"
+
+      - name: Install Yay
+        shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
+
+  when: "'command not found' in yay_version.stdout"
   tags:
       - install
       - core
-      - neovim
 
 - name: Install pacman packages
   become: true
@@ -20,6 +27,7 @@
       name: '{{ item }}'
       state: present
   with_items:
+      - libxml
       - stow
       - base-devel
       - curl
@@ -31,11 +39,9 @@
       - bat
       - unrar
       - htop
-      - xclip
   tags:
       - core
       - install
-      - neovim
 
 - name: Install Yay packages
   kewlfft.aur.aur:
@@ -46,7 +52,6 @@
   tags:
       - core
       - install
-      - neovim
 
 - name: Install fonts
   ansible.builtin.git:
