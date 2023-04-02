@@ -32,6 +32,8 @@
       - polkit-kde-agent
       - qt5-wayland
       - qt6-wayland
+      - firefox-developer-edition
+      - man
   tags:
       - install
       - wm
@@ -46,6 +48,7 @@
       - mpv
       - pulsemixer
       - alsa-utils
+      - pavucontrol
   tags:
       - install
       - wm
@@ -56,10 +59,22 @@
       state: present
       name: '{{ item }}'
   with_items:
+      - cliphist
       - hyprland-nvidia-git
+      - xdg-desktop-portal-hyprland-git
       - jmtpfs
       - lf-bin
       - otf-symbola
+      - otf-font-awesome
+      - gvfs
+      - thunar
+      - thunar-archive-plugin
+      - thunar-media-tags-plugin
+      - thunar-dropbox
+      - thunar-vulman
+      - nerd-fonts-jetbrains-mono
+      - swaybg
+      - swayimg
   tags:
       - install
       - wm
