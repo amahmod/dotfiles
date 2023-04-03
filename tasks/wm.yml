@@ -75,6 +75,7 @@
       - nerd-fonts-jetbrains-mono
       - swaybg
       - swayimg
+      - rofi-lbonn-wayland-git
   tags:
       - install
       - wm
