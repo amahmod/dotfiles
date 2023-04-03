@@ -1,21 +1,21 @@
 - name: Install node 16
   become: true
   community.general.pacman:
-    name: nodejs-lts-gallium
-    state: present
+      name: nodejs-lts-gallium
+      state: present
   tags: &tags_for_node ['install', 'node', 'neovim']
 
 - name: Install npm
   become: true
   community.general.pacman:
-    name: npm
-    state: present
+      name: npm
+      state: present
   tags: *tags_for_node
 
 - name: npmjs prefix
   file:
-    path: ~/.local/.npm-packages
-    state: directory
+      path: ~/.local/.npm-packages
+      state: directory
   tags: *tags_for_node
 
 - name: npmjs global settings
@@ -28,16 +28,16 @@
 
 - name: Install global npm packages
   npm:
-    global: yes
-    name: '{{ item }}'
+      global: yes
+      name: '{{ item }}'
   with_items:
-    - nodemon
-    - neovim
-    - yarn
-    - typescript
-    - ts-node
-    - '@fsouza/prettierd'
-    - live-server
-    - prettier
-    - eslint_d
+      - nodemon
+      - neovim
+      - yarn
+      - typescript
+      - ts-node
+      - '@fsouza/prettierd'
+      - live-server
+      - prettier
+      - eslint_d
   tags: *tags_for_node

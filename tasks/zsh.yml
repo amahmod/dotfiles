@@ -1,15 +1,15 @@
 - name: Make sure curl is installed
   become: true
   community.general.pacman:
-    name: curl
-    state: present
+      name: curl
+      state: present
   tags: &tags_for_zsh_tasks ['install', 'productivity', 'zsh']
 
 - name: Install ZSH
   become: true
   community.general.pacman:
-    name: zsh
-    state: present
+      name: zsh
+      state: present
   tags: *tags_for_zsh_tasks
 
 # - name: Change shell to zsh
@@ -20,13 +20,13 @@
 - name: Change shell to zsh
   become: true
   user:
-    name: '{{ username }}'
-    shell: /bin/zsh
+      name: '{{ username }}'
+      shell: /bin/zsh
   tags: *tags_for_zsh_tasks
 
 - name: Check that the .oh-my-zsh exists
   stat:
-    path: '/home/{{ username }}/.oh-my-zsh'
+      path: '/home/{{ username }}/.oh-my-zsh'
   register: oh_my_stats
   tags: *tags_for_zsh_tasks
 
@@ -38,12 +38,12 @@
 
 - name: Install zsh-autosuggestions
   ansible.builtin.git:
-    repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
-    dest: '~/.oh-my-zsh/plugins/zsh-autosuggestions'
+      repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+      dest: '~/.oh-my-zsh/plugins/zsh-autosuggestions'
   tags: *tags_for_zsh_tasks
 
 - name: Install zsh-syntax-highlighting
   ansible.builtin.git:
-    repo: 'https://github.com/zsh-users/zsh-syntax-highlighting'
-    dest: '~/.oh-my-zsh/plugins/zsh-syntax-highlighting'
+      repo: 'https://github.com/zsh-users/zsh-syntax-highlighting'
+      dest: '~/.oh-my-zsh/plugins/zsh-syntax-highlighting'
   tags: *tags_for_zsh_tasks

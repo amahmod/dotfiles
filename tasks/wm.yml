@@ -1,96 +1,96 @@
 - name: Create user directories
   file:
-    path: '{{ item }}'
-    state: directory
+      path: '{{ item }}'
+      state: directory
   with_items:
-    - "{{ lookup('env', 'HOME') }}/Desktop"
-    - "{{ lookup('env', 'HOME') }}/Downloads"
-    - "{{ lookup('env', 'HOME') }}/Documents/books"
-    - "{{ lookup('env', 'HOME') }}/Pictures/screenshot"
-    - "{{ lookup('env', 'HOME') }}/wokspace/client"
-    - "{{ lookup('env', 'HOME') }}/wokspace/personal"
-    - "{{ lookup('env', 'HOME') }}/wokspace/learning"
+      - "{{ lookup('env', 'HOME') }}/Desktop"
+      - "{{ lookup('env', 'HOME') }}/Downloads"
+      - "{{ lookup('env', 'HOME') }}/Documents/books"
+      - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
+      - "{{ lookup('env', 'HOME') }}/work"
+      - "{{ lookup('env', 'HOME') }}/personal"
+      - "{{ lookup('env', 'HOME') }}/learning"
   tags:
-    - install
-    - wm
+      - install
+      - wm
 
 - name: Install wm packages
   become: true
   community.general.pacman:
-    name: '{{ item }}'
-    state: present
+      name: '{{ item }}'
+      state: present
   with_items:
-    - xorg
-    - xorg-xinit
-    - nvidia
-    - nvidia-utils
-    - arandr
-    - bspwm
-    - sxhkd
-    - dmenu
-    - picom
-    - feh
-    - dunst
-    - libnotify
-    - flameshot
-    - zathura
-    - calcurse
-    - unclutter
-    - ripgrep
-    - fzf
-    - trash-cli
-    - redshift
-    - thunar
-    - thunar-archive-plugin
-    - tumbler
-    - ffmpegthumbnailer
-    - neofetch
-    - polybar
-    - ibus
-    - ibus-m17n
-    - rofi
-    - wezterm
-    - ttf-roboto
+      - xorg
+      - xorg-xinit
+      - nvidia
+      - nvidia-utils
+      - arandr
+      - bspwm
+      - sxhkd
+      - dmenu
+      - picom
+      - feh
+      - dunst
+      - libnotify
+      - flameshot
+      - zathura
+      - calcurse
+      - unclutter
+      - ripgrep
+      - fzf
+      - trash-cli
+      - redshift
+      - thunar
+      - thunar-archive-plugin
+      - tumbler
+      - ffmpegthumbnailer
+      - neofetch
+      - polybar
+      - ibus
+      - ibus-m17n
+      - rofi
+      - wezterm
+      - ttf-roboto
   tags:
-    - install
-    - wm
+      - install
+      - wm
 
 - name: Install media apps
   become: true
   community.general.pacman:
-    name: '{{ item }}'
-    state: present
+      name: '{{ item }}'
+      state: present
   with_items:
-    - ffmpeg
-    - sxiv
-    - mpv
-    - pulsemixer
-    - alsa-utils
+      - ffmpeg
+      - sxiv
+      - mpv
+      - pulsemixer
+      - alsa-utils
   tags:
-    - install
-    - wm
+      - install
+      - wm
 
 - name: Install aur packages
   kewlfft.aur.aur:
-    use: yay
-    state: present
-    name: '{{ item }}'
+      use: yay
+      state: present
+      name: '{{ item }}'
   with_items:
-    - zathura-pdf-mupdf
-    - jmtpfs
-    - lf-bin
-    - ibus-avro-git
-    - nerd-fonts-jetbrains-mono
-    - otf-symbola
-    - gtk-theme-numix-solarized
-    - numix-circle-icon-theme-git
-    - xcursor-numix
+      - zathura-pdf-mupdf
+      - jmtpfs
+      - lf-bin
+      - ibus-avro-git
+      - nerd-fonts-jetbrains-mono
+      - otf-symbola
+      - gtk-theme-numix-solarized
+      - numix-circle-icon-theme-git
+      - xcursor-numix
   tags:
-    - install
-    - wm
+      - install
+      - wm
 
 - name: Enable undercurl support in wezterm
   shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
   tags:
-    - install
-    - wm
+      - install
+      - wm
