@@ -40,9 +40,11 @@
       - fzf
       - trash-cli
       - redshift
+      - tumbler
+      - gvfs
       - thunar
       - thunar-archive-plugin
-      - tumbler
+      - thunar-volman
       - ffmpegthumbnailer
       - neofetch
       - polybar
