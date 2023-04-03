@@ -53,6 +53,7 @@
   with_items:
       - cliphist
       - hyprland-nvidia-git
+      - hyprpicker-git
       - jmtpfs
       - lf-bin
       - nerd-fonts-jetbrains-mono
