@@ -27,7 +27,6 @@
       name: '{{ item }}'
       state: present
   with_items:
-      - libxml
       - stow
       - base-devel
       - curl
@@ -48,6 +47,7 @@
       use: yay
       name:
           - pod2man
+          - libxml
       state: present
   tags:
       - core
