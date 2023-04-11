@@ -41,6 +41,7 @@
       - tumbler
       - wireplumber
       - zathura
+      - waybar
   tags:
       - install
       - wm
