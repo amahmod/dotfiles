@@ -7,9 +7,9 @@
       - "{{ lookup('env', 'HOME') }}/Downloads"
       - "{{ lookup('env', 'HOME') }}/Documents/books"
       - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
-      - "{{ lookup('env', 'HOME') }}/wokspace/client"
-      - "{{ lookup('env', 'HOME') }}/wokspace/personal"
-      - "{{ lookup('env', 'HOME') }}/wokspace/learning"
+      - "{{ lookup('env', 'HOME') }}/work"
+      - "{{ lookup('env', 'HOME') }}/personal"
+      - "{{ lookup('env', 'HOME') }}/learning"
   tags:
       - install
       - wm
@@ -41,6 +41,10 @@
       - tumbler
       - wireplumber
       - zathura
+      - linux-headers
+      - nvidia-dkms
+      - nvidia-settings
+      - nvidia-utils
   tags:
       - install
       - wm
@@ -66,6 +70,8 @@
       - thunar-media-tags-plugin
       - xdg-desktop-portal-hyprland-git
       - waybar-hyprland
+      - wlogout
+      - swaylock
   tags:
       - install
       - wm
