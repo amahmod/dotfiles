@@ -41,7 +41,6 @@
       - tumbler
       - wireplumber
       - zathura
-      - waybar
   tags:
       - install
       - wm
@@ -66,6 +65,7 @@
       - thunar-dropbox
       - thunar-media-tags-plugin
       - xdg-desktop-portal-hyprland-git
+      - waybar-hyprland
   tags:
       - install
       - wm
