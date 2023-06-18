@@ -76,6 +76,19 @@
       - install
       - wm
 
+- name: Lf terminal file manager
+  kewlfft.aur.aur:
+      state: present
+      use: yay
+      name: '{{ item }}'
+  with_items:
+      - lf-bin
+      - ctpv-git # file preview
+  tags:
+      - install
+      - wm
+      - lf
+
 - name: Install media apps
   become: true
   community.general.pacman:
