@@ -45,6 +45,7 @@
       - nvidia-dkms
       - nvidia-settings
       - nvidia-utils
+      - wofi
   tags:
       - install
       - wm
