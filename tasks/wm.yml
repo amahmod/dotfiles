@@ -69,7 +69,7 @@
       - thunar-dropbox
       - thunar-media-tags-plugin
       - xdg-desktop-portal-hyprland-git
-      - waybar-hyprland
+      - waybar-hyprland-git
       - wlogout
       - swaylock
   tags:
