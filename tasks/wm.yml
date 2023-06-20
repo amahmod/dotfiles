@@ -20,6 +20,7 @@
       name: '{{ item }}'
       state: present
   with_items:
+      - brightnessctl
       - calcurse
       - dmenu
       - dunst
@@ -101,6 +102,7 @@
       - mpv
       - pavucontrol
       - pulsemixer
+      - pamixer
   tags:
       - install
       - wm
