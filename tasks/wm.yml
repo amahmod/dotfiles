@@ -58,7 +58,7 @@
       name: '{{ item }}'
   with_items:
       - cliphist
-      - hyprland-nvidia-git
+      - hyprland
       - hyprpicker-git
       - jmtpfs
       - lf-bin
