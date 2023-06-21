@@ -27,17 +27,18 @@
       name: '{{ item }}'
       state: present
   with_items:
-      - stow
       - base-devel
-      - curl
-      - git
-      - zip
-      - unzip
-      - fontconfig
-      - tree
       - bat
-      - unrar
+      - curl
+      - fontconfig
+      - git
       - htop
+      - stow
+      - sxiv # image viewer
+      - tree
+      - unrar
+      - unzip
+      - zip
   tags:
       - core
       - install
