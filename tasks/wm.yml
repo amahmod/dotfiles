@@ -43,9 +43,6 @@
       - wireplumber
       - zathura
       - linux-headers
-      - nvidia-dkms
-      - nvidia-settings
-      - nvidia-utils
       - wofi
   tags:
       - install
