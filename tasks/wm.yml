@@ -25,13 +25,15 @@
       - dmenu
       - dunst
       - firefox-developer-edition
+      - flameshot
       - fzf
       - grim
       - gvfs
       - kitty
+      - linux-headers
       - man
       - pipewire
-      - polkit-kde-agent
+      - polkit-gnome
       - qt5-wayland
       - qt6-wayland
       - ripgrep
@@ -41,9 +43,8 @@
       - trash-cli
       - tumbler
       - wireplumber
-      - zathura
-      - linux-headers
       - wofi
+      - zathura
   tags:
       - install
       - wm
@@ -102,55 +103,4 @@
       - pamixer
   tags:
       - install
-      - wm
-
-- name: 'Check if flameshoft is installed'
-  shell:
-      cmd: flameshoft --version 2>&1 | head -1 | cut -d '"' -f 2
-  register: flameshot_version
-  check_mode: false
-  changed_when: false
-  failed_when: flameshot_version.rc != 0 and flameshot_version.rc != 127
-  tags:
-      - install
-      - flameshot
-      - wm
-
-- name: Install flameshot
-  block:
-      - name: Install dependencies
-        become: true
-        community.general.pacman:
-            name:
-                - cmake
-                - base-devel
-                - git
-                - qt5-base
-                - qt5-tools
-                - qt5-svg
-                - openssl
-                - ca-certificates
-            state: present
-
-      - name: Remove existing code
-        shell: rm -rf ~/.flameshot
-
-      - name: Clone Flameshot repo
-        ansible.builtin.git:
-            repo: 'git@github.com:flameshot-org/flameshot.git'
-            dest: "{{ lookup('env', 'HOME') }}/.flameshot"
-
-      - name: Create build directory
-        shell: "cd {{ lookup('env', 'HOME') }}/.flameshot && mkdir build"
-
-      - name: Build flameshot
-        shell: "cd {{ lookup('env', 'HOME') }}/.flameshot/build && cmake -DUSE_WAYLAND_GRIM=true ../"
-
-      - name: Install flameshot
-        become: true
-        shell: "cd {{ lookup('env', 'HOME') }}/.flameshot/build && make install"
-  when: "'command not found' in flameshot_version.stdout"
-  tags:
-      - install
-      - flameshot
       - wm
