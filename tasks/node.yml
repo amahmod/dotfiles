@@ -31,13 +31,13 @@
       global: yes
       name: '{{ item }}'
   with_items:
-      - nodemon
-      - neovim
-      - yarn
-      - typescript
-      - ts-node
       - '@fsouza/prettierd'
-      - live-server
-      - prettier
       - eslint_d
+      - live-server
+      - neovim
+      - nodemon
+      - prettier
+      - ts-node
+      - typescript
+      - yarn
   tags: *tags_for_node

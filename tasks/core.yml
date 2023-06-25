@@ -3,15 +3,15 @@
       repo: 'https://aur.archlinux.org/yay.git'
       dest: "{{ lookup('env', 'HOME') }}/.yay"
   tags:
-      - install
       - core
+      - install
       - neovim
 
 - name: Install Yay
   shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
   tags:
-      - install
       - core
+      - install
       - neovim
 
 - name: Install pacman packages
@@ -56,13 +56,13 @@
       repo: git@github.com:amahmod/fonts.git
       dest: ~/.local/share/fonts
   tags:
-      - install
       - core
       - fonts
+      - install
 
 - name: Update font cache
   shell: fc-cache -fv
   tags:
-      - install
       - core
       - fonts
+      - install

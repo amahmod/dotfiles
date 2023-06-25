@@ -12,10 +12,10 @@
       state: present
   tags: *tags_for_zsh_tasks
 
-# - name: Change shell to zsh
-#   become: true
-#   shell: chsh -s $(which zsh) ${whoami}
-#   tags: *tags_for_zsh_tasks
+- name: Change shell to zsh
+  become: true
+  shell: chsh -s $(which zsh) ${whoami}
+  tags: *tags_for_zsh_tasks
 
 - name: Change shell to zsh
   become: true

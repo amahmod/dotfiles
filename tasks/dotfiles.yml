@@ -16,11 +16,11 @@
       accept_hostkey: yes
       version: main
   tags:
-      - install
       - dotfiles
+      - install
 
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./install
   tags:
-      - install
       - dotfiles
+      - install

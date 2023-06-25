@@ -20,39 +20,37 @@
       name: '{{ item }}'
       state: present
   with_items:
-      - xorg
-      - xorg-xinit
-      - nvidia
-      - nvidia-utils
       - arandr
       - bspwm
-      - sxhkd
-      - dmenu
-      - picom
-      - feh
-      - dunst
-      - libnotify
-      - flameshot
-      - zathura
       - calcurse
-      - unclutter
-      - ripgrep
+      - dmenu
+      - dunst
+      - feh
+      - ffmpegthumbnailer
+      - flameshot
       - fzf
-      - trash-cli
-      - redshift
-      - tumbler
       - gvfs
+      - ibus
+      - ibus-m17n
+      - libnotify
+      - neofetch
+      - picom
+      - polybar
+      - redshift
+      - ripgrep
+      - rofi
+      - sxhkd
       - thunar
       - thunar-archive-plugin
       - thunar-volman
-      - ffmpegthumbnailer
-      - neofetch
-      - polybar
-      - ibus
-      - ibus-m17n
-      - rofi
-      - wezterm
+      - trash-cli
       - ttf-roboto
+      - tumbler
+      - unclutter
+      - wezterm
+      - xorg
+      - xorg-xinit
+      - zathura
   tags:
       - install
       - wm
@@ -63,11 +61,11 @@
       name: '{{ item }}'
       state: present
   with_items:
+      - alsa-utils
       - ffmpeg
-      - sxiv
       - mpv
       - pulsemixer
-      - alsa-utils
+      - sxiv
   tags:
       - install
       - wm
@@ -78,15 +76,15 @@
       state: present
       name: '{{ item }}'
   with_items:
-      - zathura-pdf-mupdf
+      - gtk-theme-numix-solarized
+      - ibus-avro-git
       - jmtpfs
       - lf-bin
-      - ibus-avro-git
       - nerd-fonts-jetbrains-mono
-      - otf-symbola
-      - gtk-theme-numix-solarized
       - numix-circle-icon-theme-git
+      - otf-symbola
       - xcursor-numix
+      - zathura-pdf-mupdf
   tags:
       - install
       - wm

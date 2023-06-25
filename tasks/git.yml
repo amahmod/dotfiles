@@ -5,8 +5,8 @@
       state: present
   tags:
       - dotfiles
-      - install
       - git
+      - install
 
 - name: Git personal setup email
   git_config:
@@ -15,8 +15,8 @@
       value: 'dev.amahmod@gmail.com'
   tags:
       - dotfiles
-      - install
       - git
+      - install
 
 - name: Git personal setup name
   git_config:
@@ -25,8 +25,8 @@
       value: 'Mohammad Apel Mahmod'
   tags:
       - dotfiles
-      - install
       - git
+      - install
 
 - name: Git set default branch to "main"
   git_config:
@@ -35,5 +35,5 @@
       value: 'main'
   tags:
       - dotfiles
-      - install
       - git
+      - install
