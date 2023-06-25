@@ -81,6 +81,7 @@
       - jmtpfs
       - lf-bin
       - nerd-fonts-jetbrains-mono
+      - ttf-jetbrains-mono-nerd
       - numix-circle-icon-theme-git
       - otf-symbola
       - xcursor-numix
