@@ -34,7 +34,6 @@
       - ibus-m17n
       - libnotify
       - neofetch
-      - picom
       - polybar
       - redshift
       - ripgrep
@@ -81,9 +80,10 @@
       - jmtpfs
       - lf-bin
       - nerd-fonts-jetbrains-mono
-      - ttf-jetbrains-mono-nerd
       - numix-circle-icon-theme-git
       - otf-symbola
+      - picom-animations-git
+      - ttf-jetbrains-mono-nerd
       - xcursor-numix
       - zathura-pdf-mupdf
   tags:
