@@ -20,18 +20,20 @@
       name: '{{ item }}'
       state: present
   with_items:
-      - stow
+      - archiver
       - base-devel
-      - curl
-      - git
-      - zip
-      - unzip
-      - fontconfig
-      - tree
       - bat
-      - unrar
+      - curl
+      - fontconfig
+      - git
       - htop
+      - p7zip
+      - stow
+      - tree
+      - unrar
+      - unzip
       - xclip
+      - zip
   tags:
       - core
       - install
