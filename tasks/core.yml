@@ -26,6 +26,7 @@
       - fontconfig
       - git
       - htop
+      - jq
       - p7zip
       - stow
       - tree

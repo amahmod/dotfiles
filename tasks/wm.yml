@@ -85,7 +85,7 @@
       - nerd-fonts-jetbrains-mono
       - numix-circle-icon-theme-git
       - otf-symbola
-      - picom-animations-git
+      - picom
       - ttf-jetbrains-mono-nerd
       - xcursor-numix
       - zathura-pdf-mupdf
@@ -95,13 +95,6 @@
 
 - name: Enable undercurl support in wezterm
   shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
-  tags:
-      - install
-      - wm
-
-- name: Enable bluetooh service
-  become: true
-  shell: systemctl enable bluetooh
   tags:
       - install
       - wm
