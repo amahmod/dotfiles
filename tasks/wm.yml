@@ -14,7 +14,7 @@
       - install
       - wm
 
-- name: Install aur packages
+- name: Install window manager packages
   kewlfft.aur.aur:
       use: yay
       state: present
@@ -76,7 +76,6 @@
       state: present
       name: '{{ item }}'
   with_items:
-      - nerd-fonts-jetbrains-mono
       - ttf-jetbrains-mono-nerd
       - ttf-roboto
       - otf-symbola
