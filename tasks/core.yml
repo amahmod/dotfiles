@@ -5,65 +5,39 @@
   tags:
       - core
       - install
-      - neovim
 
-- name: Install Yay
+- name: Install Yay (aur helper)
   shell: "cd {{ lookup('env', 'HOME') }}/.yay && makepkg -si --noconfirm"
   tags:
       - core
       - install
-      - neovim
 
-- name: Install pacman packages
-  become: true
-  community.general.pacman:
-      name: '{{ item }}'
-      state: present
-  with_items:
-      - base-devel
-      - bat
-      - curl
-      - fontconfig
-      - git
-      - htop
-      - jq
-      - p7zip
-      - stow
-      - tree
-      - unrar
-      - unzip
-      - xclip
-      - zip
-  tags:
-      - core
-      - install
-      - neovim
-
-- name: Install Yay packages
+- name: Install core packages
   kewlfft.aur.aur:
       use: yay
       name:
-          - pod2man
           - archiver
+          - base-devel
+          - bat
+          - curl
+          - fontconfig
+          - fzf
+          - git
+          - htop
+          - jq
+          - libnotify
+          - p7zip
+          - pod2man
+          - ripgrep
+          - stow
+          - trash-cli
+          - tree
+          - unclutter
+          - unrar
+          - unzip
+          - xclip
+          - zip
       state: present
   tags:
       - core
-      - install
-      - neovim
-
-- name: Install fonts
-  ansible.builtin.git:
-      accept_hostkey: true
-      repo: git@github.com:amahmod/fonts.git
-      dest: ~/.local/share/fonts
-  tags:
-      - core
-      - fonts
-      - install
-
-- name: Update font cache
-  shell: fc-cache -fv
-  tags:
-      - core
-      - fonts
       - install

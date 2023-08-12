@@ -21,5 +21,5 @@ USER amahmod
 WORKDIR /home/amahmod
 
 FROM amahmod
-COPY . .
+COPY . ./ansible
 CMD ["sh", "-c", "ansible-playbook $TAGS local.yml"]

@@ -7,15 +7,6 @@
       - install
       - neovim
 
-- name: Install neovim
-  become: true
-  community.general.pacman:
-      name: neovim
-      state: present
-  tags:
-      - install
-      - neovim
-
 - name: Install required packages for neovim
   kewlfft.aur.aur:
       use: yay
@@ -29,6 +20,7 @@
       - shfmt
       - stylua-git
       - yamllint
+      - neovim
   tags:
       - install
       - neovim

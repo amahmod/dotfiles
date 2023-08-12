@@ -14,80 +14,51 @@
       - install
       - wm
 
-- name: Install wm packages
-  become: true
-  community.general.pacman:
-      name: '{{ item }}'
-      state: present
-  with_items:
-      - arandr
-      - bspwm
-      - calcurse
-      - dmenu
-      - dunst
-      - feh
-      - ffmpegthumbnailer
-      - flameshot
-      - fzf
-      - gvfs
-      - ibus
-      - ibus-m17n
-      - libnotify
-      - neofetch
-      - polybar
-      - redshift
-      - ripgrep
-      - rofi
-      - sxhkd
-      - thunar
-      - thunar-archive-plugin
-      - thunar-volman
-      - trash-cli
-      - ttf-roboto
-      - tumbler
-      - unclutter
-      - wezterm
-      - xorg
-      - xorg-xinit
-      - zathura
-      - bluez
-      - bluez-utils
-      - blueman
-  tags:
-      - install
-      - wm
-
-- name: Install media apps
-  become: true
-  community.general.pacman:
-      name: '{{ item }}'
-      state: present
-  with_items:
-      - alsa-utils
-      - ffmpeg
-      - mpv
-      - pulsemixer
-      - sxiv
-  tags:
-      - install
-      - wm
-
 - name: Install aur packages
   kewlfft.aur.aur:
       use: yay
       state: present
       name: '{{ item }}'
   with_items:
+      - alsa-utils
+      - arandr
+      - blueman
+      - bluez
+      - bluez-utils
+      - bspwm
+      - calcurse
+      - dmenu
+      - dunst
+      - feh
+      - ffmpeg
+      - ffmpegthumbnailer
+      - flameshot
       - gtk-theme-numix-solarized
+      - gvfs
+      - ibus
       - ibus-avro-git
+      - ibus-m17n
       - jmtpfs
       - lf-bin
-      - nerd-fonts-jetbrains-mono
+      - mpv
+      - neofetch
       - numix-circle-icon-theme-git
-      - otf-symbola
       - picom
-      - ttf-jetbrains-mono-nerd
+      - polybar
+      - pulsemixer
+      - redshift
+      - rofi
+      - sxhkd
+      - sxiv
+      - thunar
+      - thunar-archive-plugin
+      - thunar-volman
+      - tumbler
+      - wezterm
       - xcursor-numix
+      - xorg
+      - xorg-xinit
+      - zathura
       - zathura-pdf-mupdf
   tags:
       - install
@@ -96,5 +67,38 @@
 - name: Enable undercurl support in wezterm
   shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
   tags:
+      - install
+      - wm
+
+- name: Install fonts
+  kewlfft.aur.aur:
+      use: yay
+      state: present
+      name: '{{ item }}'
+  with_items:
+      - nerd-fonts-jetbrains-mono
+      - ttf-jetbrains-mono-nerd
+      - ttf-roboto
+      - otf-symbola
+
+  tags:
+      - fonts
+      - install
+      - wm
+
+- name: Install additional fonts
+  ansible.builtin.git:
+      accept_hostkey: true
+      repo: git@github.com:amahmod/fonts.git
+      dest: ~/.local/share/fonts
+  tags:
+      - fonts
+      - install
+      - wm
+
+- name: Update font cache
+  shell: fc-cache -fv
+  tags:
+      - fonts
       - install
       - wm

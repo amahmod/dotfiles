@@ -19,6 +19,12 @@
       - dotfiles
       - install
 
+- name: Backup old .zshrc
+  shell: mv $HOME/.zshrc $HOME/.zshrc.old 2> /dev/null
+  tags:
+      - dotfiles
+      - install
+
 - name: Stow dotfiles
   shell: cd $HOME/.dotfiles && ./install
   tags:
