@@ -20,6 +20,7 @@
           - base-devel
           - bat
           - curl
+          - fd
           - fontconfig
           - fzf
           - git
@@ -35,6 +36,7 @@
           - unclutter
           - unrar
           - unzip
+          - wget
           - xclip
           - zip
       state: present

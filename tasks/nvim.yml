@@ -14,13 +14,13 @@
       state: present
   with_items:
       - luacheck-git
+      - neovim
       - prettierd
       - rust-analyzer
       - shellcheck
       - shfmt
       - stylua-git
       - yamllint
-      - neovim
   tags:
       - install
       - neovim

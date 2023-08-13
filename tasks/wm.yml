@@ -61,6 +61,8 @@
       - xorg-xinit
       - zathura
       - zathura-pdf-mupdf
+      - tree-sitter-cli                                                                                                                       <<<
+
   tags:
       - install
       - wm
