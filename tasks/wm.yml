@@ -23,6 +23,7 @@
       - alsa-utils
       - arandr
       - blueman
+      - xarchiver
       - bluez
       - bluez-utils
       - bspwm
