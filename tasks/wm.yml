@@ -79,6 +79,12 @@
       - ttf-jetbrains-mono-nerd
       - ttf-roboto
       - otf-symbola
+      - ttf-dejavu
+      - ttf-liberation
+      - noto-fonts
+      - noto-fonts-emoji
+      - noto-fonts-extra
+      - ttf-ubuntu-font-family
 
   tags:
       - fonts
