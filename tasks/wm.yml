@@ -49,6 +49,7 @@
       - pulsemixer
       - redshift
       - rofi
+      - rofi-emoji
       - sxhkd
       - sxiv
       - thunar
@@ -61,7 +62,7 @@
       - xorg-xinit
       - zathura
       - zathura-pdf-mupdf
-      - tree-sitter-cli                                                                                                                       <<<
+      - tree-sitter-cli
 
   tags:
       - install
