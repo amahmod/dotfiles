@@ -21,12 +21,10 @@
       - install
       - core
 
-- name: Install pacman packages
-  become: true
-  community.general.pacman:
-      name: '{{ item }}'
-      state: present
-  with_items:
+- name: Install Yay packages
+  kewlfft.aur.aur:
+      use: yay
+      name:
       - archiver
       - base-devel
       - bat
@@ -42,16 +40,8 @@
       - unrar
       - unzip
       - zip
-  tags:
-      - core
-      - install
-
-- name: Install Yay packages
-  kewlfft.aur.aur:
-      use: yay
-      name:
-          - pod2man
-          - libxml
+      - pod2man
+      - libxml
       state: present
   tags:
       - core
