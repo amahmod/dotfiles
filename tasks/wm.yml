@@ -63,6 +63,7 @@
       - zathura
       - zathura-pdf-mupdf
       - tree-sitter-cli
+      - subliminal
 
   tags:
       - install
