@@ -1,7 +1,7 @@
 - name: Install node 16
   become: true
   community.general.pacman:
-      name: nodejs-lts-gallium
+      name: nodejs-lts-iron
       state: present
   tags: &tags_for_node ['install', 'node', 'neovim']
 
