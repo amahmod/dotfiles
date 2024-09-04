@@ -51,6 +51,7 @@
       - redshift
       - rofi
       - rofi-emoji
+      - xdotool
       - sxhkd
       - sxiv
       - thunar
