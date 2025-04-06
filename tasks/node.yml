@@ -1,13 +1,10 @@
-- name: Setup node 16 source
-  become: true
-  shell: curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+- name: Install n Nodejs version manager
+  shell: curl -L https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | bash
+  ignore_errors: yes
   tags: &tags_for_node ['install', 'node', 'neovim']
 
-- name: Install nodejs and npm
-  become: true
-  apt:
-      name: ['nodejs']
-      state: present
+- name: Install Node.js 22
+  shell: n install 22
   tags: *tags_for_node
 
 - name: npmjs prefix
