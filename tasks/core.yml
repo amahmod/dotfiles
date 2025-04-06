@@ -16,35 +16,10 @@
       - fzf
       - fonts-symbola
       - rofi
+      - ripgrep
   tags:
       - install
       - core
-
-- name: Create fonts directory
-  file:
-      path: ~/.local/share/fonts
-      state: directory
-  tags:
-      - install
-      - core
-      - fonts
-
-- name: Install fonts
-  ansible.builtin.git:
-      accept_hostkey: true
-      repo: git@github.com:amahmod/fonts.git
-      dest: ~/.local/share/fonts
-  tags:
-      - install
-      - core
-      - fonts
-
-- name: Update font cache
-  shell: fc-cache -fv
-  tags:
-      - install
-      - core
-      - fonts
 
 - name: Install lazygit
   become: true
@@ -169,3 +144,59 @@
       - install
       - core
       - python
+
+- name: Install Nerd Fonts
+  block:
+      - name: Create fonts directory
+        file:
+            path: '{{ ansible_env.HOME }}/.local/share/fonts'
+            state: directory
+            mode: '0755'
+
+      - name: Download and install Nerd Fonts
+        get_url:
+            url: 'https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/{{ item }}.zip'
+            dest: '/tmp/{{ item }}.zip'
+        loop:
+            - JetBrainsMono
+            - FiraCode
+            - Hack
+            - Meslo
+
+      - name: Extract Nerd Fonts
+        unarchive:
+            src: '/tmp/{{ item }}.zip'
+            dest: '{{ ansible_env.HOME }}/.local/share/fonts'
+            remote_src: true
+        loop:
+            - JetBrainsMono
+            - FiraCode
+            - Hack
+            - Meslo
+
+      - name: Clean up downloaded font archives
+        file:
+            path: '/tmp/{{ item }}.zip'
+            state: absent
+        loop:
+            - JetBrainsMono
+            - FiraCode
+            - Hack
+            - Meslo
+
+      - name: Install private fonts
+        ansible.builtin.git:
+            accept_hostkey: true
+            repo: git@github.com:amahmod/fonts.git
+            dest: ~/.local/share/fonts
+        tags:
+            - install
+            - core
+            - fonts
+
+      - name: Update font cache
+        command: fc-cache -fv
+  tags:
+      - install
+      - core
+      - fonts
