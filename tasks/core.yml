@@ -4,6 +4,7 @@
       name: '{{ item }}'
       state: present
   with_items:
+      - which
       - curl
       - git
       - build-essential
@@ -87,3 +88,58 @@
       - install
       - core
       - rust
+
+- name: Install Go
+  block:
+      - name: Check if Go is installed
+        stat:
+            path: /usr/local/go/bin/go
+        register: go_check
+
+      - name: Download Go
+        get_url:
+            url: https://go.dev/dl/go1.21.6.linux-amd64.tar.gz
+            dest: /tmp/go.tar.gz
+            mode: '0644'
+        when: not go_check.stat.exists
+
+      - name: Extract Go
+        become: true
+        unarchive:
+            src: /tmp/go.tar.gz
+            dest: /usr/local
+            remote_src: true
+        when: not go_check.stat.exists
+
+      - name: Clean up Go download
+        file:
+            path: /tmp/go.tar.gz
+            state: absent
+        when: not go_check.stat.exists
+  tags:
+      - install
+      - core
+      - go
+
+- name: Install Python3
+  block:
+      - name: Check if Python3 is already installed
+        command: which python3
+        register: python_check
+        ignore_errors: true
+        changed_when: false
+
+      - name: Install Python3 and pip
+        become: true
+        apt:
+            name:
+                - python3
+                - python3-pip
+                - python3-venv
+            state: present
+            update_cache: true
+        when: python_check.rc != 0
+  tags:
+      - install
+      - core
+      - python
