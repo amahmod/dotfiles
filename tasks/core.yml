@@ -200,3 +200,12 @@
       - install
       - core
       - fonts
+
+- name: Set workspace keyboard shortcuts
+  become: true
+  command: 'gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-{{ item }} "[''<Super>{{ item }}'']"'
+  loop: '{{ range(1, 10) | list }}'
+  tags:
+      - install
+      - core
+      - workspace
