@@ -55,3 +55,35 @@
       - install
       - core
       - lazygit
+
+- name: Install Rust
+  block:
+      - name: Check if Rust is already installed
+        command: which rustc
+        register: rust_check
+        ignore_errors: true
+        changed_when: false
+
+      - name: Create cargo directory
+        file:
+            path: '{{ ansible_env.HOME }}/.cargo/bin'
+            state: directory
+            mode: '0755'
+        when: rust_check.rc != 0
+
+      - name: Download rustup
+        get_url:
+            url: https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init
+            dest: '{{ ansible_env.HOME }}/.cargo/bin/rustup-init'
+            mode: '0755'
+        when: rust_check.rc != 0
+
+      - name: Run rustup installation
+        shell: '{{ ansible_env.HOME }}/.cargo/bin/rustup-init -y --no-modify-path'
+        environment:
+            PATH: '{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}'
+        when: rust_check.rc != 0
+  tags:
+      - install
+      - core
+      - rust
