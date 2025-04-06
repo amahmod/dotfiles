@@ -65,9 +65,20 @@ On Ubuntu/Debian systems, you can install Ansible in one of two ways:
     ```
 
 2. **Run the playbook**:
+
     ```bash
-    ansible-playbook local.yml
+    ansible-playbook local.yml --ask-vault-pass --ask-become-pass
     ```
+
+    The flags explained:
+
+    - `--ask-vault-pass`: Prompts for vault password to decrypt sensitive data
+    - `--ask-become-pass`: Prompts for sudo password (required for system-wide installations)
+
+    Note: Both flags are required for full installation as the playbook:
+
+    - Contains encrypted sensitive data that needs vault password
+    - Requires sudo privileges for installing system packages
 
 ## Structure
 
