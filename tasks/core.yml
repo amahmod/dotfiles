@@ -123,9 +123,15 @@
 
 - name: Install Python3
   block:
-      - name: Check if Python3 is already installed
+      - name: Check if Python3 is installed
         command: which python3
-        register: python_check
+        register: python3_check
+        ignore_errors: true
+        changed_when: false
+
+      - name: Check if pip is installed
+        command: which pip
+        register: pip_check
         ignore_errors: true
         changed_when: false
 
@@ -136,9 +142,27 @@
                 - python3
                 - python3-pip
                 - python3-venv
+                - python3-dev
+                - python3-setuptools
             state: present
             update_cache: true
-        when: python_check.rc != 0
+        when: python3_check.rc != 0 or pip_check.rc != 0
+
+      - name: Upgrade pip
+        become: true
+        pip:
+            name: pip
+            state: latest
+            executable: pip3
+        when: python3_check.rc != 0 or pip_check.rc != 0
+
+      - name: Install virtualenv
+        become: true
+        pip:
+            name: virtualenv
+            state: present
+            executable: pip3
+        when: python3_check.rc != 0 or pip_check.rc != 0
   tags:
       - install
       - core
