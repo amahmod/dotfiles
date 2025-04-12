@@ -1,4 +1,4 @@
-- name: Install node 16
+- name: Install node 20
   become: true
   community.general.pacman:
       name: nodejs-lts-iron
@@ -31,13 +31,7 @@
       global: yes
       name: '{{ item }}'
   with_items:
-      - '@fsouza/prettierd'
-      - eslint_d
-      - live-server
-      - neovim
       - nodemon
-      - prettier
-      - ts-node
-      - typescript
+      - live-server
       - yarn
   tags: *tags_for_node
