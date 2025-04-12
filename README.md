@@ -16,23 +16,16 @@ The playbook uses the following Ansible Galaxy collections:
 
 ## Installation
 
-1. Install required collections:
-
-    ```bash
-    ansible-galaxy collection install -r requirements.yml
-    ```
-
-2. Run the playbook:
-    ```bash
-    ansible-playbook local.yml --ask-become-pass --ask-vault-pass
-    ```
+```bash
+$ ./install
+```
 
 ## Playbook Structure
 
 The playbook is organized into several task files:
 
 -   `tasks/ssh.yml` - SSH configuration
--   `tasks/core.yml` - Core system packages
+-   `tasks/systeme.yml` - Core system packages
 -   `tasks/git.yml` - Git setup
 -   `tasks/node.yml` - Node.js installation
 -   `tasks/zsh.yml` - Zsh configuration
