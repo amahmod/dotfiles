@@ -16,12 +16,15 @@
 
 - name: Install Yay (aur helper)
   shell: |
-      sudo pacman -S --needed git base-devel && \
+      sudo pacman -S --needed git base-devel fakeroot && \
+      rm -rf yay-bin && \
       git clone https://aur.archlinux.org/yay-bin.git && \
       cd yay-bin && \
-      makepkg -si && \
+      yes | makepkg -si && \
       cd .. && \
       rm -rf yay-bin
+  register: yay_install
+  failed_when: yay_install.rc != 0 and 'already up to date' not in yay_install.stderr
   tags:
       - system
       - install
