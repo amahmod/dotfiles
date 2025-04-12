@@ -98,7 +98,7 @@
       - install
       - wm
 
-- name: Install additional fonts
+- name: Install private fonts
   ansible.builtin.git:
       accept_hostkey: true
       repo: git@github.com:amahmod/fonts.git
