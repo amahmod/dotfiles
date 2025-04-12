@@ -1,116 +1,31 @@
-- name: Create user directories
-  file:
-      path: '{{ item }}'
-      state: directory
-  with_items:
-      - "{{ lookup('env', 'HOME') }}/Desktop"
-      - "{{ lookup('env', 'HOME') }}/Downloads"
-      - "{{ lookup('env', 'HOME') }}/Documents/books"
-      - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
-      - "{{ lookup('env', 'HOME') }}/work"
-      - "{{ lookup('env', 'HOME') }}/personal"
-      - "{{ lookup('env', 'HOME') }}/learning"
-  tags:
-      - install
-      - wm
-
 - name: Install window manager packages
   kewlfft.aur.aur:
       use: yay
-      state: present
       name: '{{ item }}'
-  with_items:
-      - alsa-utils
-      - arandr
-      - blueman
-      - xarchiver
-      - bluez
-      - bluez-utils
-      - bspwm
-      - calcurse
-      - dmenu
-      - dunst
-      - feh
-      - ffmpeg
-      - ffmpegthumbnailer
-      - flameshot
-      - gtk-theme-numix-solarized
-      - gvfs
-      - ibus
-      - ibus-avro-git
-      - ibus-m17n
-      - jmtpfs
-      - lf-bin
-      - yazi
-      - mpv
-      - neofetch
-      - numix-circle-icon-theme-git
-      - picom
-      - polybar
-      - pulsemixer
-      - redshift
-      - rofi
-      - rofi-emoji
-      - xdotool
-      - sxhkd
-      - sxiv
-      - thunar
-      - thunar-archive-plugin
-      - thunar-volman
-      - tumbler
-      - wezterm
-      - xcursor-numix
-      - xorg
-      - xorg-xinit
-      - zathura
-      - zathura-pdf-mupdf
-      - tree-sitter-cli
-      - subliminal
-
-  tags:
-      - install
-      - wm
-
-- name: Enable undercurl support in wezterm
-  shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
-  tags:
-      - install
-      - wm
-
-- name: Install fonts
-  kewlfft.aur.aur:
-      use: yay
       state: present
-      name: '{{ item }}'
   with_items:
-      - ttf-jetbrains-mono-nerd
-      - ttf-roboto
-      - otf-symbola
-      - ttf-dejavu
-      - ttf-liberation
-      - noto-fonts
-      - noto-fonts-emoji
-      - noto-fonts-extra
-      - ttf-ubuntu-font-family
+      # Window Manager and Desktop Environment
+      - bspwm # Tiling window manager
+      - sxhkd # Simple X hotkey daemon
+      - xorg # X Window System
+      - xorg-xinit # X Window System initializer
+      - picom # Compositor for X11
+      - polybar # Status bar
+      - rofi # Window switcher and launcher
+      - rofi-emoji # Emoji selector for Rofi
+      - dunst # Lightweight notification daemon
 
-  tags:
-      - fonts
-      - install
-      - wm
+      # Display and Input
+      - arandr # GUI for XRandR
+      - ibus # Input method framework
+      - ibus-avro-git # Bengali input method
+      - ibus-m17n # Multilingual input method
+      - xdotool # X11 automation tool
 
-- name: Install private fonts
-  ansible.builtin.git:
-      accept_hostkey: true
-      repo: git@github.com:amahmod/fonts.git
-      dest: ~/.local/share/fonts
+      # Themes and Icons
+      - gtk-theme-numix-solarized # Solarized Numix GTK theme
+      - numix-circle-icon-theme-git # Numix Circle icon theme
+      - xcursor-numix # Numix cursor theme
   tags:
-      - fonts
-      - install
       - wm
-
-- name: Update font cache
-  shell: fc-cache -fv
-  tags:
-      - fonts
       - install
-      - wm

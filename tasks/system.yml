@@ -1,0 +1,152 @@
+- name: Create user directories
+  file:
+      path: '{{ item }}'
+      state: directory
+  with_items:
+      - "{{ lookup('env', 'HOME') }}/Desktop"
+      - "{{ lookup('env', 'HOME') }}/Downloads"
+      - "{{ lookup('env', 'HOME') }}/Documents/books"
+      - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
+      - "{{ lookup('env', 'HOME') }}/work"
+      - "{{ lookup('env', 'HOME') }}/personal"
+      - "{{ lookup('env', 'HOME') }}/learning"
+  tags:
+      - system
+      - install
+
+- name: Install Yay (aur helper)
+  shell: |
+      sudo pacman -S --needed git base-devel && \
+      git clone https://aur.archlinux.org/yay-bin.git && \
+      cd yay-bin && \
+      makepkg -si && \
+      cd .. && \
+      rm -rf yay-bin
+  tags:
+      - system
+      - install
+
+- name: Install system packages
+  kewlfft.aur.aur:
+      use: yay
+      name: '{{ item }}'
+      state: present
+  with_items:
+      # Core System Utilities
+      - base-devel # Base development tools for building packages
+      - git # Version control system
+      - htop # Interactive process viewer
+      - tree # Directory listing in tree format
+      - trash-cli # Command line trash utility
+
+      # File Management
+      - archiver # GUI archive manager
+      - p7zip # 7-Zip file archiver
+      - unrar # RAR archive extractor
+      - unzip # ZIP archive extractor
+      - zip # ZIP archive creator
+      - thunar # Modern file manager
+      - thunar-archive-plugin # Archive support for Thunar
+      - thunar-volman # Volume management for Thunar
+      - xarchiver # Lightweight archive manager
+      - lf-bin # Terminal file manager
+      - yazi # Modern terminal file manager
+
+      # Development Tools
+      - pod2man # Perl documentation converter
+      - ripgrep # Fast recursive grep alternative
+      - stow # Symlink farm manager
+      - tree-sitter-cli # Parser generator tool
+
+      # Network Tools
+      - curl # Command line tool for transferring data
+      - wget # Command line download utility
+
+      # System Configuration
+      - fontconfig # Font configuration and customization
+      - libnotify # Desktop notification library
+      - unclutter # Hide mouse cursor when inactive
+
+      # Command Line Tools
+      - bat # Cat clone with syntax highlighting
+      - fd # Fast and user-friendly find alternative
+      - fzf # Command-line fuzzy finder
+      - jq # Command-line JSON processor
+      - xclip # Command line clipboard utility
+      - calcurse # Calendar and scheduling application
+      - dmenu # Dynamic menu for X
+      - neofetch # System information tool
+      - subliminal # Subtitle downloader
+
+      # Audio and Bluetooth
+      - alsa-utils # ALSA sound utilities
+      - bluez # Bluetooth protocol stack
+      - bluez-utils # Bluetooth utilities
+      - blueman # Bluetooth manager
+      - pulsemixer # CLI and curses mixer for PulseAudio
+
+      # Media and Graphics
+      - feh # Lightweight image viewer
+      - ffmpeg # Complete solution for audio/video
+      - ffmpegthumbnailer # Video thumbnail generator
+      - flameshot # Screenshot tool
+      - mpv # Media player
+      - sxiv # Simple X Image Viewer
+      - tumbler # Thumbnail generator
+      - wezterm # GPU-accelerated terminal emulator
+      - zathura # Document viewer
+      - zathura-pdf-mupdf # PDF plugin for Zathura
+
+      # System Integration
+      - gvfs # Virtual filesystem implementation
+      - jmtpfs # MTP device filesystem
+  tags:
+      - system
+      - install
+
+- name: Enable undercurl support in wezterm
+  shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
+  tags:
+      - system
+      - install
+
+- name: Install fonts
+  kewlfft.aur.aur:
+      use: yay
+      state: present
+      name:
+          # Programming Fonts
+          - ttf-jetbrains-mono-nerd
+
+          # System Fonts
+          - ttf-roboto
+          - ttf-dejavu
+          - ttf-liberation
+          - ttf-ubuntu-font-family
+
+          # Unicode and Emoji Support
+          - otf-symbola
+          - noto-fonts
+          - noto-fonts-emoji
+          - noto-fonts-extra
+  tags:
+      - fonts
+      - system
+      - install
+
+- name: Install private fonts
+  ansible.builtin.git:
+      accept_hostkey: true
+      repo: git@github.com:amahmod/fonts.git
+      dest: ~/.local/share/fonts
+  tags:
+      - fonts
+      - system
+      - install
+
+- name: Update font cache
+  shell: fc-cache -fv
+  tags:
+      - fonts
+      - system
+      - install
