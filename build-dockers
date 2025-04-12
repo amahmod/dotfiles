@@ -1,3 +1,11 @@
 #!/usr/bin/env bash
 
-docker build --network=host . -t new-computer
+# Build the Docker image with any provided arguments
+docker build "$@" --network=host . -t new-computer
+
+# Run the container in interactive mode
+docker run -it --rm \
+    -v $(pwd):/home/amahmod/ansible \
+    -w /home/amahmod/ansible \
+    new-computer \
+    /bin/bash
