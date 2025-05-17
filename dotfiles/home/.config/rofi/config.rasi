@@ -1,0 +1,14 @@
+configuration {
+  display-drun: "Applications:";
+  display-window: "Windows:";
+  display-run: "Run:";
+  display-emoji: "Emoji:";
+  drun-display-format: "{icon} {name}";
+  font: "JetBrainsMono Nerd Font Medium 14";
+  modi: "window,run,drun";
+  show-icons: true;
+  icon-theme: "Papirus";
+  modi: "drun,emoji,run";
+}
+
+@theme "custom"

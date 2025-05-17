@@ -1,0 +1,70 @@
+#!/usr/bin/env sh
+
+alias ka="killall"
+alias gd="cd ~/Downloads"
+alias gD="cd ~/Documents"
+alias gp="cd ~/Projects"
+alias gP="cd ~/Pictures"
+alias gw="cd ~/workspace"
+alias h="cd ~/"
+alias c="calcurse -D ~/.config/calcurse"
+alias mkd="mkdir -pv"
+alias p="sudo pacman"
+alias f="$FILE"
+alias g="git"
+alias e="$EDITOR"
+alias v="$EDITOR"
+alias x="sxiv -ft *"
+alias eb="e ~/.config/bspwm/bspwmrc"
+alias es="e ~/.config/sxhkd/sxhkdrc"
+alias sdn="sudo shutdown -h now"
+alias ls="ls -hN --color=auto --group-directories-first"
+alias grep="grep --color=auto"
+alias diff="diff --color=auto"
+alias ccat="highlight --out-format=ansi"
+alias yt="youtube-dl --add-metadata -i -o '%(upload_date)s-%(title)s.%(ext)s'"
+alias yt3="youtube-dl --extract-audio --audio-format=mp3"
+alias yta="yt -x -f bestaudio/best"
+alias gl="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+# open file in default editor ( nvim in my case )
+fe() { fzf | xargs -r -I % $EDITOR %; }
+# open file in defult program
+fo() { fzf | xargs -r -I % xdg-open %; }
+
+alias pn=pnpm
+alias vpsdime="ssh root@63.142.251.137"
+
+#  ╭──────────────────────────────────────────────────────────╮
+#  │                Package management aliases                │
+#  ╰──────────────────────────────────────────────────────────╯
+alias update='sudo pacman -Sy'                     # Update package lists
+alias upgrade='sudo pacman -Syu'                   # Upgrade all installed packages
+alias install='sudo pacman -S'                     # Install packages
+alias remove='sudo pacman -R'                      # Remove packages
+alias purge='sudo pacman -Rs'                      # Remove packages along with their configuration files
+alias clean='sudo pacman -Sc'                      # Remove downloaded package files
+alias autoremove='sudo pacman -Rs $(pacman -Qtdq)' # Remove unused packages and dependencies
+
+#  ╭──────────────────────────────────────────────────────────╮
+#  │                   File system aliases                    │
+#  ╰──────────────────────────────────────────────────────────╯
+alias ll='ls -alF'        # List all files with permissions and details
+alias la='ls -A'          # List all files, including hidden ones
+alias l='ls -CF'          # List all files in a compact view
+alias ..='cd ..'          # Go up one directory
+alias ...='cd ../..'      # Go up two directories
+alias ....='cd ../../..'  # Go up three directories
+alias rm='rm -i'          # Remove files with confirmation
+alias cp='cp -i'          # Copy files with confirmation
+alias mv='mv -i'          # Move files with confirmation
+alias mkdir='mkdir -p'    # Create directories with parents
+alias find='find . -name' # Find files by name
+
+#  ╭──────────────────────────────────────────────────────────╮
+#  │                    YoutubeDL Aliases                     │
+#  ╰──────────────────────────────────────────────────────────╯
+alias yd-best='youtube-dl -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/bestvideo+bestaudio" '                                                                                           # Download best quality audio and video
+alias yd-480='youtube-dl -f "bestvideo[height<=480][ext=mp4]+bestaudio[ext=m4a]" '                                                                                                   # Download 480p video
+alias yd-720='youtube-dl -f "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]" '                                                                                                   # Download 720p video
+alias yd-4k='echo -e "This will transcode the video from webm to h264 which could take a long time\n\n"; youtube-dl -f "bestvideo[ext=webm]+bestaudio[ext=m4a]" --recode-video mp4 ' # Download 4k video
+alias yd-mp3='youtube-dl --extract-audio -f bestaudio[ext=mp3] --no-playlist '                                                                                                       # Download mp3 audio

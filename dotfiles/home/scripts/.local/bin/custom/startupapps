@@ -1,0 +1,25 @@
+#!/bin/sh
+
+if [ -x /usr/bin/polybar ]; then
+    bash $HOME/.config/polybar/launch.sh
+fi
+
+if [ -x /usr/bin/redshift-gtk ]; then
+    ! pidof redshift >/dev/null && redshift-gtk
+fi
+
+if [ -x /usr/bin/skypeforlinux ]; then
+    ! pidof skypeforlinux >/dev/null && skypeforlinux
+fi
+
+# if [ -x /usr/bin/mailspring ]; then
+#     ! pidof mailspring >/dev/null && mailspring
+# fi
+
+if [ -x /usr/bin/thunderbird ]; then
+    ! pidof thunderbird >/dev/null && thunderbird
+fi
+
+if [ -x /usr/bin/stretchly ]; then
+    ! pidof stretchly >/dev/null && stretchly
+fi

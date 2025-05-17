@@ -1,0 +1,39 @@
+#!/usr/bin/bash
+
+function active_window() {
+	# Get active window geometry
+	eval "$(xdotool getactivewindow getwindowgeometry --shell)"
+	REGION="${WIDTH}x${HEIGHT}+${X}+${Y}"
+
+	# Launch the screenshot gui
+	flameshot gui --region "$REGION"
+}
+
+function selected_area() {
+	flameshot gui
+}
+
+function current_screen() {
+	flameshot screen -p ~/Pictures/screenshots
+}
+
+function full_screen() {
+	flameshot full -p ~/Pictures/screenshots
+}
+
+function selected_window() {
+	# Let the user select a window and get its geometry
+	eval "$(xdotool selectwindow getwindowgeometry --shell)"
+	REGION="${WIDTH}x${HEIGHT}+${X}+${Y}"
+
+	# Launch the screenshot gui
+	flameshot gui --region "$REGION"
+}
+
+case "$(printf "active window\\na selected area\\ncurrent screen\\nfull screen\\nselected window" | dmenu -fn 'JetBrainsMono Nerd Font Mono' -l 6 -i -p "Screenshot which area?")" in
+"active window") active_window ;;
+"a selected area") selected_area ;;
+"current screen") current_screen ;;
+"full screen") full_screen ;;
+"selected window") selected_window ;;
+esac

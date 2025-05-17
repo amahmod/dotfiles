@@ -1,0 +1,14 @@
+# A TOML linter such as https://taplo.tamasfe.dev/ can use this schema to validate your config.
+# If you encounter any issues, please make an issue at https://github.com/yazi-rs/schemas.
+"$schema" = "https://yazi-rs.github.io/schemas/keymap.json"
+
+[manager]
+prepend_keymap = [
+    # Archive
+    { on = [ "c", "a" ], run  = "plugin compress", desc = "Archive selected files"},
+    # Bookmarks
+    { on = [ "m" ], run = "plugin bookmarks --args=save", desc = "Save current position as a bookmark"},
+    { on = [ "'" ], run = "plugin bookmarks --args=jump", desc = "Jump to a bookmark"},
+    { on = [ "b", "d" ], run = "plugin bookmarks --args=delete", desc = "Delete a bookmark"},
+    { on = [ "b", "D" ], run = "plugin bookmarks --args=delete_all", desc = "Delete all bookmarks"}
+]

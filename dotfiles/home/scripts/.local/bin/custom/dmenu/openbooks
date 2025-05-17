@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+[ ! -d "~/Documents/books" ] >/dev/null || exit
+
+chosen=$(rg --files ~/Documents/books -tpdf | dmenu -fn 'JetBrainsMono Nerd Font Mono' -i -l 20)
+
+[ "$chosen" != "" ] || exit
+
+bspc rule -a Zathura -o state=tiled &
+zathura "$chosen"

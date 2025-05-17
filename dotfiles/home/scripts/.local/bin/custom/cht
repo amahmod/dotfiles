@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+languages=$(echo "golang solidity vlang v nodejs javascript tmux typescript zsh cpp c lua rust python bash php haskell ArnoldC css html gdb" | tr ' ' '\n')
+core_utils=$(echo "find man tldr sed awk tr cp ls grep xargs rg ps mv kill lsof less head tail tar cp rm rename jq cat ssh cargo git git-worktree git-status git-commit git-rebase docker docker-compose stow chmod chown make" | tr ' ' '\n')
+
+# Combine the lists and use fzf for selection
+selected=$(printf "%s\n%s" "$languages" "$core_utils" | fzf)
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+read -p "Enter query: " query
+
+# Replace spaces in the query with '+'
+query=$(echo "$query" | tr ' ' '+')
+
+# Check if the selected item is in the languages list
+if echo "$languages" | grep -qx "$selected"; then
+    curl -s cht.sh/"$selected"/"$query"
+else
+    curl -s cht.sh/"$selected~$query"
+fi

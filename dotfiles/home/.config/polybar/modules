@@ -1,0 +1,335 @@
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                        Separotrs                         │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/rounded-left]
+type = custom/text
+content = %{T6}%{T-}
+content-foreground = ${color.black}
+
+[module/rounded-right]
+type = custom/text
+content = %{T6}%{T-}
+content-foreground = ${color.black}
+
+[module/rounded-right-colored]
+type = custom/text
+content = %{T6}%{T-}
+content-foreground = ${color.white}
+
+[module/rounded-left-colored]
+type = custom/text
+content = %{T6}%{T-}
+content-foreground = ${color.white}
+
+[module/sep]
+type = custom/text
+content = |
+content-foreground = ${color.alpha}
+content-background = ${color.alpha}
+content-padding = 1
+
+[module/sep-color]
+type = custom/text
+content = |
+content-foreground = ${color.bgs}
+content-background = ${color.bgs}
+content-padding = 1
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                          UPTIME                          │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/uptime]
+type = custom/script
+;exec = uptime -p | awk {'print $2 "d " $4 "h " $6 "m"'}
+;exec = uptime -p | sed 's/up //;s/ days/d/;s/ day/d/;s/ hour,/h/;s/ hours/h/;s/ minutes/m/;s/ minute/m/;s/,//g'
+exec = uptime -p | awk {'print $2 $3 $4 $5'} | sed 's/,//g;s/up //;s/days/d /;s/day/d /;s/hour/h/;s/hours/h/;s/minutes/m/;s/hs/h/'
+interval = 60
+format-prefix = ""
+format-prefix-foreground = ${color.blue}
+format-prefix-font = 2
+format-background = 
+label-padding = 1
+label-foreground = ${color.blue}
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                           CPU                            │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/cpu]
+type = internal/cpu
+interval = 2
+label-margin = 1
+label-padding=0
+label = %{T3} %{T-}%percentage%%
+label-foreground = ${color.teal}
+
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                          MEMORY                          │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/memory]
+type = internal/memory
+interval = 1
+warn-percentage = 85
+
+format =<label>
+format-warn = <label-warn>
+format-padding = 2
+
+label = %{T2} %{T-}%gb_used%
+label-foreground = ${color.cyan}
+
+label-warn = %{T2} %{T-}%gb_used%
+label-warn-foreground = ${color.red}
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                        WORKSPACE                         │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/bspwm]
+type = internal/bspwm
+pin-workspaces = true
+enable-click = true
+enable-scroll = false
+
+format = <label-state>
+format-padding = 1
+
+label-focused-foreground = ${color.teal}
+label-dimmed-foreground = #777
+
+label-empty = 
+
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                           DATE                           │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/date]
+type = internal/date
+interval = 1.0
+label = %{T2} %{T-}%date%
+label-padding = 2
+label-foreground = ${color.blue}
+date =  %a %d/%m%
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                           TIME                           │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/time]
+type = internal/date
+interval = 1.0
+
+label =  %{T2} %{T-}%time%
+label-padding = 2
+label-foreground = ${color.orange}
+
+time = %I:%M %p
+
+
+[module/wlan]
+type = internal/network
+; interface = enp7s0
+interface-type = wired
+interval = 2.0
+
+format-connected = <ramp-signal> <label-connected>
+format-disconnected = <label-disconnected>
+
+label-connected =  %{T2} %{T-}%downspeed:2% %{T2} %{T-}%upspeed:2%
+label-connected-foreground = ${color.teal}
+
+label-disconnected = 睊 NA
+label-disconnected-foreground = ${color.red}
+ramp-signal-0 =
+
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                        BLUETOOTH                         │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/bluetooth]
+type = custom/script
+label = %output%
+format-prefix = " "
+
+label-foreground = ${color.txt1}
+label-background = ${color.bgs}
+
+format-prefix-foreground = ${color.txt1}
+format-prefix-background = ${color.bgs}
+format-prefix-padding = 1
+
+exec = python3 $HOME/.config/polybar/scripts/bt-stat.py
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                          VOLUME                          │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/volume]
+type = internal/pulseaudio
+
+format-volume = %{T2} %{T-}<label-volume>
+format-volume-padding = 2
+format-volume-foreground = ${color.blue}
+
+label-volume = %percentage%%
+label-volume-foreground = ${color.blue}
+
+label-muted = %{T3}婢
+label-muted-padding = 2
+label-muted-foreground = ${color.orange}
+
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                         BATTERY                          │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/battery]
+type = internal/battery
+full-at = 99
+low-at = 20
+; battery = BAT0
+; adapter = ACAD
+poll-interval = 5
+
+; see "man date" for details on how to format the time string
+; NOTE: if you want to use syntax tags here you need to use %%{...}
+; Default: %H:%M:%S
+time-format = %H:%M
+
+format-charging = %{T2}<animation-charging>%{T-} <label-charging>
+format-charging-foreground = ${color.green}
+
+format-discharging = %{T2}<ramp-capacity>%{T-} <label-discharging>
+format-discharging-foreground = ${color.orange}
+
+format-full = %{T2}<ramp-capacity>%{T-} <label-full>
+format-full-foreground = ${color.green}
+
+format-low = %{T2}<ramp-capacity>%{T-} <label-low>
+format-low-foreground = ${color.red}
+
+label-charging = %percentage%% %time%
+label-discharging = %percentage%%
+label-full = %percentage%%
+label-low = %percentage%%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+bar-capacity-width = 10
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+animation-discharging-0 = 
+animation-discharging-1 = 
+animation-discharging-2 = 
+animation-discharging-3 = 
+animation-discharging-4 = 
+animation-discharging-framerate = 500
+
+animation-low-0 = !
+animation-low-1 = 
+animation-low-framerate = 200
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                        X-KEYBOARD                        │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/xkeyboard]
+type = internal/xkeyboard
+
+content-background = ${color.bg}
+
+label-layout =  %layout%
+label-layout-padding-left = 2
+label-layout-padding-right = 2
+label-layout-background = ${color.bg}
+label-layout-foreground = ${color.txt}
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+format = <label-layout>
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                          TIMER                           │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/timer]
+
+type = custom/script
+
+exec = $HOME/.config/polybar/scripts/timer.sh tail 'TIMER' 5
+tail = true
+
+click-left = $HOME/.config/polybar/scripts/timer.sh new 25 '祥' 'notify-send "Session finished"' ; $HOME/.config/polybar/scripts/timer.sh update %pid%
+click-middle = $HOME/.config/polybar/scripts/timer.sh kill ; $HOME/.config/polybar/scripts/timer.sh update %pid%
+click-right = $HOME/.config/polybar/scripts/timer.sh new 5 'Pomo break' 'notify-send "Break finished"' ; $HOME/.config/polybar/scripts/timer.sh update %pid%
+scroll-up = $HOME/.config/polybar/scripts/timer.sh increase 60 || $HOME/.config/polybar/scripts/timer.sh new 1 'TIMER:' 'notify-send -u critical "Timer expired."' ; $HOME/.config/polybar/scripts/timer.sh update %pid%
+scroll-down = $HOME/.config/polybar/scripts/timer.sh increase -60 ; $HOME/.config/polybar/scripts/timer.sh update %pid%
+
+format-background = ${color.bgs}
+format-foreground = ${color.txt1}
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                           MPD                            │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/mpd]
+type = internal/mpd
+format-online = <toggle> <label-song>
+;format-online =  <label-song>
+;alt icons =   
+format-online-background = ${color.bg}
+format-online-foreground = ${color.txt}
+format-online-padding = 2
+
+icon-play = 
+icon-pause = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                       TEMPERATURE                        │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 60
+
+format = <ramp><label>
+format-warn = <ramp><label-warn>
+format-font = 2
+
+label = "%temperature-c% "
+label-background = ${color.grey}
+label-foreground = ${color.white}
+label-warn = %temperature-c%
+label-warn-background = ${color.grey}
+label-warn-foreground = ${color.red}
+label-font = 2
+label-warn-font = 2
+
+ramp-0 = "  "
+ramp-1 = "  "
+ramp-2 = "  "
+ramp-background = ${color.grey}
+ramp-foreground = ${color.white}
+ramp-font = 5
+
+
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                         Wakatime                         │
+;  ╰──────────────────────────────────────────────────────────╯
+
+[module/wakatime]
+type = custom/script
+exec = wakatime.sh
+interval = 300 ; five minutes
+format = %{T2} %{T-}<label>
+format-foreground = ${color.teal}
+format-padding = 2
+
+
+
+; vim:ft=dosini

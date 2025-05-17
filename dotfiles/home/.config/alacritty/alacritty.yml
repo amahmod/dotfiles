@@ -1,0 +1,57 @@
+env:
+    TERM: xterm-256color
+
+window:
+    opacity: 1
+    padding:
+        x: 2
+        y: 2
+    dynamic_title: true
+    class:
+        instance: Alacritty
+        general: Alacritty
+
+scrolling:
+    history: 10000
+    multiplier: 1
+
+font:
+    normal:
+        family: 'MonoLisa'
+    size: 12
+    offset:
+        x: 0
+        y: 5
+    glyph_offset:
+        x: -1
+        y: 2
+
+draw_bold_text_with_bright_colors: true
+
+bell:
+    animation: EaseOutExpo
+    duration: 0
+
+selection:
+    semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
+    save_to_clipboard: true
+
+cursor:
+    unfocused_hollow: true
+
+live_config_reload: true
+
+working_directory: None
+
+hints:
+    launcher:
+        program: xdg-open
+        args: []
+    modifiers: None
+
+mouse_bindings:
+    - mouse: Middle
+      action: Copy
+
+import:
+    - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
