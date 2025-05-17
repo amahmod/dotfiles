@@ -7,20 +7,43 @@
       - dotfiles
       - install
 
-- name: Cloning .dotfiles
-  ansible.builtin.git:
-      repo: 'git@github.com:amahmod/.dotfiles.git'
-      dest: "{{ lookup('env', 'HOME') }}/.dotfiles"
-      recursive: yes
-      update: yes
-      accept_hostkey: yes
-      version: main
+- name: Remove existing .dotfiles directory if exists
+  ansible.builtin.file:
+      path: "{{ lookup('env', 'HOME') }}/.dotfiles"
+      state: absent
+  tags:
+      - dotfiles
+      - install
+
+- name: Create .dotfiles directory
+  ansible.builtin.file:
+      path: "{{ lookup('env', 'HOME') }}/.dotfiles"
+      state: directory
+      mode: '0755'
+  tags:
+      - dotfiles
+      - install
+
+- name: Copy dotfiles to home directory
+  ansible.builtin.copy:
+      src: '{{ playbook_dir }}/dotfiles/'
+      dest: "{{ lookup('env', 'HOME') }}/.dotfiles/"
+      mode: preserve
+  tags:
+      - dotfiles
+      - install
+
+- name: Check if .zshrc exists
+  ansible.builtin.stat:
+      path: "{{ lookup('env', 'HOME') }}/.zshrc"
+  register: zshrc_stat
   tags:
       - dotfiles
       - install
 
 - name: Backup old .zshrc
-  shell: mv $HOME/.zshrc $HOME/.zshrc.old 2> /dev/null
+  ansible.builtin.command: mv {{ lookup('env', 'HOME') }}/.zshrc {{ lookup('env', 'HOME') }}/.zshrc.old
+  when: zshrc_stat.stat.exists
   tags:
       - dotfiles
       - install
