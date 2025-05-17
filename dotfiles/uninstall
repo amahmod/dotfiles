@@ -1,0 +1,6 @@
+#!/usr/bin/sh
+
+for folder in */ ; do
+	echo "stow $folder"
+	stow -D $folder
+done
