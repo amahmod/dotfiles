@@ -4,7 +4,6 @@
       name: git
       state: present
   tags:
-      - dotfiles
       - git
       - install
 
@@ -14,7 +13,6 @@
       scope: global
       value: 'dev.amahmod@gmail.com'
   tags:
-      - dotfiles
       - git
       - install
 
@@ -24,7 +22,6 @@
       scope: global
       value: 'Mohammad Apel Mahmod'
   tags:
-      - dotfiles
       - git
       - install
 
@@ -34,6 +31,5 @@
       scope: global
       value: 'main'
   tags:
-      - dotfiles
       - git
       - install

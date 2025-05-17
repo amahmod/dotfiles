@@ -4,7 +4,6 @@
       name: openssh
       state: present
   tags:
-      - dotfiles
       - install
       - ssh
 
@@ -14,7 +13,6 @@
       mode: 0700
       state: directory
   tags:
-      - dotfiles
       - install
       - ssh
 
@@ -24,7 +22,6 @@
       dest: '{{ dest_key }}'
       mode: 0600
   tags:
-      - dotfiles
       - install
       - ssh
 
@@ -34,7 +31,6 @@
       dest: '{{ dest_key }}.pub'
       mode: 0644
   tags:
-      - dotfiles
       - install
       - ssh
 
@@ -44,6 +40,5 @@
       state: present
       key: "{{ lookup('file', '/home/{{ username }}/.ssh/id_rsa.pub') }}"
   tags:
-      - dotfiles
       - install
       - ssh
