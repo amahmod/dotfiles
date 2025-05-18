@@ -1,0 +1,4 @@
+#!/usr/bin/sh
+
+cd "$(dirname "$0")"
+stow --target="$HOME" --dir="$(dirname "$0")" dotfiles

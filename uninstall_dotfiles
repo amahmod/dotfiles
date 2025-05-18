@@ -1,0 +1,5 @@
+#!/usr/bin/sh
+
+cd "$(dirname "$0")"
+
+stow --delete --target="$HOME" --dir="$(dirname "$0")" dotfiles

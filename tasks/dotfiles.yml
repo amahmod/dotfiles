@@ -7,32 +7,6 @@
       - dotfiles
       - install
 
-- name: Remove existing .dotfiles directory if exists
-  ansible.builtin.file:
-      path: "{{ lookup('env', 'HOME') }}/.dotfiles"
-      state: absent
-  tags:
-      - dotfiles
-      - install
-
-- name: Create .dotfiles directory
-  ansible.builtin.file:
-      path: "{{ lookup('env', 'HOME') }}/.dotfiles"
-      state: directory
-      mode: '0755'
-  tags:
-      - dotfiles
-      - install
-
-- name: Copy dotfiles to home directory
-  ansible.builtin.copy:
-      src: '{{ playbook_dir }}/dotfiles/'
-      dest: "{{ lookup('env', 'HOME') }}/.dotfiles/"
-      mode: preserve
-  tags:
-      - dotfiles
-      - install
-
 - name: Check if .zshrc exists
   ansible.builtin.stat:
       path: "{{ lookup('env', 'HOME') }}/.zshrc"
@@ -49,7 +23,7 @@
       - install
 
 - name: Stow dotfiles
-  shell: cd $HOME/.dotfiles && ./install
+  ansible.builtin.command: '{{ playbook_dir }}/install_dotfiles'
   tags:
       - dotfiles
       - install
