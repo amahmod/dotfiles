@@ -14,6 +14,8 @@
       - rofi # Window switcher and launcher
       - rofi-emoji # Emoji selector for Rofi
       - dunst # Lightweight notification daemon
+      - lxpolkit # Polkit daemon
+      - clipcat # Clipboard daemon
 
       # Display and Input
       - arandr # GUI for XRandR

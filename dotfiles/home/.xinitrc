@@ -34,12 +34,4 @@ fi
 
 [ -f "$HOME/.xprofile" ] && . ~/.xprofile
 
-sxhkd &
-dunst &
-xset r rate 300 50 &
-xsetroot -cursor_name left_ptr &
-unclutter &
-picom &
-ibus-daemon 2>/dev/null &
-
 exec bspwm

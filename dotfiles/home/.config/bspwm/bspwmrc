@@ -111,5 +111,25 @@ declare -a media=(Skype Slack Telegram)
 for i in ${media[@]}; do
    bspc rule -a $i desktop='^9' follow=on focus=on; done
 
+   
+run() {
+  if ! pidof -q "$1"; then
+    "$@" &
+  fi
+}
+
+
+
+run sxhkd
+run picom
+run clipcatd
+run lxpolkit
+run dunst
+run ibus-daemon 2>/dev/null
+run unclutter
+run xsetroot -cursor_name left_ptr
+run xset r rate 300 50 
+
+   
 # startup application
 startupapps &
