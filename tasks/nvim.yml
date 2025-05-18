@@ -1,26 +1,27 @@
 - name: Install tree-sitter
   become: true
   community.general.pacman:
-      name: tree-sitter
-      state: present
+    name: tree-sitter
+    state: present
   tags:
-      - install
-      - neovim
+    - install
+    - neovim
 
 - name: Install required packages for neovim
   kewlfft.aur.aur:
-      use: yay
-      name: '{{ item }}'
-      state: present
+    use: yay
+    name: "{{ item }}"
+    state: present
   with_items:
-      - luacheck-git
-      - neovim
-      - prettierd
-      - rust-analyzer
-      - shellcheck
-      - shfmt
-      - stylua
-      - yamllint
+    - luacheck-git
+    - neovim
+    - prettierd
+    - rust-analyzer
+    - shellcheck
+    - shfmt
+    - stylua
+    - yamllint
+    - lazygit
   tags:
-      - install
-      - neovim
+    - install
+    - neovim
