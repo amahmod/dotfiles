@@ -63,8 +63,8 @@ super + o; {c,b,f,t}
     {google-chrome-stable, brave, firefox, thunar}
 
 # Open application in termials
-super + t; {l,h,n}
-    wezterm start {lf, htop, nvim}
+super + t; {l,h,n,y}
+    wezterm start {lf, htop, nvim, yazi}
 
 # }}}
 
