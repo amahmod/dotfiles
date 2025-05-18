@@ -19,7 +19,7 @@
       - rust-analyzer
       - shellcheck
       - shfmt
-      - stylua-git
+      - stylua
       - yamllint
   tags:
       - install

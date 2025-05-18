@@ -1,214 +1,213 @@
 - name: Create user directories
   file:
-      path: '{{ item }}'
-      state: directory
+    path: "{{ item }}"
+    state: directory
   with_items:
-      - "{{ lookup('env', 'HOME') }}/Desktop"
-      - "{{ lookup('env', 'HOME') }}/Downloads"
-      - "{{ lookup('env', 'HOME') }}/Documents/books"
-      - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
-      - "{{ lookup('env', 'HOME') }}/work"
-      - "{{ lookup('env', 'HOME') }}/personal"
-      - "{{ lookup('env', 'HOME') }}/learning"
+    - "{{ lookup('env', 'HOME') }}/Desktop"
+    - "{{ lookup('env', 'HOME') }}/Downloads"
+    - "{{ lookup('env', 'HOME') }}/Documents/books"
+    - "{{ lookup('env', 'HOME') }}/Pictures/screenshots"
+    - "{{ lookup('env', 'HOME') }}/work"
+    - "{{ lookup('env', 'HOME') }}/personal"
+    - "{{ lookup('env', 'HOME') }}/learning"
   tags:
-      - system
-      - install
+    - system
+    - install
 
 - name: Install Yay (aur helper)
   shell: |
-      sudo pacman -S --needed git base-devel fakeroot && \
-      rm -rf yay-bin && \
-      git clone https://aur.archlinux.org/yay-bin.git && \
-      cd yay-bin && \
-      yes | makepkg -si && \
-      cd .. && \
-      rm -rf yay-bin
+    sudo pacman -S --needed git base-devel fakeroot && \
+    rm -rf yay-bin && \
+    git clone https://aur.archlinux.org/yay-bin.git && \
+    cd yay-bin && \
+    yes | makepkg -si && \
+    cd .. && \
+    rm -rf yay-bin
   register: yay_install
   failed_when: yay_install.rc != 0 and 'already up to date' not in yay_install.stderr
   tags:
-      - system
-      - install
+    - system
+    - install
 
 - name: Install system packages
   kewlfft.aur.aur:
-      use: yay
-      name: '{{ item }}'
-      state: present
+    use: yay
+    name: "{{ item }}"
+    state: present
   with_items:
-      # Core System Utilities
-      - base-devel # Base development tools for building packages
-      - git # Version control system
-      - htop # Interactive process viewer
-      - tree # Directory listing in tree format
-      - trash-cli # Command line trash utility
-      - brightnessctl # Brightness control utility
-      - pacman-contrib # Pacman contribution utilities
-      - xdg-user-dirs # Manage user directories
+    # Core System Utilities
+    - base-devel # Base development tools for building packages
+    - git # Version control system
+    - htop # Interactive process viewer
+    - tree # Directory listing in tree format
+    - trash-cli # Command line trash utility
+    - brightnessctl # Brightness control utility
+    - pacman-contrib # Pacman contribution utilities
+    - xdg-user-dirs # Manage user directories
 
-      # Window Manager & Desktop Environment
-      - bspwm # Tiling window manager
-      - sxhkd # Simple X hotkey daemon
-      - dunst # Notification daemon
-      - polybar # Status bar
-      - picom # Compositor for X11
-      - rofi # Application launcher
-      - rofi-emoji # Emoji selector for Rofi
-      - jgmenu # Menu for X11
-      - lxsession-gtk3 # Session manager
-      - lxpolkit # Polkit daemon
-      - redshift # Color temperature adjustment
-      - xsettingsd # Settings daemon for X
-      - xorg # X Window System
-      - xorg-xinit # X Window System initializer
-      - xorg-xdpyinfo # Display information utility
-      - xorg-xkill # Kill X clients
-      - xorg-xprop # Property displayer for X
-      - xorg-xrandr # Resize and rotate utility
-      - xorg-xsetroot # Root window parameter setting utility
-      - xorg-xwininfo # Window information utility
-      - xdo # Small X utility to perform actions on windows
-      - xdotool # Command-line X11 automation tool
-      - arandr # GUI for XRandR
-      - ibus # Input method framework
-      - ibus-avro-git # Bengali input method
-      - ibus-m17n # Multilingual input method
+    # Window Manager & Desktop Environment
+    - bspwm # Tiling window manager
+    - sxhkd # Simple X hotkey daemon
+    - dunst # Notification daemon
+    - polybar # Status bar
+    - picom # Compositor for X11
+    - rofi # Application launcher
+    - rofi-emoji # Emoji selector for Rofi
+    - jgmenu # Menu for X11
+    - lxsession-gtk3 # Session manager
+    - redshift # Color temperature adjustment
+    - xsettingsd # Settings daemon for X
+    - xorg # X Window System
+    - xorg-xinit # X Window System initializer
+    - xorg-xdpyinfo # Display information utility
+    - xorg-xkill # Kill X clients
+    - xorg-xprop # Property displayer for X
+    - xorg-xrandr # Resize and rotate utility
+    - xorg-xsetroot # Root window parameter setting utility
+    - xorg-xwininfo # Window information utility
+    - xdo # Small X utility to perform actions on windows
+    - xdotool # Command-line X11 automation tool
+    - arandr # GUI for XRandR
+    - ibus # Input method framework
+    - ibus-avro-git # Bengali input method
+    - ibus-m17n # Multilingual input method
 
-      # Themes and Icons
-      - gtk-theme-numix-solarized # Solarized Numix GTK theme
-      - numix-circle-icon-theme-git # Numix Circle icon theme
-      - xcursor-numix # Numix cursor theme
-      - papirus-icon-theme # Icon theme
+    # Themes and Icons
+    - gtk-theme-numix-solarized # Solarized Numix GTK theme
+    - numix-circle-icon-theme-git # Numix Circle icon theme
+    - xcursor-numix # Numix cursor theme
+    - papirus-icon-theme # Icon theme
 
-      # File Management
-      - archiver # GUI archive manager
-      - p7zip # 7-Zip file archiver
-      - unrar # RAR archive extractor
-      - unzip # ZIP archive extractor
-      - zip # ZIP archive creator
-      - thunar # Modern file manager
-      - thunar-archive-plugin # Archive support for Thunar
-      - thunar-volman # Volume management for Thunar
-      - xarchiver # Lightweight archive manager
-      - lf-bin # Terminal file manager
-      - yazi # Modern terminal file manager
-      - eza # Modern replacement for ls
+    # File Management
+    - archiver # GUI archive manager
+    - p7zip # 7-Zip file archiver
+    - unrar # RAR archive extractor
+    - unzip # ZIP archive extractor
+    - zip # ZIP archive creator
+    - thunar # Modern file manager
+    - thunar-archive-plugin # Archive support for Thunar
+    - thunar-volman # Volume management for Thunar
+    - xarchiver # Lightweight archive manager
+    - lf # Terminal file manager
+    - yazi # Modern terminal file manager
+    - eza # Modern replacement for ls
 
-      # Development Tools
-      - pod2man # Perl documentation converter
-      - ripgrep # Fast recursive grep alternative
-      - stow # Symlink farm manager
-      - tree-sitter-cli # Parser generator tool
-      - rustup # Rust toolchain installer
-      - geany # Lightweight IDE
+    # Development Tools
+    - pod2man # Perl documentation converter
+    - ripgrep # Fast recursive grep alternative
+    - stow # Symlink farm manager
+    - tree-sitter-cli # Parser generator tool
+    - rustup # Rust toolchain installer
+    - geany # Lightweight IDE
 
-      # Network Tools
-      - curl # Command line tool for transferring data
-      - wget # Command line download utility
-      - firefox # Web browser
+    # Network Tools
+    - curl # Command line tool for transferring data
+    - wget # Command line download utility
+    - firefox # Web browser
 
-      # System Configuration
-      - fontconfig # Font configuration and customization
-      - libnotify # Desktop notification library
-      - unclutter # Hide mouse cursor when inactive
-      - pamixer # Pulseaudio command line mixer
-      - playerctl # MPRIS media player controller
+    # System Configuration
+    - fontconfig # Font configuration and customization
+    - libnotify # Desktop notification library
+    - unclutter # Hide mouse cursor when inactive
+    - pamixer # Pulseaudio command line mixer
+    - playerctl # MPRIS media player controller
 
-      # Command Line Tools
-      - bat # Cat clone with syntax highlighting
-      - fd # Fast and user-friendly find alternative
-      - fzf # Command-line fuzzy finder
-      - jq # Command-line JSON processor
-      - xclip # Command line clipboard utility
-      - calcurse # Calendar and scheduling application
-      - dmenu # Dynamic menu for X
-      - neofetch # System information tool
-      - subliminal # Subtitle downloader
-      - clipcat # Clipboard manager
+    # Command Line Tools
+    - bat # Cat clone with syntax highlighting
+    - fd # Fast and user-friendly find alternative
+    - fzf # Command-line fuzzy finder
+    - jq # Command-line JSON processor
+    - xclip # Command line clipboard utility
+    - calcurse # Calendar and scheduling application
+    - dmenu # Dynamic menu for X
+    - neofetch # System information tool
+    - subliminal # Subtitle downloader
+    - clipcat # Clipboard manager
 
-      # Audio and Bluetooth
-      - alsa-utils # ALSA sound utilities
-      - bluez # Bluetooth protocol stack
-      - bluez-utils # Bluetooth utilities
-      - blueman # Bluetooth manager
-      - pulsemixer # CLI and curses mixer for PulseAudio
-      - mpc # MPD client
-      - mpd # Music player daemon
-      - ncmpcpp # MPD client
+    # Audio and Bluetooth
+    - alsa-utils # ALSA sound utilities
+    - bluez # Bluetooth protocol stack
+    - bluez-utils # Bluetooth utilities
+    - blueman # Bluetooth manager
+    - pulsemixer # CLI and curses mixer for PulseAudio
+    - mpc # MPD client
+    - mpd # Music player daemon
+    - ncmpcpp # MPD client
 
-      # Media and Graphics
-      - feh # Lightweight image viewer
-      - ffmpeg # Complete solution for audio/video
-      - ffmpegthumbnailer # Video thumbnail generator
-      - flameshot # Screenshot tool
-      - mpv # Media player
-      - sxiv # Simple X Image Viewer
-      - tumbler # Thumbnail generator
-      - wezterm # GPU-accelerated terminal emulator
-      - zathura # Document viewer
-      - zathura-pdf-mupdf # PDF plugin for Zathura
-      - alacritty # GPU accelerated terminal
-      - kitty # GPU-based terminal emulator
-      - imagemagick # Image manipulation
-      - maim # Screenshot utility
-      - libwebp # WebP library
-      - webp-pixbuf-loader # WebP support for GTK applications
-      - python-gobject # Python bindings for GObject
+    # Media and Graphics
+    - feh # Lightweight image viewer
+    - ffmpeg # Complete solution for audio/video
+    - ffmpegthumbnailer # Video thumbnail generator
+    - flameshot # Screenshot tool
+    - mpv # Media player
+    - sxiv # Simple X Image Viewer
+    - tumbler # Thumbnail generator
+    - wezterm # GPU-accelerated terminal emulator
+    - zathura # Document viewer
+    - zathura-pdf-mupdf # PDF plugin for Zathura
+    - alacritty # GPU accelerated terminal
+    - kitty # GPU-based terminal emulator
+    - imagemagick # Image manipulation
+    - maim # Screenshot utility
+    - libwebp # WebP library
+    - webp-pixbuf-loader # WebP support for GTK applications
+    - python-gobject # Python bindings for GObject
 
-      # System Integration
-      - gvfs # Virtual filesystem implementation
-      - jmtpfs # MTP device filesystem
-      - gvfs-mtp # MTP support for GVFS
+    # System Integration
+    - gvfs # Virtual filesystem implementation
+    - jmtpfs # MTP device filesystem
+    - gvfs-mtp # MTP support for GVFS
   tags:
-      - system
-      - install
-      - wm
+    - system
+    - install
+    - wm
 
 - name: Enable undercurl support in wezterm
   shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
   tags:
-      - system
-      - install
+    - system
+    - install
 
 - name: Install fonts
   kewlfft.aur.aur:
-      use: yay
-      state: present
-      name:
-          # Programming Fonts
-          - ttf-jetbrains-mono-nerd
-          - ttf-inconsolata
-          - ttf-terminus-nerd
-          - ttf-ubuntu-mono-nerd
+    use: yay
+    state: present
+    name:
+      # Programming Fonts
+      - ttf-jetbrains-mono-nerd
+      - ttf-inconsolata
+      - ttf-terminus-nerd
+      - ttf-ubuntu-mono-nerd
 
-          # System Fonts
-          - ttf-roboto
-          - ttf-dejavu
-          - ttf-liberation
-          - ttf-ubuntu-font-family
+      # System Fonts
+      - ttf-roboto
+      - ttf-dejavu
+      - ttf-liberation
+      - ttf-ubuntu-font-family
 
-          # Unicode and Emoji Support
-          - otf-symbola
-          - noto-fonts
-          - noto-fonts-emoji
-          - noto-fonts-extra
+      # Unicode and Emoji Support
+      - otf-symbola
+      - noto-fonts
+      - noto-fonts-emoji
+      - noto-fonts-extra
   tags:
-      - fonts
-      - system
-      - install
+    - fonts
+    - system
+    - install
 
 - name: Install private fonts
   ansible.builtin.git:
-      accept_hostkey: true
-      repo: git@github.com:amahmod/fonts.git
-      dest: ~/.local/share/fonts
+    accept_hostkey: true
+    repo: git@github.com:amahmod/fonts.git
+    dest: ~/.local/share/fonts
   tags:
-      - fonts
-      - system
-      - install
+    - fonts
+    - system
+    - install
 
 - name: Update font cache
   shell: fc-cache -fv
   tags:
-      - fonts
-      - system
-      - install
+    - fonts
+    - system
+    - install
