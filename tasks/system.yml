@@ -41,6 +41,43 @@
       - htop # Interactive process viewer
       - tree # Directory listing in tree format
       - trash-cli # Command line trash utility
+      - brightnessctl # Brightness control utility
+      - pacman-contrib # Pacman contribution utilities
+      - xdg-user-dirs # Manage user directories
+
+      # Window Manager & Desktop Environment
+      - bspwm # Tiling window manager
+      - sxhkd # Simple X hotkey daemon
+      - dunst # Notification daemon
+      - polybar # Status bar
+      - picom # Compositor for X11
+      - rofi # Application launcher
+      - rofi-emoji # Emoji selector for Rofi
+      - jgmenu # Menu for X11
+      - lxsession-gtk3 # Session manager
+      - lxpolkit # Polkit daemon
+      - redshift # Color temperature adjustment
+      - xsettingsd # Settings daemon for X
+      - xorg # X Window System
+      - xorg-xinit # X Window System initializer
+      - xorg-xdpyinfo # Display information utility
+      - xorg-xkill # Kill X clients
+      - xorg-xprop # Property displayer for X
+      - xorg-xrandr # Resize and rotate utility
+      - xorg-xsetroot # Root window parameter setting utility
+      - xorg-xwininfo # Window information utility
+      - xdo # Small X utility to perform actions on windows
+      - xdotool # Command-line X11 automation tool
+      - arandr # GUI for XRandR
+      - ibus # Input method framework
+      - ibus-avro-git # Bengali input method
+      - ibus-m17n # Multilingual input method
+
+      # Themes and Icons
+      - gtk-theme-numix-solarized # Solarized Numix GTK theme
+      - numix-circle-icon-theme-git # Numix Circle icon theme
+      - xcursor-numix # Numix cursor theme
+      - papirus-icon-theme # Icon theme
 
       # File Management
       - archiver # GUI archive manager
@@ -54,21 +91,27 @@
       - xarchiver # Lightweight archive manager
       - lf-bin # Terminal file manager
       - yazi # Modern terminal file manager
+      - eza # Modern replacement for ls
 
       # Development Tools
       - pod2man # Perl documentation converter
       - ripgrep # Fast recursive grep alternative
       - stow # Symlink farm manager
       - tree-sitter-cli # Parser generator tool
+      - rustup # Rust toolchain installer
+      - geany # Lightweight IDE
 
       # Network Tools
       - curl # Command line tool for transferring data
       - wget # Command line download utility
+      - firefox # Web browser
 
       # System Configuration
       - fontconfig # Font configuration and customization
       - libnotify # Desktop notification library
       - unclutter # Hide mouse cursor when inactive
+      - pamixer # Pulseaudio command line mixer
+      - playerctl # MPRIS media player controller
 
       # Command Line Tools
       - bat # Cat clone with syntax highlighting
@@ -80,6 +123,7 @@
       - dmenu # Dynamic menu for X
       - neofetch # System information tool
       - subliminal # Subtitle downloader
+      - clipcat # Clipboard manager
 
       # Audio and Bluetooth
       - alsa-utils # ALSA sound utilities
@@ -87,6 +131,9 @@
       - bluez-utils # Bluetooth utilities
       - blueman # Bluetooth manager
       - pulsemixer # CLI and curses mixer for PulseAudio
+      - mpc # MPD client
+      - mpd # Music player daemon
+      - ncmpcpp # MPD client
 
       # Media and Graphics
       - feh # Lightweight image viewer
@@ -99,13 +146,22 @@
       - wezterm # GPU-accelerated terminal emulator
       - zathura # Document viewer
       - zathura-pdf-mupdf # PDF plugin for Zathura
+      - alacritty # GPU accelerated terminal
+      - kitty # GPU-based terminal emulator
+      - imagemagick # Image manipulation
+      - maim # Screenshot utility
+      - libwebp # WebP library
+      - webp-pixbuf-loader # WebP support for GTK applications
+      - python-gobject # Python bindings for GObject
 
       # System Integration
       - gvfs # Virtual filesystem implementation
       - jmtpfs # MTP device filesystem
+      - gvfs-mtp # MTP support for GVFS
   tags:
       - system
       - install
+      - wm
 
 - name: Enable undercurl support in wezterm
   shell: tempfile=$(mktemp) \ && curl -o $tempfile https://raw.githubusercontent.com/wez/wezterm/main/termwiz/data/wezterm.terminfo \ && tic -x -o ~/.terminfo $tempfile \ && rm $tempfile
@@ -120,6 +176,9 @@
       name:
           # Programming Fonts
           - ttf-jetbrains-mono-nerd
+          - ttf-inconsolata
+          - ttf-terminus-nerd
+          - ttf-ubuntu-mono-nerd
 
           # System Fonts
           - ttf-roboto
