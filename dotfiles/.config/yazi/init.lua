@@ -1,14 +1,11 @@
-require('bookmarks'):setup({
-  save_last_directory = false,
-  persist = 'vim',
-  desc_format = 'full',
-  notify = {
-    enable = true,
-    timeout = 1,
-    message = {
-      new = "New bookmark '<key>' -> '<folder>'",
-      delete = "Deleted bookmark in '<key>'",
-      delete_all = 'Deleted all bookmarks',
-    },
-  },
-})
+require("full_border"):setup()
+require("smart_enter"):setup {
+	open_multi = true,
+}
+
+Header:children_add(function()
+	if ya.target_family() ~= "unix" then
+		return ui.Line {}
+	end
+	return ui.Span(ya.user_name() .. "@" .. ya.host_name() .. ":"):fg("magenta")
+end, 500, Header.LEFT)
