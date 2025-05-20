@@ -120,15 +120,14 @@ run() {
 
 
 
-run sxhkd
-run picom
-run clipcatd
-run lxpolkit
-run dunst
-run ibus-daemon 2>/dev/null
-run unclutter
 run xsetroot -cursor_name left_ptr
-run xset r rate 300 50 
+run xset r rate 300 50
+# run lxpolkit
+run picom
+run dunst
+run sxhkd
+run clipcatd
+run unclutter
 
    
 # startup application
