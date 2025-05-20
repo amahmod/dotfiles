@@ -331,5 +331,21 @@ format-foreground = ${color.teal}
 format-padding = 2
 
 
+;  ╭──────────────────────────────────────────────────────────╮
+;  │                          TRAY                            │
+;  ╰──────────────────────────────────────────────────────────╯
+[module/tray]
+type = internal/tray
+
+format-margin = 8px
+tray-spacing = 8px
+; tray-position = right
+tray-detached = false
+tray-maxsize = 20
+tray-background = 
+tray-offset-x = 0
+tray-offset-y = 0
+tray-padding = 6
+tray-scale = 1.0
 
 ; vim:ft=dosini
