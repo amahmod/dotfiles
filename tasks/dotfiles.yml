@@ -1,29 +1,33 @@
 - name: Install stow
   become: true
   community.general.pacman:
-      name: stow
-      state: present
+    name: stow
+    state: present
   tags:
-      - dotfiles
-      - install
+    - dotfiles
+    - install
 
-- name: Check if .zshrc exists
+- name: Check if dotfiles exist
   ansible.builtin.stat:
-      path: "{{ lookup('env', 'HOME') }}/.zshrc"
-  register: zshrc_stat
+    path: "{{ lookup('env', 'HOME') }}/{{ item }}"
+  register: dotfile_stat
+  loop:
+    - .zshrc
+    - .bashrc
   tags:
-      - dotfiles
-      - install
+    - dotfiles
+    - install
 
-- name: Backup old .zshrc
-  ansible.builtin.command: mv {{ lookup('env', 'HOME') }}/.zshrc {{ lookup('env', 'HOME') }}/.zshrc.old
-  when: zshrc_stat.stat.exists
+- name: Backup dotfiles
+  ansible.builtin.command: mv {{ lookup('env', 'HOME') }}/{{ item.item }} {{ lookup('env', 'HOME') }}/{{ item.item }}.old
+  when: item.stat.exists
+  loop: "{{ dotfile_stat.results }}"
   tags:
-      - dotfiles
-      - install
+    - dotfiles
+    - install
 
 - name: Stow dotfiles
-  ansible.builtin.command: '{{ playbook_dir }}/install_dotfiles'
+  ansible.builtin.command: "{{ playbook_dir }}/install_dotfiles"
   tags:
-      - dotfiles
-      - install
+    - dotfiles
+    - install
