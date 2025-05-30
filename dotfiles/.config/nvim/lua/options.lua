@@ -41,9 +41,60 @@ opt.spell = true
 opt.formatoptions:remove 'o' -- Don't add comment leader on 'o'
 
 -- ───────────────────────────────( Folding )────────────────────────────
+
+-- Enhanced fold text function with syntax highlighting and visual indicators
+function custom_fold_text()
+    local line = vim.fn.getline(vim.v.foldstart)
+    local line_count = vim.v.foldend - vim.v.foldstart + 1
+    local fold_level = vim.fn.foldlevel(vim.v.foldstart)
+    local indent = string.rep('  ', fold_level - 1)
+
+    -- Get the first non-empty line in the fold
+    local first_line = line:match '^%s*(.-)%s*$'
+    if first_line == '' then
+        for i = vim.v.foldstart + 1, vim.v.foldend do
+            first_line = vim.fn.getline(i):match '^%s*(.-)%s*$'
+            if first_line ~= '' then
+                break
+            end
+        end
+    end
+
+    -- Truncate if too long
+    if #first_line > 50 then
+        first_line = first_line:sub(1, 47) .. '...'
+    end
+
+    -- Create a more visually appealing fold text
+    local lines_text = line_count == 1 and '1 line' or line_count .. ' lines'
+    local fold_icon = '▸' -- Triangle icon for closed folds
+    local fold_separator = '─' -- Separator line
+    local padding = string.rep(' ', 3 - #tostring(line_count))
+
+    -- Format the fold text with visual elements
+    local fold_text = string.format(
+        '%s%s %s %s%s %s',
+        indent,
+        fold_icon,
+        first_line,
+        fold_separator,
+        padding,
+        lines_text
+    )
+
+    -- Return a table with the fold text and highlight groups
+    return {
+        { fold_text, 'Folded' },
+    }
+end
+
+-- Configure folding
+opt.foldenable = true
 opt.foldlevel = 99
 opt.foldlevelstart = 99
-opt.foldenable = true
+opt.foldmethod = 'expr'
+opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+opt.foldtext = 'v:lua.custom_fold_text()'
 
 -- ───────────────────────────────( Filetype Detection )────────────────────────────
 vim.filetype.add {
