@@ -7,6 +7,6 @@ if is_vscode then
 else
     require "options"
     require "mappings"
-    print("neovim")
+    require "autocmds"
 end
 
