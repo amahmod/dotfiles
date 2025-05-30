@@ -12,4 +12,3 @@ return {
         require 'plugins.statusline.evil_line'
     end,
 }
-

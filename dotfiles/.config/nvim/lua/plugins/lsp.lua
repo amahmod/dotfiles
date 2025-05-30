@@ -1,9 +1,9 @@
 return {
-    "mason-org/mason-lspconfig.nvim",
+    'mason-org/mason-lspconfig.nvim',
     opts = {},
     dependencies = {
-        { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
+        { 'mason-org/mason.nvim', opts = {} },
+        'neovim/nvim-lspconfig',
         'WhoIsSethDaniel/mason-tool-installer.nvim',
         { 'j-hui/fidget.nvim', opts = {} },
         'b0o/SchemaStore.nvim',
@@ -91,11 +91,11 @@ return {
                 },
             },
             vtsls = {},
-            tsserver = {
+            ts_ls = {
                 settings = {
                     typescript = {
                         inlayHints = {
-                            includeInlayParameterNameHints = "all",
+                            includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
                             includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
@@ -106,7 +106,7 @@ return {
                     },
                     javascript = {
                         inlayHints = {
-                            includeInlayParameterNameHints = "all",
+                            includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = false,
                             includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
@@ -119,11 +119,11 @@ return {
             },
             rust_analyzer = {
                 settings = {
-                    ["rust-analyzer"] = {
+                    ['rust-analyzer'] = {
                         cargo = { allFeatures = true },
                         checkOnSave = {
-                            command = "clippy",
-                            extraArgs = { "--no-deps" },
+                            command = 'clippy',
+                            extraArgs = { '--no-deps' },
                         },
                     },
                 },
@@ -132,9 +132,9 @@ return {
                 settings = {
                     clangd = {
                         arguments = {
-                            "--header-insertion=never",
-                            "--clang-tidy",
-                            "--all-scopes-completion",
+                            '--header-insertion=never',
+                            '--clang-tidy',
+                            '--all-scopes-completion',
                         },
                     },
                 },
@@ -164,10 +164,18 @@ return {
             -- Diagnostics navigation
             vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
             vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-            vim.keymap.set('n', '[e', function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end, opts)
-            vim.keymap.set('n', ']e', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end, opts)
-            vim.keymap.set('n', '[w', function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.WARN }) end, opts)
-            vim.keymap.set('n', ']w', function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.WARN }) end, opts)
+            vim.keymap.set('n', '[e', function()
+                vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR }
+            end, opts)
+            vim.keymap.set('n', ']e', function()
+                vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR }
+            end, opts)
+            vim.keymap.set('n', '[w', function()
+                vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.WARN }
+            end, opts)
+            vim.keymap.set('n', ']w', function()
+                vim.diagnostic.goto_next { severity = vim.diagnostic.severity.WARN }
+            end, opts)
 
             -- TypeScript and Svelte specific keymaps
             if client.name == 'typescript-tools' or client.name == 'svelte' then
@@ -197,7 +205,7 @@ return {
                 'svelte',
                 'templ',
                 'vtsls',
-                'tsserver',
+                'ts_ls',
                 'clangd',
                 'emmet_language_server',
                 'denols',
@@ -231,7 +239,7 @@ return {
         -- Add additional capabilities
         capabilities.textDocument.foldingRange = {
             dynamicRegistration = false,
-            lineFoldingOnly = true
+            lineFoldingOnly = true,
         }
 
         for server_name, server_config in pairs(servers) do
@@ -245,7 +253,7 @@ return {
         end
 
         -- Configure diagnostic display
-        vim.diagnostic.config({
+        vim.diagnostic.config {
             virtual_text = true,
             signs = true,
             underline = true,
@@ -257,6 +265,6 @@ return {
                 header = '',
                 prefix = '',
             },
-        })
-    end
+        }
+    end,
 }

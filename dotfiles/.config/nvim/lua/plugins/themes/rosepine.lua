@@ -12,4 +12,3 @@ return {
         -- vim.cmd("colorscheme rose-pine-dawn")
     end,
 }
-

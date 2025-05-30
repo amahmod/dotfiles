@@ -13,7 +13,7 @@ return {
             { 'V', desc = 'Shrink selection', mode = 'x' },
         },
         opts = {
-            highlight = { 
+            highlight = {
                 enable = true,
                 disable = function(lang, buf)
                     local max_filesize = 100 * 1024 -- 100 KB
@@ -109,16 +109,15 @@ return {
             },
             auto_install = true,
             sync_install = {
-                "lua",
-                "vim",
-                "vimdoc",
-                "query",
+                'lua',
+                'vim',
+                'vimdoc',
+                'query',
             },
         },
         config = function(_, opts)
             require('nvim-treesitter.configs').setup(opts)
 
-            
             require('treesitter-context').setup {
                 enable = true,
                 max_lines = 3,

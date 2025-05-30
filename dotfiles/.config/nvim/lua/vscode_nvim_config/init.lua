@@ -1,4 +1,3 @@
-
 local function augroup(name)
     return vim.api.nvim_create_augroup(name, { clear = true })
 end
@@ -12,5 +11,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
-
 require 'vscode_nvim_config.mappings'
+

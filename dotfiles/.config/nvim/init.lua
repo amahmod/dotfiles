@@ -38,10 +38,9 @@ require('lazy').setup {
 }
 
 if is_vscode then
-    require "vscode_nvim_config"
+    require 'vscode_nvim_config'
 else
-    require "options"
-    require "mappings"
-    require "autocmds"
+    require 'options'
+    require 'mappings'
+    require 'autocmds'
 end
-

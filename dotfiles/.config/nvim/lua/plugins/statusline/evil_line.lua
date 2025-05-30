@@ -1,4 +1,3 @@
-
 local lualine = require 'lualine'
 
 local colors = {
@@ -166,4 +165,3 @@ insert_right {
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)
-
