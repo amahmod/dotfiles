@@ -128,6 +128,30 @@ return {
                     },
                 },
             },
+            svelte = {
+                settings = {
+                    svelte = {
+                        enable = true,
+                        diagnostics = {
+                            enable = true,
+                        },
+                        format = {
+                            enable = true,
+                        },
+                        plugin = {
+                            svelte = {
+                                defaultScriptLanguage = 'ts',
+                            },
+                        },
+                        trace = {
+                            server = 'off',
+                        },
+                        validate = {
+                            enable = true,
+                        },
+                    },
+                },
+            },
             clangd = {
                 settings = {
                     clangd = {
@@ -212,6 +236,7 @@ return {
             },
             -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed
             automatic_installation = true,
+            automatic_enable = false,
         }
 
         -- Setup mason-tool-installer
@@ -243,13 +268,13 @@ return {
         }
 
         for server_name, server_config in pairs(servers) do
-            require('lspconfig')[server_name].setup {
+            local config = vim.tbl_deep_extend('force', {
                 capabilities = capabilities,
-                settings = server_config.settings,
                 on_attach = function(client, bufnr)
                     setup_keymaps(bufnr, client)
                 end,
-            }
+            }, server_config)
+            require('lspconfig')[server_name].setup(config)
         end
 
         -- Configure diagnostic display
