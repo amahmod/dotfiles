@@ -26,7 +26,7 @@ require('lazy').setup {
         },
         -- vscode
         {
-            import = 'vscode/plugins',
+            import = 'vscode_nvim_config/plugins',
             cond = function()
                 return is_vscode
             end,
@@ -38,7 +38,7 @@ require('lazy').setup {
 }
 
 if is_vscode then
-    print("vscode")
+    require "vscode_nvim_config"
 else
     require "options"
     require "mappings"
