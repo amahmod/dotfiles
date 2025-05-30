@@ -103,3 +103,5 @@ map('x', 'J', ":move '>+1<CR>gv-gv", opts)
 map('x', 'K', ":move '<-2<CR>gv-gv", opts)
 
 -- }}}
+
+map( { 'n', 'v' }, '<leader>gg', "<cmd>lua require('vscode').action('lazygit-vscode.toggle')<CR>")
