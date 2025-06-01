@@ -10,7 +10,19 @@ return {
     },
     config = function()
         local servers = {
-            emmet_language_server = {},
+            emmet_language_server = {
+                filetypes = {
+                    'html',
+                    'css',
+                    'scss',
+                    'sass',
+                    'less',
+                    'javascriptreact',
+                    'typescriptreact',
+                    'vue',
+                    'svelte',
+                },
+            },
             gopls = {
                 settings = {
                     gopls = {
