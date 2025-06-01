@@ -9,6 +9,8 @@ return {
         'b0o/SchemaStore.nvim',
     },
     config = function()
+        local lspconfig = require 'lspconfig'
+
         local servers = {
             emmet_language_server = {
                 filetypes = {
@@ -21,6 +23,26 @@ return {
                     'typescriptreact',
                     'vue',
                     'svelte',
+                },
+                init_options = {
+                    ---@type table<string, string>
+                    includeLanguages = {},
+                    --- @type string[]
+                    excludeLanguages = {},
+                    --- @type string[]
+                    extensionsPath = {},
+                    --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
+                    preferences = {},
+                    --- @type boolean Defaults to `true`
+                    showAbbreviationSuggestions = true,
+                    --- @type "always" | "never" Defaults to `"always"`
+                    showExpandedAbbreviation = 'always',
+                    --- @type boolean Defaults to `false`
+                    showSuggestionsAsSnippets = false,
+                    --- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
+                    syntaxProfiles = {},
+                    --- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
+                    variables = {},
                 },
             },
             gopls = {
@@ -55,26 +77,18 @@ return {
                 },
                 settings = {
                     Lua = {
-                        runtime = {
-                            version = 'LuaJIT',
-                            special = { reload = 'require' },
+                        completion = {
+                            callSnippet = 'Replace',
+                        },
+                        diagnostics = {
+                            globals = { 'vim' },
                         },
                         workspace = {
                             library = {
-                                vim.fn.expand '$VIMRUNTIME/lua',
-                                vim.fn.expand '$VIMRUNTIME/lua/vim/lsp',
-                                vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy',
-                            },
-                        },
-                        diagnostics = {
-                            globals = {
-                                'vim',
-                                'use',
-                                'describe',
-                                'it',
-                                'assert',
-                                'before_each',
-                                'after_each',
+                                [vim.fn.expand '$VIMRUNTIME/lua'] = true,
+                                [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+                                [vim.fn.stdpath 'config' .. '/lua'] = true,
+                                [vim.fn.stdpath 'data' .. '/lazy/lazy.nvim/lua/lazy'] = true,
                             },
                         },
                     },
@@ -104,28 +118,20 @@ return {
             },
             vtsls = {},
             ts_ls = {
-                settings = {
-                    typescript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        },
-                    },
-                    javascript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        },
+                root_dir = function(fname)
+                    local util = lspconfig.util
+                    return not util.root_pattern('deno.json', 'deno.jsonc')(fname)
+                        and util.root_pattern(
+                            'tsconfig.json',
+                            'package.json',
+                            'jsconfig.json',
+                            '.git'
+                        )(fname)
+                end,
+                init_options = {
+                    preferences = {
+                        includeCompletionsWithSnippetText = true,
+                        includeCompletionsForImportStatements = true,
                     },
                 },
             },
