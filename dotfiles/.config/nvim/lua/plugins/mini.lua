@@ -6,5 +6,6 @@ return {
         require('mini.align').setup()
         require('mini.pairs').setup()
         require('mini.icons').setup()
+        require('mini.surround').setup()
     end,
 }
