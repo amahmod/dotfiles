@@ -218,6 +218,10 @@ return {
                 vim.diagnostic.goto_next { severity = vim.diagnostic.severity.WARN }
             end, opts)
 
+            vim.keymap.set('i', '<C-h>', function()
+                vim.lsp.buf.signature_help()
+            end, opts)
+
             -- TypeScript and Svelte specific keymaps
             if client.name == 'typescript-tools' or client.name == 'svelte' then
                 vim.keymap.set('n', '<leader>to', '<cmd>TSToolsOrganizeImports<cr>', opts)
@@ -297,7 +301,14 @@ return {
         -- Configure diagnostic display
         vim.diagnostic.config {
             virtual_text = true,
-            signs = true,
+            signs = {
+                text = {
+                    [vim.diagnostic.severity.ERROR] = ' ',
+                    [vim.diagnostic.severity.WARN] = ' ',
+                    [vim.diagnostic.severity.HINT] = '󰠠 ',
+                    [vim.diagnostic.severity.INFO] = ' ',
+                },
+            },
             underline = true,
             update_in_insert = false,
             severity_sort = true,
