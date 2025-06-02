@@ -198,24 +198,40 @@ return {
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
             vim.keymap.set({ 'n', 'x' }, '<leader>ca', function()
                 vim.lsp.buf.code_action {
-                    context = { only = { 'source', 'refactor', 'quickfix' } },
+                    context = {
+                        diagnostics = vim.diagnostic.get(0),
+                        only = {
+                            'quickfix',
+                            'refactor',
+                            'refactor.extract',
+                            'refactor.inline',
+                            'refactor.move',
+                            'source',
+                            'source.fixAll',
+                            'source.organizeImports',
+                        },
+                    },
                 }
             end, opts)
 
             -- Diagnostics navigation
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+            vim.keymap.set('n', '[d', function()
+                vim.diagnostic.jump { count = -1 }
+            end, opts)
+            vim.keymap.set('n', ']d', function()
+                vim.diagnostic.jump { count = 1 }
+            end, opts)
             vim.keymap.set('n', '[e', function()
-                vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.ERROR }
+                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR }
             end, opts)
             vim.keymap.set('n', ']e', function()
-                vim.diagnostic.goto_next { severity = vim.diagnostic.severity.ERROR }
+                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR }
             end, opts)
             vim.keymap.set('n', '[w', function()
-                vim.diagnostic.goto_prev { severity = vim.diagnostic.severity.WARN }
+                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.WARN }
             end, opts)
             vim.keymap.set('n', ']w', function()
-                vim.diagnostic.goto_next { severity = vim.diagnostic.severity.WARN }
+                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.WARN }
             end, opts)
 
             vim.keymap.set('i', '<C-h>', function()
