@@ -1,7 +1,6 @@
 ---@type boolean
 local auto_format_on_save = true
 
----@type table<string, string[]|table>
 local prettier_config = {
     'prettierd',
     'prettier', -- fallback
@@ -30,7 +29,6 @@ return {
         -- Define formatters
         formatters_by_ft = {
             lua = { 'stylua' },
-            python = { 'isort', 'black' },
             javascript = prettier_config,
             typescript = prettier_config,
             javascriptreact = prettier_config,
