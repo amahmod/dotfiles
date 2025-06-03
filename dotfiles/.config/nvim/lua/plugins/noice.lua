@@ -86,7 +86,7 @@ return {
                     },
                 },
                 messages = {
-                    enabled = true,
+                    enabled = false,
                 },
                 health = {
                     checker = true,
