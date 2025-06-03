@@ -7,6 +7,7 @@ return {
         require('mini.pairs').setup()
         require('mini.icons').setup()
         require('mini.surround').setup()
+        require('mini.animate').setup()
         require('mini.splitjoin').setup {
             mappings = {
                 toggle = 'gS',
