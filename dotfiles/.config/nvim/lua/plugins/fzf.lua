@@ -53,6 +53,7 @@ return {
         { '<leader>lr', function() require('fzf-lua').lsp_references() end, desc = 'Find references' },
         { '<leader>ld', function() require('fzf-lua').lsp_definitions() end, desc = 'Find definitions' },
         { '<leader>li', function() require('fzf-lua').lsp_implementations() end, desc = 'Find implementations' },
+        { '<leader>lI', function() require('fzf-lua').lsp_incoming_calls() end, desc = 'Incoming calls' },
         -- stylua: ignore end
     },
 }
