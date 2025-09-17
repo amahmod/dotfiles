@@ -57,6 +57,8 @@ function yy() {
 NPM_PACKAGES="${HOME}/.local/.npm-packages"
 export PATH="$PATH:$NPM_PACKAGES/bin"
 export MANPATH="${MANPATH-$(manpath)}:$NPM_PACKAGES/share/man"
+export N_PREFIX=$HOME/.n
+export PATH=$N_PREFIX/bin:$PATH
 
 [ ! -d "~/.cargo/bin/" ] && export PATH="$PATH:${HOME}/.cargo/bin"
 [ ! -d "~/go/bin/" ] && export PATH="$PATH:${HOME}/go/bin"
