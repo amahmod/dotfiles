@@ -32,9 +32,9 @@ map('n', '<leader>w', '<cmd>w<CR>', { desc = 'Save' })
 -- }}}
 
 -- Harpoon keymaps {{{
-map({ 'n', 'v' }, '<leader>ha', "<cmd>lua require('vscode').action('vscode-harpoon.addEditor')<CR>")
+map({ 'n', 'v' }, '<C-m>', "<cmd>lua require('vscode').action('vscode-harpoon.addEditor')<CR>")
 map( { 'n', 'v' }, '<leader>ho', "<cmd>lua require('vscode').action('vscode-harpoon.editorQuickPick')<CR>")
-map( { 'n', 'v' }, '<leader>he', "<cmd>lua require('vscode').action('vscode-harpoon.editEditors')<CR>")
+map( { 'n', 'v' }, '<C-S-M>', "<cmd>lua require('vscode').action('vscode-harpoon.editEditors')<CR>")
 map( { 'n', 'v' }, '<leader>1', "<cmd>lua require('vscode').action('vscode-harpoon.gotoEditor1')<CR>")
 map( { 'n', 'v' }, '<leader>2', "<cmd>lua require('vscode').action('vscode-harpoon.gotoEditor2')<CR>")
 map( { 'n', 'v' }, '<leader>3', "<cmd>lua require('vscode').action('vscode-harpoon.gotoEditor3')<CR>")
@@ -92,6 +92,9 @@ map( { 'n', 'v' }, 'H', "<cmd>lua require('vscode').action('workbench.action.pre
 map( { 'n', 'v' }, '<leader>e', "<cmd>lua require('vscode').action('workbench.action.toggleSidebarVisibility')<CR>")
 
 
+map( { 'n', 'v' }, '<C-i>', "<cmd>lua require('vscode').action('workbench.action.chat.open')<CR>")
+
+
 -- better indent handling
 map('v', '<', '<gv', opts)
 map('v', '>', '>gv', opts)
@@ -105,3 +108,5 @@ map('x', 'K', ":move '<-2<CR>gv-gv", opts)
 -- }}}
 
 map( { 'n', 'v' }, '<leader>gg', "<cmd>lua require('vscode').action('lazygit-vscode.toggle')<CR>")
+
+-- vim: fdm=marker
