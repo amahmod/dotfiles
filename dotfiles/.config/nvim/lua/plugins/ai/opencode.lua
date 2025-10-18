@@ -6,6 +6,11 @@ return {
     },
     config = function()
         vim.g.opencode_opts = {
+            terminal = {
+                win = {
+                    position = 'left',
+                },
+            },
             -- Your configuration, if any — see `lua/opencode/config.lua`
         }
 
