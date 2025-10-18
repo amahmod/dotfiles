@@ -17,7 +17,6 @@ return {
                 update_n_lines = 'Sn',
             },
         }
-        require('mini.animate').setup()
         require('mini.splitjoin').setup {
             mappings = {
                 toggle = 'gt',
