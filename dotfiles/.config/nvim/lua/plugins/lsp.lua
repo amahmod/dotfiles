@@ -8,8 +8,6 @@ return {
         'b0o/SchemaStore.nvim',
     },
     config = function()
-        local lspconfig = require 'lspconfig'
-
         local servers = {
             emmet_language_server = {
                 filetypes = {
@@ -116,24 +114,24 @@ return {
                 },
             },
             vtsls = {},
-            ts_ls = {
-                root_dir = function(fname)
-                    local util = lspconfig.util
-                    return not util.root_pattern('deno.json', 'deno.jsonc')(fname)
-                        and util.root_pattern(
-                            'tsconfig.json',
-                            'package.json',
-                            'jsconfig.json',
-                            '.git'
-                        )(fname)
-                end,
-                init_options = {
-                    preferences = {
-                        includeCompletionsWithSnippetText = true,
-                        includeCompletionsForImportStatements = true,
-                    },
-                },
-            },
+            -- ts_ls = {
+            --     root_dir = function(fname)
+            --         local util = lspconfig.util
+            --         return not util.root_pattern('deno.json', 'deno.jsonc')(fname)
+            --             and util.root_pattern(
+            --                 'tsconfig.json',
+            --                 'package.json',
+            --                 'jsconfig.json',
+            --                 '.git'
+            --             )(fname)
+            --     end,
+            --     init_options = {
+            --         preferences = {
+            --             includeCompletionsWithSnippetText = true,
+            --             includeCompletionsForImportStatements = true,
+            --         },
+            --     },
+            -- },
             rust_analyzer = {
                 settings = {
                     ['rust-analyzer'] = {
@@ -169,22 +167,13 @@ return {
                     },
                 },
             },
-            clangd = {
-                settings = {
-                    clangd = {
-                        arguments = {
-                            '--header-insertion=never',
-                            '--clang-tidy',
-                            '--all-scopes-completion',
-                        },
-                    },
-                },
-            },
         }
 
         local function setup_keymaps(bufnr, client)
             local opts = { buffer = bufnr, silent = true }
 
+
+            -- stylua: ignore start
             -- Navigation
             vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
             vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
@@ -197,55 +186,30 @@ return {
             vim.keymap.set('n', '<leader>hd', vim.diagnostic.open_float, opts)
             vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
             vim.keymap.set({ 'n', 'x' }, '<leader>ca', function()
-                vim.lsp.buf.code_action {
-                    context = {
-                        diagnostics = vim.diagnostic.get(0),
-                        only = {
-                            'quickfix',
-                            'refactor',
-                            'refactor.extract',
-                            'refactor.inline',
-                            'refactor.move',
-                            'source',
-                            'source.fixAll',
-                            'source.organizeImports',
-                        },
-                    },
-                }
+                vim.lsp.buf.code_action {}
             end, opts)
 
             -- Diagnostics navigation
-            vim.keymap.set('n', '[d', function()
-                vim.diagnostic.jump { count = -1 }
-            end, opts)
-            vim.keymap.set('n', ']d', function()
-                vim.diagnostic.jump { count = 1 }
-            end, opts)
-            vim.keymap.set('n', '[e', function()
-                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR }
-            end, opts)
-            vim.keymap.set('n', ']e', function()
-                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR }
-            end, opts)
-            vim.keymap.set('n', '[w', function()
-                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.WARN }
-            end, opts)
-            vim.keymap.set('n', ']w', function()
-                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.WARN }
-            end, opts)
+            vim.keymap.set('n', '[d', function() vim.diagnostic.jump { count = -1 } end, opts)
+            vim.keymap.set('n', ']d', function() vim.diagnostic.jump { count = 1 } end, opts)
+            vim.keymap.set('n', '[e', function() vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR } end, opts)
+            vim.keymap.set('n', ']e', function() vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR } end, opts)
+            vim.keymap.set('n', '[w', function() vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.WARN } end, opts)
+            vim.keymap.set('n', ']w', function() vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.WARN } end, opts)
 
-            vim.keymap.set('i', '<C-h>', function()
-                vim.lsp.buf.signature_help()
-            end, opts)
+            vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
+            vim.keymap.set("n", "<leader>th", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, { desc = "Toggle Inlay Hint (Global)" })
 
             -- TypeScript and Svelte specific keymaps
-            if client.name == 'typescript-tools' or client.name == 'svelte' then
-                vim.keymap.set('n', '<leader>to', '<cmd>TSToolsOrganizeImports<cr>', opts)
-                vim.keymap.set('n', '<leader>ta', '<cmd>TSToolsAddMissingImports<cr>', opts)
-                vim.keymap.set('n', '<leader>tr', '<cmd>TSToolsRemoveUnusedImports<cr>', opts)
-                vim.keymap.set('n', '<leader>tf', '<cmd>TSToolsFixAll<cr>', opts)
-                vim.keymap.set('n', '<leader>tR', '<cmd>TSToolsRenameFile<cr>', opts)
-            end
+            -- if client.name == 'typescript-tools' or client.name == 'svelte' then
+            --     vim.keymap.set('n', '<leader>to', '<cmd>TSToolsOrganizeImports<cr>', opts)
+            --     vim.keymap.set('n', '<leader>ta', '<cmd>TSToolsAddMissingImports<cr>', opts)
+            --     vim.keymap.set('n', '<leader>tr', '<cmd>TSToolsRemoveUnusedImports<cr>', opts)
+            --     vim.keymap.set('n', '<leader>tf', '<cmd>TSToolsFixAll<cr>', opts)
+            --     vim.keymap.set('n', '<leader>tR', '<cmd>TSToolsRenameFile<cr>', opts)
+            -- end
+
+            -- stylua: ignore end
         end
 
         -- Setup mason-lspconfig
@@ -267,7 +231,6 @@ return {
                 'templ',
                 'vtsls',
                 'ts_ls',
-                'clangd',
                 'emmet_language_server',
                 'denols',
             },
@@ -288,7 +251,6 @@ return {
                 'gofumpt',
                 'goimports',
                 'golines',
-                'clang-format',
                 'shfmt',
                 'shellcheck',
             },
@@ -311,7 +273,8 @@ return {
                     setup_keymaps(bufnr, client)
                 end,
             }, server_config)
-            require('lspconfig')[server_name].setup(config)
+            vim.lsp.config(server_name, config)
+            vim.lsp.enable(server_name)
         end
 
         -- Configure diagnostic display
