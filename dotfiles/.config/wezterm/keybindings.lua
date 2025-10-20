@@ -62,7 +62,7 @@ return {
   -- {{{ SPLIT PANES (s for split, intuitive directions)
   {
     key = 's',
-    mods = 'ALT',
+    mods = 'ALT|SHIFT',
     action = wezterm.action { SplitVertical = { domain = 'CurrentPaneDomain' } },
   },
   {
@@ -92,9 +92,9 @@ return {
   -- }}}
 
   -- {{{ TABS (t for tab, n/p for next/prev, numbers for direct)
-  { key = 't', mods = 'ALT', action = wezterm.action { SpawnTab = 'CurrentPaneDomain' } },
-  { key = 'n', mods = 'ALT', action = wezterm.action { ActivateTabRelativeNoWrap = 1 } },
-  { key = 'p', mods = 'ALT', action = wezterm.action { ActivateTabRelativeNoWrap = -1 } },
+  { key = 'n', mods = 'ALT', action = wezterm.action { SpawnTab = 'CurrentPaneDomain' } },
+  { key = '.', mods = 'ALT', action = wezterm.action { ActivateTabRelativeNoWrap = 1 } },
+  { key = ',', mods = 'ALT', action = wezterm.action { ActivateTabRelativeNoWrap = -1 } },
   { key = '1', mods = 'ALT', action = wezterm.action { ActivateTab = 0 } },
   { key = '2', mods = 'ALT', action = wezterm.action { ActivateTab = 1 } },
   { key = '3', mods = 'ALT', action = wezterm.action { ActivateTab = 2 } },
