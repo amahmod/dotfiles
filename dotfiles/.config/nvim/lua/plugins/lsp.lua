@@ -113,7 +113,52 @@ return {
                     },
                 },
             },
-            vtsls = {},
+            vtsls = {
+                settings = {
+                    vtsls = {
+                        tsserver = {
+                            globalPlugins = {
+                                {
+                                    name = '@vue/typescript-plugin',
+                                    location = vim.fn.stdpath 'data'
+                                        .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+                                    languages = { 'vue' },
+                                    configNamespace = 'typescript',
+                                },
+                            },
+                        },
+                    },
+                    javascript = {
+                        updateImportsOnFileMove = { enabled = 'always' },
+                    },
+                    typescript = {
+                        preferences = {
+                            importModuleSpecifier = 'non-relative',
+                            updateImportsOnFileMove = {
+                                enabled = 'always',
+                            },
+                            suggest = {
+                                completeFunctionCalls = true,
+                            },
+                            inlayHints = {
+                                enumMemberValues = { enabled = true },
+                                functionLikeReturnTypes = { enabled = true },
+                                parameterNames = { enabled = 'literals' },
+                                parameterTypes = { enabled = true },
+                                propertyDeclarationTypes = { enabled = true },
+                                variableTypes = { enabled = false },
+                            },
+                        },
+                    },
+                },
+                filetypes = {
+                    'typescript',
+                    'javascript',
+                    'javascriptreact',
+                    'typescriptreact',
+                    'vue',
+                },
+            },
             -- ts_ls = {
             --     root_dir = function(fname)
             --         local util = lspconfig.util
@@ -143,6 +188,7 @@ return {
                     },
                 },
             },
+            vue_ls = {},
             svelte = {
                 settings = {
                     svelte = {
@@ -230,6 +276,7 @@ return {
                 'svelte',
                 'templ',
                 'vtsls',
+                'vue_ls',
                 'ts_ls',
                 'emmet_language_server',
                 'denols',
