@@ -1,0 +1,228 @@
+[
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      GLOBAL (NORMAL & VISUAL MODE)
+      Description: Active when editing files in normal/visual mode and no menu or prompt is open.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "Editor && (vim_mode == normal || vim_mode == visual) && !VimWaiting && !menu",
+        "bindings": {
+            // ─── Git ──────────────────────────────────────────────────────────
+            "space g h d": "editor::ToggleSelectedDiffHunks", // Toggle diff for selected hunks
+            "space g g": "git_panel::ToggleFocus", // Open or focus Git panel
+
+            // ─── Toggle Options ───────────────────────────────────────────────
+            "space t i": "editor::ToggleInlayHints", // Toggle inline type hints
+            "space t w": "editor::ToggleSoftWrap", // Toggle soft line wrapping
+
+            // ─── Markdown ─────────────────────────────────────────────────────
+            "space m p": "markdown::OpenPreview", // Open Markdown preview
+            "space m P": "markdown::OpenPreviewToTheSide", // Preview in split
+
+            // ─── Files & Search ───────────────────────────────────────────────
+            "space f p": "projects::OpenRecent", // Open recent projects
+            "space s w": "pane::DeploySearch", // Search word under cursor
+
+            // ─── AI Assistant ─────────────────────────────────────────────────
+            "ctrl-i": "agent::ToggleFocus", // Open or focus AI chat panel
+
+            // ─── Linting / Formatting ─────────────────────────────────────────
+            "space l f": "editor::Format" // Format current buffer
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      NORMAL MODE ONLY
+      Description: Navigation, LSP, diagnostics, Git, and buffer operations.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+        "bindings": {
+            // ─── Pane Navigation ──────────────────────────────────────────────
+            "ctrl-h": "workspace::ActivatePaneLeft",
+            "ctrl-l": "workspace::ActivatePaneRight",
+            "ctrl-k": "workspace::ActivatePaneUp",
+            "ctrl-j": "workspace::ActivatePaneDown",
+
+            // ─── LSP (Code Navigation) ────────────────────────────────────────
+            "space c a": "editor::ToggleCodeActions",
+            "space .": "editor::ToggleCodeActions",
+            "space r n": "editor::Rename",
+            "g d": "editor::GoToDefinition",
+            "g D": "editor::GoToDefinitionSplit",
+            "g i": "editor::GoToImplementation",
+            "g I": "editor::GoToImplementationSplit",
+            "g t": "editor::GoToTypeDefinition",
+            "g T": "editor::GoToTypeDefinitionSplit",
+            "g r": "editor::FindAllReferences",
+
+            // ─── Diagnostics ──────────────────────────────────────────────────
+            "] d": "editor::GoToDiagnostic",
+            "[ d": "editor::GoToPreviousDiagnostic",
+            "] e": "editor::GoToDiagnostic",
+            "[ e": "editor::GoToPreviousDiagnostic",
+            "space l s": "outline::Toggle", // Symbol outline (current file)
+            "space l S": "project_symbols::Toggle", // Project-wide symbols
+            "space l d": "diagnostics::Deploy", // Show diagnostics panel
+
+            // ─── Git Integration ──────────────────────────────────────────────
+            "] h": "editor::GoToHunk", // Next hunk
+            "[ h": "editor::GoToPreviousHunk", // Prev hunk
+
+            // ─── Buffer / Pane Management ─────────────────────────────────────
+            "shift-h": "pane::ActivatePreviousItem",
+            "shift-l": "pane::ActivateNextItem",
+            "space b o": "pane::CloseOtherItems", // Close all but current
+            "space b a": "pane::CloseAllItems", // Close all
+            "space w": "workspace::Save", // Save current file
+            "space space": "file_finder::Toggle", // Open file finder
+            "space /": "pane::DeploySearch", // Project search
+            "space e": "pane::RevealInProjectPanel" // Reveal current file in sidebar
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      EMPTY PANE / DASHBOARD
+      Description: Allows basic workspace operations when no editor is open.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "EmptyPane || SharedScreen",
+        "bindings": {
+            "space space": "file_finder::Toggle",
+            "space f p": "projects::OpenRecent",
+            "space e": "workspace::ToggleRightDock"
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      PROJECT PANEL (File Explorer)
+      Description: Netrw-like file management in Zed’s sidebar.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "ProjectPanel && not_editing",
+        "bindings": {
+            // ─── File Operations ──────────────────────────────────────────────
+            "a": "project_panel::NewFile",
+            "A": "project_panel::NewDirectory",
+            "r": "project_panel::Rename",
+            "d": "project_panel::Delete",
+            "x": "project_panel::Cut",
+            "c": "project_panel::Copy",
+            "p": "project_panel::Paste",
+
+            // ─── Panel Management ─────────────────────────────────────────────
+            "q": "workspace::ToggleRightDock",
+            "space e": "workspace::ToggleRightDock",
+
+            // ─── Pane Navigation ──────────────────────────────────────────────
+            "ctrl-h": "workspace::ActivatePaneLeft",
+            "ctrl-l": "workspace::ActivatePaneRight",
+            "ctrl-k": "workspace::ActivatePaneUp",
+            "ctrl-j": "workspace::ActivatePaneDown"
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      DOCK / PANEL NAVIGATION
+      Description: Seamless movement between Zed docks and editor panes.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "(Dock && !Editor) || (Dock > Editor && VimControl)",
+        "bindings": {
+            "ctrl-h": "workspace::ActivatePaneLeft",
+            "ctrl-l": "workspace::ActivatePaneRight",
+            "ctrl-k": "workspace::ActivatePaneUp",
+            "ctrl-j": "workspace::ActivatePaneDown",
+            "space x": "workspace::CloseActiveDock"
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      SNEAK MOTION
+      Description: Vim Sneak-like motion for jumping to characters quickly.
+      Reference: https://github.com/zed-industries/zed/pull/22793
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "vim_mode == normal || vim_mode == visual",
+        "bindings": {
+            "s": ["vim::PushSneak", {}],
+            "S": ["vim::PushSneakBackward", {}]
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      PANE MANAGEMENT (GLOBAL)
+      Description: General close behavior for any pane or view.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "Pane || (VimControl || !Editor && !Terminal) && vim_mode == normal",
+        "bindings": {
+            "space x": "pane::CloseActiveItem"
+        }
+    },
+
+    /*
+    ─────────────────────────────────────────────────────────────────────────────
+      GIT PANEL (Fugitive-like)
+      Description: Comprehensive Git workflow inspired by vim-fugitive.
+    ─────────────────────────────────────────────────────────────────────────────
+    */
+    {
+        "context": "GitPanel",
+        "bindings": {
+            // ─── Staging / Diff ──────────────────────────────────────────────
+            "-": "git::ToggleStaged",
+            "=": "git::Diff",
+            "S": "git::StageAll",
+            "U": "git::UnstageAll",
+            "X": "git::RestoreFile",
+            "s": "git::StageFile",
+            "u": "git::UnstageFile",
+
+            // ─── Navigation ───────────────────────────────────────────────────
+            "o": "git::OpenModifiedFiles", // Open changed files
+            "q": "git_panel::Close", // Close Git panel
+
+            // ─── Commits ─────────────────────────────────────────────────────
+            "c c": "git::Commit",
+            "c a": "git::Amend",
+            "c e": "git::Amend",
+            "c w": "git::GenerateCommitMessage",
+
+            // ─── Branch / Checkout ───────────────────────────────────────────
+            "c o": "git::CheckoutBranch",
+            "c b": "git::Branch",
+            "c r": "git::RenameBranch",
+
+            // ─── Push / Pull / Fetch ─────────────────────────────────────────
+            "P": "git::Push",
+            "g p": "git::Pull",
+            "g f": "git::Fetch",
+            "g F": "git::ForcePush",
+
+            // ─── Stash ───────────────────────────────────────────────────────
+            "c z z": "git::StashAll",
+            "c z A": "git::StashApply",
+            "c z P": "git::StashPop",
+            "c z v": "git::ViewStash",
+            "g i": "git::AddToGitignore",
+
+            // ─── Miscellaneous ───────────────────────────────────────────────
+            "g u": "git::SelectRepo",
+            "r": "git::Uncommit"
+        }
+    }
+]

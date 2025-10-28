@@ -1,0 +1,121 @@
+{
+    "agent": {
+        "dock": "left",
+        "button": false,
+        "default_model": {
+            "model": "claude-sonnet-4",
+            "provider": "copilot_chat"
+        },
+        "default_profile": "write",
+        "default_view": "text_thread",
+        "default_width": 600,
+        "enable_feedback": false,
+        "model_parameters": [],
+        "play_sound_when_agent_done": true,
+        "use_modifier_to_send": true
+    },
+    "bottom_dock_layout": "contained",
+    "buffer_font_family": "MonoLisa",
+    "buffer_font_size": 14,
+    "buffer_font_weight": 300,
+    "collaboration_panel": {
+        "dock": "left"
+    },
+    "debugger": {
+        "button": false
+    },
+    "diagnostics": {
+        "button": true,
+        "inline": {
+            "enabled": true
+        }
+    },
+    "edit_predictions": {
+        "mode": "subtle"
+    },
+    "features": {
+        "edit_prediction_provider": "copilot"
+    },
+    "git": {
+        "git_gutter": "tracked_files",
+        "inline_blame": {
+            "enabled": false
+        }
+    },
+    "icon_theme": "Material Icon Theme",
+    "inlay_hints": {
+        "show_parameter_hints": true,
+        "show_type_hints": true,
+        "show_background": true,
+        "show_other_hints": true,
+        "show_value_hints": true,
+        "enabled": false
+    },
+    "notification_panel": {
+        "dock": "left"
+    },
+    "outline_panel": {
+        "button": false,
+        "dock": "right"
+    },
+    "prettier": {
+        "allowed": true
+    },
+    "project_panel": {
+        "button": false,
+        "auto_reveal_entries": true,
+        "default_width": 300,
+        "dock": "right",
+        "entry_spacing": "standard",
+        "hide_gitignore": true,
+        "hide_hidden": true,
+        "hide_root": true
+    },
+    "relative_line_numbers": true,
+    "scrollbar": {
+        "show": "never"
+    },
+    "search": {
+        "button": false
+    },
+    "status_bar": {
+        "active_language_button": false,
+        "cursor_position_button": true
+    },
+    "tab_size": 4,
+    "tabs": {
+        "file_icons": true,
+        "git_status": false,
+        "show_diagnostics": "errors"
+    },
+    "telemetry": {
+        "diagnostics": false,
+        "metrics": false
+    },
+    "terminal": {
+        "button": false
+    },
+    "theme": {
+        "dark": "Gruvbox Dark Hard",
+        "light": "Gruvbox Light Hard",
+        "mode": "dark"
+    },
+    "title_bar": {
+        "show_branch_icon": false,
+        "show_branch_name": true,
+        "show_menus": false,
+        "show_project_items": true,
+        "show_user_picture": true
+    },
+    "toolbar": {
+        "breadcrumbs": false,
+        "code_actions": true,
+        "quick_actions": false,
+        "selections_menu": true
+    },
+    "ui_font_size": 16,
+    "vim_mode": true,
+    "vim": {
+        "use_smartcase_find": true
+    }
+}
