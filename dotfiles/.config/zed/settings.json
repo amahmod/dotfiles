@@ -1,5 +1,11 @@
 {
+    "languages": {
+        "JSONC": {
+            "show_edit_predictions": false
+        }
+    },
     "agent": {
+        "always_allow_tool_actions": true,
         "dock": "left",
         "button": false,
         "default_model": {
