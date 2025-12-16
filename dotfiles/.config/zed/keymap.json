@@ -93,7 +93,7 @@
             "space l r": "editor::FindAllReferences",
             "space l s": "outline::Toggle",
             "space l S": "project_symbols::Toggle",
-            "space l a": "editor::ToggleCodeActions",
+            "space c a": "editor::ToggleCodeActions",
             "space r n": "editor::Rename",
             "space l f": "editor::Format",
             "space l c": "editor::ToggleComments",
@@ -118,6 +118,7 @@
             "space g d": "editor::ToggleSelectedDiffHunks",
             "space g r": "git::RestoreFile",
             "space g a": "git::StageFile",
+            "space g u": "git::UnstageFile",
             "space g c": "git::Commit",
             "space g p": "git::Push",
             "space g P": "git::Pull",
@@ -127,6 +128,9 @@
             "[ h": "editor::GoToPreviousHunk",
             "] c": "editor::GoToHunk", // Next hunk
             "[ c": "editor::GoToPreviousHunk", // Prev hunk
+            "space h r": "git::Restore",
+            "space h s": "git::StageAndNext",
+            "space h u": "git::UnstageAndNext",
             "space g g": [
                 "task::Spawn",
                 { "task_name": "start lazygit", "reveal_target": "center" }

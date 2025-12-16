@@ -9,7 +9,7 @@
         "dock": "left",
         "button": false,
         "default_model": {
-            "model": "claude-sonnet-4",
+            "model": "claude-sonnet-4.5",
             "provider": "copilot_chat"
         },
         "default_profile": "write",
@@ -77,7 +77,7 @@
         "hide_hidden": true,
         "hide_root": true
     },
-    "relative_line_numbers": true,
+    "relative_line_numbers": "enabled",
     "scrollbar": {
         "show": "never"
     },
@@ -87,6 +87,9 @@
     "status_bar": {
         "active_language_button": false,
         "cursor_position_button": true
+    },
+    "sticky_scroll": {
+        "enabled": true
     },
     "tab_size": 4,
     "tabs": {
@@ -101,11 +104,7 @@
     "terminal": {
         "button": false
     },
-    "theme": {
-        "dark": "Gruvbox Dark Hard",
-        "light": "Gruvbox Light Hard",
-        "mode": "dark"
-    },
+    "theme": "Catppuccin Mocha",
     "title_bar": {
         "show_branch_icon": false,
         "show_branch_name": true,
