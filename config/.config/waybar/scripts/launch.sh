@@ -109,7 +109,7 @@ if [ "$COUNT" -le 1 ]; then
   "clock": {
     "format": "󰥔 {:%I:%M %p}",
     "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
-    "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
+    "tooltip-format": "<span size='18000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><span size='15000'>{calendar}</span></tt>",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
@@ -271,7 +271,7 @@ else
     "clock": {
       "format": "󰥔 {:%I:%M %p}",
       "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
-      "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
+      "tooltip-format": "<span size='18000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><span size='15000'>{calendar}</span></tt>",
       "calendar": {
         "mode": "month",
         "mode-mon-col": 3,
@@ -378,7 +378,7 @@ else
     "clock": {
       "format": "󰥔 {:%I:%M %p}",
       "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
-      "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
+      "tooltip-format": "<span size='18000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><span size='15000'>{calendar}</span></tt>",
       "calendar": {
         "mode": "month",
         "mode-mon-col": 3,
