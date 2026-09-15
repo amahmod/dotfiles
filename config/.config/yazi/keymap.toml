@@ -1,4 +1,7 @@
 [mgr]
 prepend_keymap = [
     { on = [ "<C-s>" ], run = 'shell "$SHELL" --block --confirm', desc = "Open shell in current directory" },
+    { on = [ "<C-e>" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
+    { on = [ "<C-t>" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
+    { on = [ "g", "t" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
 ]

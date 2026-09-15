@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 # Screenshot Handler for Hyprland
-# - Saves all screenshots automatically to ~/Pictures/Screenshots/
-# - Auto-copies all screenshots to clipboard (wl-copy)
 # - SUPER + S: Active window capture (auto-saved + auto-copied)
 # - SUPER + SHIFT + S: Area selection with Satty / Swappy annotation GUI
+#   (Does not auto-save or auto-copy until user saves or copies in the interactive tool)
 
 SCREENSHOT_DIR="$HOME/Pictures/Screenshots"
 mkdir -p "$SCREENSHOT_DIR"
@@ -33,22 +32,20 @@ if [ "$MODE" = "full" ]; then
     exit 0
 fi
 
-# Area selection mode
+# Area selection mode (Interactive GUI)
 GEOM=$(slurp 2>/dev/null)
 if [ -z "$GEOM" ]; then
     exit 0 # User cancelled selection
 fi
 
-# Capture selected area to file first
-grim -g "$GEOM" "$FILE_PATH"
-
-# Auto-copy captured file to clipboard
-wl-copy < "$FILE_PATH"
-
+# Pipe raw selection directly into interactive annotation tool without pre-saving or pre-copying
 if command -v satty &>/dev/null; then
-    satty --filename "$FILE_PATH" --copy-command "wl-copy" --output-filename "$FILE_PATH"
+    grim -g "$GEOM" - | satty --filename - --output-filename "$FILE_PATH" --copy-command "wl-copy" --early-exit
 elif command -v swappy &>/dev/null; then
-    swappy -f "$FILE_PATH" -o "$FILE_PATH"
+    grim -g "$GEOM" - | swappy -f - -o "$FILE_PATH"
 else
+    # Fallback if no annotation tool is installed
+    grim -g "$GEOM" "$FILE_PATH"
+    wl-copy < "$FILE_PATH"
     notify-send "Screenshot Captured" "Saved to ~/Pictures/Screenshots/\nCopied to clipboard.\nInstall <b>satty</b> for interactive annotations." -i camera-photo
 fi

@@ -224,6 +224,14 @@ hl.window_rule({
 	float = true,
 })
 
+hl.window_rule({
+	name = "screenshot-annotation-float",
+	match = { class = "^(com.gabm.satty|satty|swappy|com.github.swappy)$" },
+	float = true,
+	center = true,
+	size = { "80%", "80%" },
+})
+
 ---------------------------------
 -------- LAYER RULES ------------
 ---------------------------------
