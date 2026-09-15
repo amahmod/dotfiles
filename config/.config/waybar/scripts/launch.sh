@@ -61,7 +61,7 @@ if [ "$COUNT" -le 1 ]; then
   "margin-right": 12,
   "spacing": 6,
   "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window"],
-  "modules-center": ["custom/media", "clock"],
+  "modules-center": ["custom/media-prev", "custom/media", "custom/media-next", "clock"],
   "modules-right": ["cpu", "memory", "network"__BATTERY__, "tray", "pulseaudio", "custom/power"],
   "custom/arch": {
     "format": "󰣇",
@@ -82,11 +82,18 @@ if [ "$COUNT" -le 1 ]; then
     "max-length": 32,
     "separate-outputs": true
   },
+  "custom/media-prev": {
+    "format": "{text}",
+    "return-type": "json",
+    "interval": 1,
+    "exec": "bash ~/.config/waybar/scripts/media-player.sh prev",
+    "on-click": "playerctl previous"
+  },
   "custom/media": {
     "format": "{text}",
     "return-type": "json",
     "interval": 1,
-    "exec": "bash ~/.config/waybar/scripts/media-player.sh",
+    "exec": "bash ~/.config/waybar/scripts/media-player.sh main",
     "on-click": "playerctl play-pause",
     "on-click-right": "playerctl next",
     "on-click-middle": "playerctl previous",
@@ -94,6 +101,13 @@ if [ "$COUNT" -le 1 ]; then
     "on-scroll-down": "playerctl previous",
     "max-length": 42,
     "escape": true
+  },
+  "custom/media-next": {
+    "format": "{text}",
+    "return-type": "json",
+    "interval": 1,
+    "exec": "bash ~/.config/waybar/scripts/media-player.sh next",
+    "on-click": "playerctl next"
   },
   "clock": {
     "format": "󰥔 {:%I:%M %p}",
@@ -212,7 +226,7 @@ else
     "margin-right": 12,
     "spacing": 6,
     "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["custom/media", "clock"],
+    "modules-center": ["custom/media-prev", "custom/media", "custom/media-next", "clock"],
     "modules-right": ["cpu", "memory", "network"__BATTERY__, "tray", "pulseaudio", "custom/power"],
     "custom/arch": {
       "format": "󰣇",
@@ -233,11 +247,18 @@ else
       "max-length": 32,
       "separate-outputs": true
     },
+    "custom/media-prev": {
+      "format": "{text}",
+      "return-type": "json",
+      "interval": 1,
+      "exec": "bash ~/.config/waybar/scripts/media-player.sh prev",
+      "on-click": "playerctl previous"
+    },
     "custom/media": {
       "format": "{text}",
       "return-type": "json",
       "interval": 1,
-      "exec": "bash ~/.config/waybar/scripts/media-player.sh",
+      "exec": "bash ~/.config/waybar/scripts/media-player.sh main",
       "on-click": "playerctl play-pause",
       "on-click-right": "playerctl next",
       "on-click-middle": "playerctl previous",
@@ -245,6 +266,13 @@ else
       "on-scroll-down": "playerctl previous",
       "max-length": 42,
       "escape": true
+    },
+    "custom/media-next": {
+      "format": "{text}",
+      "return-type": "json",
+      "interval": 1,
+      "exec": "bash ~/.config/waybar/scripts/media-player.sh next",
+      "on-click": "playerctl next"
     },
     "clock": {
       "format": "󰥔 {:%I:%M %p}",
