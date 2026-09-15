@@ -10,6 +10,13 @@ hl.config({
 
 	general = {
 		layout = "dwindle",
+		gaps_in = 0,
+		gaps_out = {
+			top = 5,
+			right = 0,
+			bottom = 0,
+			left = 0,
+		},
 	},
 
 	dwindle = {
