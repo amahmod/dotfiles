@@ -188,9 +188,18 @@ tooltip label {
 }
 
 #custom-power {
-    background-color: @power-bg;
-    color: #11111b;
-    padding: 2px 12px;
+    background-color: rgba(30, 30, 46, 0.85);
+    color: @power-bg;
+    padding: 2px 11px;
     margin: 4px 8px 4px 3px;
     border-radius: 14px;
+    border: 1px solid rgba(243, 139, 168, 0.25);
+    transition: all 0.3s ease;
+}
+
+#custom-power:hover {
+    background-color: @power-bg;
+    color: #11111b;
+    border-color: @power-bg;
+    box-shadow: 0 0 12px @power-bg;
 }
