@@ -57,6 +57,7 @@ OFFICIAL_PACKAGES=(
     ansible
     base-devel
     git
+    openssh
     stow
     hyprland
     kitty
