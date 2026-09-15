@@ -1,5 +1,9 @@
 local wezterm = require('wezterm')
 local keybindings = require('keybindings')
+local theme = { color_scheme = 'Catppuccin Macchiato' }
+pcall(function()
+  theme = require('theme')
+end)
 
 return {
   -- Font {{{
@@ -15,7 +19,7 @@ return {
   -- }}}
 
   -- Color {{{
-  color_scheme = 'Catppuccin Macchiato',
+  color_scheme = theme.color_scheme,
   -- }}}
 
   -- Window {{{

@@ -1,4 +1,4 @@
-## Wofi Configuration - Catppuccin Macchiato
+## Wofi Configuration
 mode=drun
 show=drun
 width=520
@@ -17,5 +17,9 @@ image_size=28
 gtk_dark=true
 layer=overlay
 hide_scroll=true
+
+# Keybindings (Valid modifiers: Ctrl, Shift, Alt)
 key_expand=Tab
 key_exit=Escape
+key_down=Ctrl-n
+key_up=Ctrl-p

@@ -166,6 +166,10 @@ hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd([[sh -c 'grim - | wl-copy &&
 -- Waybar Controls
 hl.bind(main_mod .. " + SHIFT + B", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/waybar/launch.sh"))
 
+-- System Theme Switcher Controls
+hl.bind(main_mod .. " + SHIFT + T", hl.dsp.exec_cmd("bash " .. os.getenv("HOME") .. "/.config/hypr/scripts/theme-switch.sh menu"))
+hl.bind(main_mod .. " + ALT + T",   hl.dsp.exec_cmd("bash " .. os.getenv("HOME") .. "/.config/hypr/scripts/theme-switch.sh next"))
+
 ---------------------------------
 -------- WINDOW RULES -----------
 ---------------------------------

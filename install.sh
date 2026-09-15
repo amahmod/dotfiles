@@ -81,9 +81,10 @@ FONT_PACKAGES=(
 )
 
 DESKTOP_UTILS=(
-    # Notifications
+    # Notifications & Desktop Management
     dunst
     libnotify
+    glib2
 
     # Audio & Screensharing
     pipewire
