@@ -58,6 +58,7 @@ OFFICIAL_PACKAGES=(
     base-devel
     git
     openssh
+    pciutils
     stow
     hyprland
     kitty
@@ -123,13 +124,54 @@ AUR_PACKAGES=(
     otf-symbola
 )
 
-# --- 1. System Update & Official Packages ---
+# --- 1. GPU Detection & Driver Selection ---
+log_step "Detecting GPU hardware..."
+GPU_PACKAGES=(
+    mesa
+    mesa-utils
+    vulkan-tools
+)
+
+GPU_INFO=$(lspci -k 2>/dev/null | grep -iE "(vga|3d|display)" || true)
+
+if echo "$GPU_INFO" | grep -iE "amd|radeon|advanced micro devices" &>/dev/null; then
+    log_info "Detected AMD GPU."
+    GPU_PACKAGES+=(
+        vulkan-radeon
+        libva-mesa-driver
+        mesa-vdpau
+        xf86-video-amdgpu
+    )
+fi
+
+if echo "$GPU_INFO" | grep -iE "intel" &>/dev/null; then
+    log_info "Detected Intel GPU."
+    GPU_PACKAGES+=(
+        vulkan-intel
+        intel-media-driver
+    )
+fi
+
+if echo "$GPU_INFO" | grep -iE "nvidia" &>/dev/null; then
+    log_info "Detected NVIDIA GPU."
+    GPU_PACKAGES+=(
+        nvidia-dkms
+        nvidia-utils
+        egl-wayland
+    )
+fi
+
+# --- 2. System Update & Official Packages ---
 log_step "Updating system and installing core packages..."
 sudo pacman -Syu --noconfirm
-sudo pacman -S --needed --noconfirm "${OFFICIAL_PACKAGES[@]}" "${FONT_PACKAGES[@]}" "${DESKTOP_UTILS[@]}"
-log_success "Core packages, fonts, and desktop utilities installed."
+sudo pacman -S --needed --noconfirm \
+    "${OFFICIAL_PACKAGES[@]}" \
+    "${FONT_PACKAGES[@]}" \
+    "${DESKTOP_UTILS[@]}" \
+    "${GPU_PACKAGES[@]}"
+log_success "Core packages, GPU drivers, fonts, and desktop utilities installed."
 
-# --- 2. AUR Helper (yay) & AUR Packages ---
+# --- 3. AUR Helper (yay) & AUR Packages ---
 log_step "Checking AUR helper (yay)..."
 if command -v yay &> /dev/null; then
     log_success "yay is already installed."
@@ -147,7 +189,7 @@ if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
     log_success "AUR packages installed."
 fi
 
-# --- 3. SSH Keys & Private Fonts ---
+# --- 4. SSH Keys & Private Fonts ---
 log_step "Configuring SSH keys and private fonts..."
 mkdir -p "$HOME/.ssh"
 chmod 700 "$HOME/.ssh"
@@ -185,7 +227,7 @@ log_step "Updating font cache..."
 fc-cache -f > /dev/null
 log_success "Font cache updated."
 
-# --- 4. Dotfiles Deployment (Stow) ---
+# --- 5. Dotfiles Deployment (Stow) ---
 log_step "Deploying dotfiles with GNU Stow..."
 
 # Backup .bash_profile if it's a regular file (not a symlink)
@@ -199,7 +241,7 @@ mkdir -p "$HOME/.config"
 (cd "$REPO_DIR" && stow -R --no-folding --target="$HOME" config)
 log_success "Dotfiles linked to $HOME."
 
-# --- 5. Services ---
+# --- 6. Services ---
 log_step "Configuring system services..."
 if ! systemctl is-enabled --quiet sddm 2>/dev/null; then
     sudo systemctl enable sddm
