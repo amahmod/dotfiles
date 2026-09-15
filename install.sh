@@ -129,6 +129,24 @@ DESKTOP_UTILS=(
     pavucontrol
     brightnessctl
     playerctl
+
+    # Editor, Linting, & Git Tools
+    neovim
+    nodejs
+    npm
+    biome
+    tree-sitter
+    tree-sitter-cli
+    lazygit
+    stylua
+    shfmt
+    shellcheck
+    luacheck
+    python-pynvim
+    python-pip
+    unzip
+    wget
+    zip
 )
 
 AUR_PACKAGES=(
