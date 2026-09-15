@@ -130,6 +130,7 @@ GPU_PACKAGES=(
     mesa
     mesa-utils
     vulkan-tools
+    libva-utils
 )
 
 GPU_INFO=$(lspci -k 2>/dev/null | grep -iE "(vga|3d|display)" || true)
@@ -138,8 +139,6 @@ if echo "$GPU_INFO" | grep -iE "amd|radeon|advanced micro devices" &>/dev/null; 
     log_info "Detected AMD GPU."
     GPU_PACKAGES+=(
         vulkan-radeon
-        libva-mesa-driver
-        mesa-vdpau
         xf86-video-amdgpu
     )
 fi
@@ -155,7 +154,7 @@ fi
 if echo "$GPU_INFO" | grep -iE "nvidia" &>/dev/null; then
     log_info "Detected NVIDIA GPU."
     GPU_PACKAGES+=(
-        nvidia-dkms
+        nvidia-open-dkms
         nvidia-utils
         egl-wayland
     )
