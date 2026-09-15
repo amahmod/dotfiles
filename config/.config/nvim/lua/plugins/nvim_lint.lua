@@ -22,6 +22,16 @@ return {
         -- Configure linters
         lint.linters_by_ft = linters_by_ft
 
+        lint.linters.luacheck.args = {
+            '--globals',
+            'vim',
+            '--formatter',
+            'plain',
+            '--codes',
+            '--ranges',
+            '-',
+        }
+
         -- Create lint autocommands
         local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
 

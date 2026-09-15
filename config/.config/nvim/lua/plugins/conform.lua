@@ -17,7 +17,7 @@ return {
                 require('conform').format {
                     async = true,
                     lsp_fallback = true,
-                    timeout_ms = 500,
+                    timeout_ms = 3000,
                 }
             end,
             mode = { 'n', 'v' },
@@ -59,7 +59,7 @@ return {
 
         -- Format on save options
         format_on_save = auto_format_on_save and {
-            timeout_ms = 500,
+            timeout_ms = 3000,
             lsp_fallback = true,
             async = false,
         } or nil,

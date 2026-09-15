@@ -183,6 +183,7 @@ return {
         require('mason-tool-installer').setup {
             ensure_installed = {
                 'stylua',
+                'luacheck',
                 'biome',
                 'black',
                 'ruff',
