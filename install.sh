@@ -54,6 +54,7 @@ while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # --- Package Lists ---
 OFFICIAL_PACKAGES=(
+    ansible
     base-devel
     git
     stow
@@ -123,11 +124,45 @@ if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
     log_success "AUR packages installed."
 fi
 
+# --- 3. SSH Keys & Private Fonts ---
+log_step "Configuring SSH keys and private fonts..."
+mkdir -p "$HOME/.ssh"
+chmod 700 "$HOME/.ssh"
+
+if [[ ! -f "$HOME/.ssh/id_rsa" && -f "$REPO_DIR/.keys/id_rsa" ]]; then
+    log_info "Decrypting SSH private key with Ansible Vault..."
+    ansible-vault decrypt "$REPO_DIR/.keys/id_rsa" --output "$HOME/.ssh/id_rsa"
+    chmod 600 "$HOME/.ssh/id_rsa"
+    if [[ -f "$REPO_DIR/.keys/id_rsa.pub" ]]; then
+        cp "$REPO_DIR/.keys/id_rsa.pub" "$HOME/.ssh/id_rsa.pub"
+        chmod 644 "$HOME/.ssh/id_rsa.pub"
+    fi
+    log_success "SSH key deployed to ~/.ssh/id_rsa."
+elif [[ -f "$HOME/.ssh/id_rsa" ]]; then
+    log_info "SSH key already exists at ~/.ssh/id_rsa."
+fi
+
+mkdir -p "$HOME/.local/share/fonts"
+if [[ ! -d "$HOME/.local/share/fonts/private-fonts" && ! -d "$HOME/.local/share/fonts/.git" ]]; then
+    if [[ -f "$HOME/.ssh/id_rsa" ]]; then
+        log_info "Cloning private fonts repository..."
+        touch "$HOME/.ssh/known_hosts"
+        ssh-keyscan -H github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null || true
+        GIT_SSH_COMMAND="ssh -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=accept-new" \
+            git clone git@github.com:amahmod/fonts.git "$HOME/.local/share/fonts/private-fonts"
+        log_success "Private fonts repository cloned."
+    else
+        log_warn "SSH key (~/.ssh/id_rsa) not found. Skipping private fonts clone."
+    fi
+else
+    log_info "Private fonts already present."
+fi
+
 log_step "Updating font cache..."
 fc-cache -f > /dev/null
 log_success "Font cache updated."
 
-# --- 3. Dotfiles Deployment (Stow) ---
+# --- 4. Dotfiles Deployment (Stow) ---
 log_step "Deploying dotfiles with GNU Stow..."
 
 # Backup .bash_profile if it's a regular file (not a symlink)
@@ -141,7 +176,7 @@ mkdir -p "$HOME/.config"
 (cd "$REPO_DIR" && stow -R --no-folding --target="$HOME" config)
 log_success "Dotfiles linked to $HOME."
 
-# --- 4. Services ---
+# --- 5. Services ---
 log_step "Configuring system services..."
 if ! systemctl is-enabled --quiet sddm 2>/dev/null; then
     sudo systemctl enable sddm
