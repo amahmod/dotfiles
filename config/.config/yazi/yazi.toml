@@ -22,7 +22,7 @@ edit = [
     { run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editor" },
 ]
 play = [
-    { run = 'mpv "$@"', block = true, orphan = false, desc = "Play with mpv" },
+    { run = 'bash ~/.config/yazi/scripts/open-mpv.sh "$@"', block = true, orphan = false, desc = "Play with mpv" },
 ]
 open = [
     { run = 'xdg-open "$@"', desc = "Open with default application" },
