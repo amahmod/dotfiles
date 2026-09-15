@@ -103,9 +103,11 @@ if [ "$COUNT" -le 1 ]; then
     "interval": 2
   },
   "network": {
-    "format-wifi": " {essid}",
-    "format-ethernet": "󰈀 {ipaddr}",
+    "interval": 2,
+    "format-wifi": " ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
+    "format-ethernet": "󰈀 ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
     "format-disconnected": "󰤮 Disconnected",
+    "min-length": 16,
     "tooltip-format-wifi": "SSID: {essid} ({signalStrength}%)\nIP: {ipaddr}\nGW: {gwaddr}",
     "tooltip-format-ethernet": "Interface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}",
     "tooltip-format-disconnected": "Network disconnected",
@@ -224,9 +226,11 @@ else
       "interval": 2
     },
     "network": {
-      "format-wifi": " {essid}",
-      "format-ethernet": "󰈀 {ipaddr}",
+      "interval": 2,
+      "format-wifi": " ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
+      "format-ethernet": "󰈀 ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
       "format-disconnected": "󰤮 Disconnected",
+      "min-length": 16,
       "tooltip-format-wifi": "SSID: {essid} ({signalStrength}%)\nIP: {ipaddr}\nGW: {gwaddr}",
       "tooltip-format-ethernet": "Interface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}",
       "tooltip-format-disconnected": "Network disconnected",
