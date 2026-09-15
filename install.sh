@@ -57,6 +57,7 @@ OFFICIAL_PACKAGES=(
     ansible
     base-devel
     git
+    less
     openssh
     pciutils
     stow
