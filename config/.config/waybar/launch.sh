@@ -64,8 +64,8 @@ if [ "$COUNT" -le 1 ]; then
     "separate-outputs": true
   },
   "clock": {
-    "format": " {:%H:%M}",
-    "format-alt": " {:%a %d/%m   %H:%M}",
+    "format": " {:%I:%M %p}",
+    "format-alt": " {:%a %d/%m   %I:%M %p}",
     "tooltip-format": "<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "month",
@@ -183,8 +183,8 @@ else
       "separate-outputs": true
     },
     "clock": {
-      "format": " {:%H:%M}",
-      "format-alt": " {:%a %d/%m   %H:%M}",
+      "format": " {:%I:%M %p}",
+      "format-alt": " {:%a %d/%m   %I:%M %p}",
       "tooltip-format": "<tt><small>{calendar}</small></tt>",
       "calendar": {
         "mode": "month",
@@ -280,8 +280,8 @@ else
       "separate-outputs": true
     },
     "clock": {
-      "format": " {:%H:%M}",
-      "format-alt": " {:%a %d/%m   %H:%M}",
+      "format": " {:%I:%M %p}",
+      "format-alt": " {:%a %d/%m   %I:%M %p}",
       "tooltip-format": "<tt><small>{calendar}</small></tt>"
     },
     "pulseaudio": {
