@@ -64,13 +64,25 @@ OFFICIAL_PACKAGES=(
     wofi
 )
 
+FONT_PACKAGES=(
+    ttf-jetbrains-mono-nerd
+    ttf-nerd-fonts-symbols
+    otf-font-awesome
+    noto-fonts
+    noto-fonts-emoji
+)
+
+AUR_PACKAGES=(
+    otf-symbola
+)
+
 # --- 1. System Update & Official Packages ---
 log_step "Updating system and installing core packages..."
 sudo pacman -Syu --noconfirm
-sudo pacman -S --needed --noconfirm "${OFFICIAL_PACKAGES[@]}"
-log_success "Core packages installed."
+sudo pacman -S --needed --noconfirm "${OFFICIAL_PACKAGES[@]}" "${FONT_PACKAGES[@]}"
+log_success "Core packages and fonts installed."
 
-# --- 2. AUR Helper (yay) ---
+# --- 2. AUR Helper (yay) & AUR Packages ---
 log_step "Checking AUR helper (yay)..."
 if command -v yay &> /dev/null; then
     log_success "yay is already installed."
@@ -81,6 +93,16 @@ else
     (cd "$TMP_DIR/yay" && makepkg -si --noconfirm)
     log_success "yay installed successfully."
 fi
+
+if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
+    log_step "Installing AUR packages..."
+    yay -S --needed --noconfirm "${AUR_PACKAGES[@]}"
+    log_success "AUR packages installed."
+fi
+
+log_step "Updating font cache..."
+fc-cache -f > /dev/null
+log_success "Font cache updated."
 
 # --- 3. Dotfiles Deployment (Stow) ---
 log_step "Deploying dotfiles with GNU Stow..."
