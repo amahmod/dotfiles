@@ -108,12 +108,13 @@ if [ "$COUNT" -le 1 ]; then
   },
   "clock": {
     "format": "󰥔 {:%I:%M %p}",
-    "format-alt": "󰃭 {:%a %d %b  󰥔 %I:%M %p}",
-    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
+    "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
     "calendar": {
       "mode": "month",
       "mode-mon-col": 3,
       "weeks-pos": "right",
+      "on-scroll": 1,
       "format": {
         "months": "<span color=\"#a6e3a1\"><b>{}</b></span>",
         "days": "<span color=\"#cdd6f4\"><b>{}</b></span>",
@@ -121,6 +122,11 @@ if [ "$COUNT" -le 1 ]; then
         "weekdays": "<span color=\"#f9e2af\"><b>{}</b></span>",
         "today": "<span color=\"#f5c2e7\"><b><u>{}</u></b></span>"
       }
+    },
+    "actions": {
+      "on-click-right": "mode",
+      "on-scroll-up": "shift_up",
+      "on-scroll-down": "shift_down"
     }
   },
   "pulseaudio": {
@@ -264,12 +270,13 @@ else
     },
     "clock": {
       "format": "󰥔 {:%I:%M %p}",
-      "format-alt": "󰃭 {:%a %d %b  󰥔 %I:%M %p}",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>",
+      "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
+      "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
       "calendar": {
         "mode": "month",
         "mode-mon-col": 3,
         "weeks-pos": "right",
+        "on-scroll": 1,
         "format": {
           "months": "<span color=\"#a6e3a1\"><b>{}</b></span>",
           "days": "<span color=\"#cdd6f4\"><b>{}</b></span>",
@@ -277,6 +284,11 @@ else
           "weekdays": "<span color=\"#f9e2af\"><b>{}</b></span>",
           "today": "<span color=\"#f5c2e7\"><b><u>{}</u></b></span>"
         }
+      },
+      "actions": {
+        "on-click-right": "mode",
+        "on-scroll-up": "shift_up",
+        "on-scroll-down": "shift_down"
       }
     },
     "pulseaudio": {
@@ -364,7 +376,27 @@ else
       "separate-outputs": true
     },
     "clock": {
-      "format": "󰥔 {:%I:%M %p}"
+      "format": "󰥔 {:%I:%M %p}",
+      "format-alt": "󰃭 {:%A, %B %d, %Y  󰥔 %I:%M %p}",
+      "tooltip-format": "<span size='13000' weight='bold' color='#89dceb'>  󰃭 {:%B %Y}</span>\n\n<tt><small>{calendar}</small></tt>",
+      "calendar": {
+        "mode": "month",
+        "mode-mon-col": 3,
+        "weeks-pos": "right",
+        "on-scroll": 1,
+        "format": {
+          "months": "<span color=\"#a6e3a1\"><b>{}</b></span>",
+          "days": "<span color=\"#cdd6f4\"><b>{}</b></span>",
+          "weeks": "<span color=\"#89dceb\"><b>W{}</b></span>",
+          "weekdays": "<span color=\"#f9e2af\"><b>{}</b></span>",
+          "today": "<span color=\"#f5c2e7\"><b><u>{}</u></b></span>"
+        }
+      },
+      "actions": {
+        "on-click-right": "mode",
+        "on-scroll-up": "shift_up",
+        "on-scroll-down": "shift_down"
+      }
     }
   }
 ]
