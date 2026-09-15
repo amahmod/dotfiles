@@ -7,6 +7,10 @@ hl.monitor({
 
 hl.config({
 
+	binds = {
+		window_direction_monitor_fallback = true,
+	},
+
 	general = {
 		layout = "dwindle",
 		gaps_in = 0,
@@ -128,14 +132,14 @@ hl.bind(main_mod .. " + SHIFT + F", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(main_mod .. " + ALT + Q", hl.dsp.exit())
 
 -- Focus Navigation (Vim hjkl & Arrow Keys)
-hl.bind(main_mod .. " + H", hl.dsp.focus({ direction = "left" }))
-hl.bind(main_mod .. " + J", hl.dsp.focus({ direction = "down" }))
-hl.bind(main_mod .. " + K", hl.dsp.focus({ direction = "up" }))
-hl.bind(main_mod .. " + L", hl.dsp.focus({ direction = "right" }))
-hl.bind(main_mod .. " + Left", hl.dsp.focus({ direction = "left" }))
-hl.bind(main_mod .. " + Down", hl.dsp.focus({ direction = "down" }))
-hl.bind(main_mod .. " + Up", hl.dsp.focus({ direction = "up" }))
-hl.bind(main_mod .. " + Right", hl.dsp.focus({ direction = "right" }))
+hl.bind(main_mod .. " + H", hl.dsp.focus({ direction = "l" }))
+hl.bind(main_mod .. " + J", hl.dsp.focus({ direction = "d" }))
+hl.bind(main_mod .. " + K", hl.dsp.focus({ direction = "u" }))
+hl.bind(main_mod .. " + L", hl.dsp.focus({ direction = "r" }))
+hl.bind(main_mod .. " + Left", hl.dsp.focus({ direction = "l" }))
+hl.bind(main_mod .. " + Down", hl.dsp.focus({ direction = "d" }))
+hl.bind(main_mod .. " + Up", hl.dsp.focus({ direction = "u" }))
+hl.bind(main_mod .. " + Right", hl.dsp.focus({ direction = "r" }))
 
 -- Window Swap / Move (Vim SHIFT+hjkl & Arrow Keys)
 hl.bind(main_mod .. " + SHIFT + H", hl.dsp.window.swap({ direction = "l" }))
