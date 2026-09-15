@@ -29,8 +29,15 @@ open = [
 ]
 
 [open]
-rules = [
+prepend_rules = [
     { mime = "video/*", use = [ "play", "open" ] },
     { mime = "audio/*", use = [ "play", "open" ] },
-    { url = "*", use = [ "open" ] },
+    { url = "*.mp4", use = [ "play", "open" ] },
+    { url = "*.mkv", use = [ "play", "open" ] },
+    { url = "*.webm", use = [ "play", "open" ] },
+    { url = "*.avi", use = [ "play", "open" ] },
+    { url = "*.mov", use = [ "play", "open" ] },
+    { url = "*.mp3", use = [ "play", "open" ] },
+    { url = "*.flac", use = [ "play", "open" ] },
+    { url = "*.wav", use = [ "play", "open" ] },
 ]
