@@ -8,3 +8,5 @@
 
 # Added by Antigravity CLI installer
 export PATH="/home/amahmod/.local/bin:$PATH"
+
+export TERMINAL="wezterm"

@@ -59,6 +59,7 @@ OFFICIAL_PACKAGES=(
     stow
     hyprland
     kitty
+    wezterm
     sddm
     wofi
 )
@@ -110,7 +111,7 @@ echo -e "\n${BOLD}${GREEN}==========================================="
 echo -e "  ✔ Installation Complete! (${ELAPSED}s)"
 echo -e "===========================================${RESET}"
 echo -e "  Keybindings:"
-echo -e "    ${CYAN}SUPER + Return${RESET} : Terminal (Kitty)"
+echo -e "    ${CYAN}SUPER + Return${RESET} : Terminal (Wezterm)"
 echo -e "    ${CYAN}SUPER + Space${RESET}  : App Launcher (Wofi)"
 echo -e "    ${CYAN}SUPER + Q${RESET}      : Close Window"
 echo -e "    ${CYAN}SUPER + M${RESET}      : Exit Hyprland\n"
