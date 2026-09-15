@@ -29,10 +29,11 @@ open = [
 ]
 
 [open]
-prepend_rules = [
+rules = [
+    { name = "*.{mp4,mkv,webm,avi,mov,m4v,mp3,flac,wav}", use = [ "play", "open" ] },
     { mime = "video/*", use = [ "play", "open" ] },
     { mime = "audio/*", use = [ "play", "open" ] },
-    { url = "*/", use = [ "edit", "open" ] },
     { mime = "text/*", use = [ "edit", "open" ] },
     { mime = "application/json", use = [ "edit", "open" ] },
+    { name = "*", use = [ "open" ] },
 ]
