@@ -122,16 +122,26 @@ tooltip label {
 
 /* Modules Right */
 #pulseaudio {
-    background: @pulseaudio-bg;
-    color: #11111b;
-    padding: 2px 12px;
+    background-color: rgba(30, 30, 46, 0.85);
+    color: @pulseaudio-bg;
+    padding: 2px 11px;
     margin: 4px 3px;
     border-radius: 14px;
+    border: 1px solid rgba(245, 194, 231, 0.25);
+    transition: all 0.3s ease;
+}
+
+#pulseaudio:hover {
+    background-color: @pulseaudio-bg;
+    color: #11111b;
+    border-color: @pulseaudio-bg;
+    box-shadow: 0 0 12px @pulseaudio-bg;
 }
 
 #pulseaudio.muted {
-    background: #313244;
+    background-color: rgba(30, 30, 46, 0.85);
     color: @power-bg;
+    border: 1px solid rgba(243, 139, 168, 0.25);
 }
 
 #cpu {
