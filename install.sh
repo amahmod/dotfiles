@@ -120,6 +120,9 @@ DESKTOP_UTILS=(
     gvfs
     ffmpegthumbnailer
     poppler
+    zathura
+    zathura-pdf-mupdf
+    imv
     fd
     ripgrep
     fzf

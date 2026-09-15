@@ -1,0 +1,39 @@
+# ==============================================================================
+# IMV Image Viewer Configuration
+# Theme: Dark / Vim-style Navigation
+# ==============================================================================
+
+[options]
+background = 181825
+fullscreen = false
+overlay = false
+overlay_font = JetBrainsMono Nerd Font:10
+overlay_text = [${index}/${total}] ${filename} (${width}x${height})
+
+[binds]
+# Navigation (Vim hjkl)
+h = pan -50 0
+j = pan 0 50
+k = pan 0 -50
+l = pan 50 0
+
+n = next
+p = prev
+gg = goto 0
+G = goto -1
+
+# Scaling & Zoom
+i = zoom 1
+o = zoom -1
+z = scale actual
+Z = scale fit
+
+# Rotation
+r = rotate 90
+R = rotate 270
+
+# Overlay & Modes
+d = overlay
+f = fullscreen
+q = quit
+<Escape> = quit
