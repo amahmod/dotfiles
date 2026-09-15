@@ -72,6 +72,29 @@ FONT_PACKAGES=(
     noto-fonts-emoji
 )
 
+DESKTOP_UTILS=(
+    # Notifications
+    dunst
+    libnotify
+
+    # Audio & Screensharing
+    pipewire
+    wireplumber
+    pipewire-audio
+    pipewire-pulse
+
+    # XDG Desktop Portals
+    xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
+
+    # Polkit Authentication Agent
+    hyprpolkitagent
+
+    # Qt Wayland Support
+    qt5-wayland
+    qt6-wayland
+)
+
 AUR_PACKAGES=(
     otf-symbola
 )
@@ -79,8 +102,8 @@ AUR_PACKAGES=(
 # --- 1. System Update & Official Packages ---
 log_step "Updating system and installing core packages..."
 sudo pacman -Syu --noconfirm
-sudo pacman -S --needed --noconfirm "${OFFICIAL_PACKAGES[@]}" "${FONT_PACKAGES[@]}"
-log_success "Core packages and fonts installed."
+sudo pacman -S --needed --noconfirm "${OFFICIAL_PACKAGES[@]}" "${FONT_PACKAGES[@]}" "${DESKTOP_UTILS[@]}"
+log_success "Core packages, fonts, and desktop utilities installed."
 
 # --- 2. AUR Helper (yay) & AUR Packages ---
 log_step "Checking AUR helper (yay)..."
