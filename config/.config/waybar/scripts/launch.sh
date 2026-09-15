@@ -85,6 +85,7 @@ if [ "$COUNT" -le 1 ]; then
   "custom/media": {
     "format": "{text}",
     "return-type": "json",
+    "interval": 1,
     "exec": "bash ~/.config/waybar/scripts/media-player.sh",
     "on-click": "playerctl play-pause",
     "on-click-right": "playerctl next",
@@ -235,6 +236,7 @@ else
     "custom/media": {
       "format": "{text}",
       "return-type": "json",
+      "interval": 1,
       "exec": "bash ~/.config/waybar/scripts/media-player.sh",
       "on-click": "playerctl play-pause",
       "on-click-right": "playerctl next",
