@@ -107,6 +107,8 @@ DESKTOP_UTILS=(
     grim
     slurp
     wl-clipboard
+    swappy
+    satty
 
     # File Management & Previews
     yazi
