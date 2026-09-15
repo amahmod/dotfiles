@@ -29,6 +29,12 @@ if [ -d /sys/class/power_supply ] && [ "$(ls -A /sys/class/power_supply 2>/dev/n
     BATTERY_MODULE=', "battery"'
 fi
 
+# Ensure default audio sink is aligned to the active output
+RUNNING_SINK=$(pactl list short sinks 2>/dev/null | grep "RUNNING" | awk '{print $2}' | head -n1)
+if [ -n "$RUNNING_SINK" ]; then
+    pactl set-default-sink "$RUNNING_SINK" 2>/dev/null || true
+fi
+
 if [ "$COUNT" -le 1 ]; then
     # --- Single Monitor Mode ---
     # Workspaces 1-9 on primary monitor
@@ -119,7 +125,9 @@ if [ "$COUNT" -le 1 ]; then
     },
     "scroll-step": 5,
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-    "on-click-right": "pavucontrol"
+    "on-click-right": "pavucontrol",
+    "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
+    "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
   },
   "battery": {
     "states": {
@@ -238,7 +246,9 @@ else
       },
       "scroll-step": 5,
       "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "on-click-right": "pavucontrol"
+      "on-click-right": "pavucontrol",
+      "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
+      "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
     },
     "battery": {
       "states": {
@@ -298,7 +308,9 @@ else
       },
       "scroll-step": 5,
       "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "on-click-right": "pavucontrol"
+      "on-click-right": "pavucontrol",
+      "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
+      "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
     }
   }
 ]
@@ -308,5 +320,5 @@ fi
 
 # Start Waybar if installed
 if command -v waybar &>/dev/null; then
-    waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" &
+    nohup waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" >/dev/null 2>&1 &
 fi
