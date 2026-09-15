@@ -95,6 +95,11 @@ DESKTOP_UTILS=(
     # Qt Wayland Support
     qt5-wayland
     qt6-wayland
+
+    # Screenshots & Clipboard
+    grim
+    slurp
+    wl-clipboard
 )
 
 AUR_PACKAGES=(
