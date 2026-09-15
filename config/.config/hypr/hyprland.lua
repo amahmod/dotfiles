@@ -26,8 +26,10 @@ local menu     = "wofi --show drun"
 local main_mod = "SUPER"
 
 -- Applications & Launcher
-hl.bind(main_mod .. " + Return", hl.dsp.exec_cmd(terminal))
-hl.bind(main_mod .. " + SPACE",  hl.dsp.exec_cmd(menu))
+hl.bind(main_mod .. " + Return",    hl.dsp.exec_cmd(terminal))
+hl.bind(main_mod .. " + SPACE",     hl.dsp.exec_cmd(menu))
+hl.bind(main_mod .. " + E",         hl.dsp.exec_cmd(terminal .. " start yazi"))
+hl.bind(main_mod .. " + SHIFT + E", hl.dsp.exec_cmd("thunar"))
 
 -- Window Actions
 hl.bind(main_mod .. " + Q",         hl.dsp.window.close())
@@ -77,3 +79,17 @@ hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_S
 -- Screenshots (grim + slurp + wl-copy)
 hl.bind(main_mod .. " + SHIFT + S", hl.dsp.exec_cmd([[sh -c 'grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot" "Selection copied to clipboard" -i camera-photo']]))
 hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd([[sh -c 'grim - | wl-copy && notify-send "Screenshot" "Screen captured to clipboard" -i camera-photo']]))
+
+---------------------------------
+-------- WINDOW RULES -----------
+---------------------------------
+hl.window_rule({
+	name  = "thunar-float",
+	match = { class = "thunar" },
+	float = true,
+})
+hl.window_rule({
+	name  = "file-roller-float",
+	match = { class = "org.gnome.FileRoller" },
+	float = true,
+})

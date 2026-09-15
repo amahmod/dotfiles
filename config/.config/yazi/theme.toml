@@ -1,0 +1,88 @@
+# Catppuccin Macchiato Theme for Yazi
+
+[mgr]
+cwd = { fg = "#8bd5ca", italic = true }
+hovered = { fg = "#24273a", bg = "#b7bdf8", bold = true }
+preview_hovered = { underline = true }
+find_keyword = { fg = "#eed49f", italic = true, bold = true }
+find_position = { fg = "#f5bde6", italic = true }
+marker_copied = { fg = "#a6da95", bg = "#a6da95" }
+marker_cut = { fg = "#ed8796", bg = "#ed8796" }
+marker_marked = { fg = "#91d7e3", bg = "#91d7e3" }
+marker_selected = { fg = "#c6a0f6", bg = "#c6a0f6" }
+tab_active = { fg = "#24273a", bg = "#c6a0f6", bold = true }
+tab_inactive = { fg = "#cad3f5", bg = "#363a4f" }
+count_copied = { fg = "#24273a", bg = "#a6da95" }
+count_cut = { fg = "#24273a", bg = "#ed8796" }
+count_selected = { fg = "#24273a", bg = "#c6a0f6" }
+border_symbol = "│"
+border_style = { fg = "#5b6078" }
+
+[status]
+separator_open = ""
+separator_close = ""
+separator_style = { fg = "#363a4f", bg = "#363a4f" }
+mode_normal = { fg = "#24273a", bg = "#8aadf4", bold = true }
+mode_select = { fg = "#24273a", bg = "#a6da95", bold = true }
+mode_unset = { fg = "#24273a", bg = "#ee99a0", bold = true }
+progress_label = { fg = "#ffffff", bold = true }
+progress_normal = { fg = "#8aadf4", bg = "#363a4f" }
+progress_error = { fg = "#ed8796", bg = "#363a4f" }
+permissions_t = { fg = "#8aadf4" }
+permissions_r = { fg = "#eed49f" }
+permissions_w = { fg = "#ed8796" }
+permissions_x = { fg = "#a6da95" }
+permissions_s = { fg = "#6e738d" }
+
+[input]
+border = { fg = "#c6a0f6" }
+title = { fg = "#cad3f5" }
+value = { fg = "#cad3f5" }
+selected = { bg = "#494d64" }
+
+[select]
+border = { fg = "#c6a0f6" }
+active = { fg = "#f5bde6", bold = true }
+inactive = { fg = "#cad3f5" }
+
+[tasks]
+border = { fg = "#c6a0f6" }
+title = { fg = "#cad3f5" }
+hovered = { fg = "#c6a0f6", underline = true }
+
+[which]
+mask = { bg = "#1e2030" }
+cand = { fg = "#8bd5ca" }
+rest = { fg = "#b7bdf8" }
+desc = { fg = "#f5bde6" }
+separator = "  "
+separator_style = { fg = "#5b6078" }
+
+[help]
+on = { fg = "#a6da95" }
+exec = { fg = "#8bd5ca" }
+desc = { fg = "#cad3f5" }
+hovered = { bg = "#494d64", bold = true }
+footer = { fg = "#24273a", bg = "#cad3f5" }
+
+[filetype]
+rules = [
+    # Directories
+    { name = "*/", fg = "#8aadf4", bold = true },
+    # Media
+    { mime = "image/*", fg = "#eed49f" },
+    { mime = "video/*", fg = "#f5a97f" },
+    { mime = "audio/*", fg = "#f5a97f" },
+    # Archives
+    { mime = "application/*zip", fg = "#ee99a0" },
+    { mime = "application/x-tar", fg = "#ee99a0" },
+    { mime = "application/x-bzip2", fg = "#ee99a0" },
+    { mime = "application/x-7z-compressed", fg = "#ee99a0" },
+    { mime = "application/x-rar", fg = "#ee99a0" },
+    # Documents
+    { mime = "application/pdf", fg = "#ed8796" },
+    # Code
+    { mime = "text/*", fg = "#cad3f5" },
+    # Fallback
+    { name = "*", fg = "#cad3f5" },
+]

@@ -1,0 +1,40 @@
+"$schema" = "https://yazi-rs.github.io/schemas/yazi.json"
+
+[mgr]
+ratio = [1, 3, 4]
+sort_by = "alphabetical"
+sort_sensitive = false
+sort_reverse = false
+sort_dir_first = true
+linemode = "size"
+show_hidden = false
+show_symlink = true
+
+[preview]
+tab_size = 2
+max_width = 1000
+max_height = 1000
+cache_dir = ""
+image_filter = "lanczos3"
+image_quality = 85
+sixel_fraction = 15
+
+[opener]
+edit = [
+    { run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editor" },
+]
+open = [
+    { run = 'xdg-open "$@"', desc = "Open with default application" },
+]
+
+[open]
+rules = [
+    { name = "*/", use = [ "edit", "open" ] },
+    { mime = "text/*", use = [ "edit", "open" ] },
+    { mime = "image/*", use = [ "open" ] },
+    { mime = "video/*", use = [ "open" ] },
+    { mime = "audio/*", use = [ "open" ] },
+    { mime = "application/json", use = [ "edit", "open" ] },
+    { mime = "application/pdf", use = [ "open" ] },
+    { name = "*", use = [ "open" ] },
+]

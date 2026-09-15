@@ -100,6 +100,23 @@ DESKTOP_UTILS=(
     grim
     slurp
     wl-clipboard
+
+    # File Management & Previews
+    yazi
+    thunar
+    thunar-volman
+    thunar-archive-plugin
+    file-roller
+    tumbler
+    gvfs
+    ffmpegthumbnailer
+    poppler
+    fd
+    ripgrep
+    fzf
+    zoxide
+    jq
+    imagemagick
 )
 
 AUR_PACKAGES=(
@@ -196,8 +213,10 @@ ELAPSED=$(( $(date +%s) - START_TIME ))
 echo -e "\n${BOLD}${GREEN}==========================================="
 echo -e "  ✔ Installation Complete! (${ELAPSED}s)"
 echo -e "===========================================${RESET}"
-echo -e "  Keybindings:"
-echo -e "    ${CYAN}SUPER + Return${RESET} : Terminal (Wezterm)"
-echo -e "    ${CYAN}SUPER + Space${RESET}  : App Launcher (Wofi)"
-echo -e "    ${CYAN}SUPER + Q${RESET}      : Close Window"
-echo -e "    ${CYAN}SUPER + M${RESET}      : Exit Hyprland\n"
+echo -e "  Keybindings:
+    ${CYAN}SUPER + Return${RESET}       : Terminal (Wezterm)
+    ${CYAN}SUPER + Space${RESET}        : App Launcher (Wofi)
+    ${CYAN}SUPER + E${RESET}            : Terminal File Manager (Yazi)
+    ${CYAN}SUPER + Shift + E${RESET}    : GUI File Manager (Thunar)
+    ${CYAN}SUPER + Q${RESET}            : Close Window
+    ${CYAN}SUPER + Alt + Q${RESET}      : Exit Hyprland\n"
