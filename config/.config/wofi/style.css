@@ -1,0 +1,90 @@
+/* ==========================================================================
+   Wofi Styling - Catppuccin Macchiato
+   ========================================================================== */
+
+* {
+    font-family: "JetBrainsMono Nerd Font", "Noto Sans", sans-serif;
+    font-size: 13px;
+    outline: none;
+    border: none;
+    text-shadow: none;
+}
+
+window {
+    background-color: rgba(36, 39, 58, 0.95);
+    border: 2px solid #c6a0f6;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    margin: 0px;
+    padding: 16px;
+}
+
+#outer-box {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#input {
+    margin: 4px 4px 16px 4px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    color: #cad3f5;
+    background-color: #1e2030;
+    border: 1px solid #494d64;
+    font-size: 14px;
+}
+
+#input:focus {
+    border: 1px solid #c6a0f6;
+    box-shadow: 0 0 8px rgba(198, 160, 246, 0.3);
+}
+
+#scroll {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#inner-box {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    background-color: transparent;
+}
+
+#entry {
+    margin: 3px 4px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: transparent;
+    color: #cad3f5;
+    transition: all 0.15s ease-in-out;
+}
+
+#entry:selected {
+    background-color: #363a4f;
+    border-left: 3px solid #c6a0f6;
+    color: #cad3f5;
+}
+
+#entry:hover:not(:selected) {
+    background-color: rgba(54, 58, 79, 0.5);
+}
+
+#text {
+    margin-left: 10px;
+    color: #cad3f5;
+}
+
+#entry:selected #text {
+    color: #c6a0f6;
+    font-weight: bold;
+}
+
+#img {
+    margin-right: 8px;
+    background-color: transparent;
+}
