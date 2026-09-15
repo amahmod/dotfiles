@@ -23,6 +23,11 @@ hl.config({
 		preserve_split = true,
 		force_split = 2, -- Always split to the right/bottom
 	},
+
+	misc = {
+		enable_swallow = true,
+		swallow_regex = "^(org.wezfurlong.wezterm|wezterm|kitty)$",
+	},
 })
 
 -----------------------------------------

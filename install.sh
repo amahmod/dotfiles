@@ -127,6 +127,7 @@ DESKTOP_UTILS=(
 
     # Bar & Media Controls
     waybar
+    mpv
     pavucontrol
     brightnessctl
     playerctl

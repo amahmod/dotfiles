@@ -21,12 +21,17 @@ sixel_fraction = 15
 edit = [
     { run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editor" },
 ]
+play = [
+    { run = 'mpv "$@"', block = true, orphan = false, desc = "Play with mpv" },
+]
 open = [
     { run = 'xdg-open "$@"', desc = "Open with default application" },
 ]
 
 [open]
 prepend_rules = [
+    { mime = "video/*", use = [ "play", "open" ] },
+    { mime = "audio/*", use = [ "play", "open" ] },
     { url = "*/", use = [ "edit", "open" ] },
     { mime = "text/*", use = [ "edit", "open" ] },
     { mime = "application/json", use = [ "edit", "open" ] },
