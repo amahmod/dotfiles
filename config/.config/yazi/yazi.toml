@@ -19,13 +19,13 @@ sixel_fraction = 15
 
 [opener]
 edit = [
-    { run = '${EDITOR:-nvim} "$@"', block = true, desc = "Editor" },
+    { run = '${EDITOR:-nvim} %s', block = true, desc = "Editor" },
 ]
 play = [
-    { run = 'bash ~/.config/yazi/scripts/open-mpv.sh "$@"', block = true, orphan = false, desc = "Play with mpv" },
+    { run = 'mpv %s', block = true, desc = "Play with mpv" },
 ]
 open = [
-    { run = 'xdg-open "$@"', desc = "Open with default application" },
+    { run = 'xdg-open %s', desc = "Open with default application" },
 ]
 
 [open]
