@@ -13,5 +13,6 @@ local terminal = "kitty"
 local main_mod = "SUPER"
 
 hl.bind("SUPER + Return", hl.dsp.exec_cmd("kitty"))
-hl.bind("SUPER + Q", hl.dsp.window.kill())
+hl.bind("SUPER + SPACE", hl.dsp.exec_cmd("wofi --show drun"))
+hl.bind("SUPER + Q", hl.dsp.window.close())
 hl.bind("SUPER + M", hl.dsp.exit())
