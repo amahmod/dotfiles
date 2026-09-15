@@ -41,8 +41,8 @@ local function setup_monitors_and_workspaces()
 	local primary = mons[1]
 
 	if #mons == 1 then
-		-- Single Monitor: Workspaces 1-9 on primary
-		for w = 1, 9 do
+		-- Single Monitor: Workspaces 1-10 on primary
+		for w = 1, 10 do
 			hl.workspace_rule({
 				workspace = tostring(w),
 				monitor = primary.name,
@@ -51,7 +51,7 @@ local function setup_monitors_and_workspaces()
 			})
 		end
 	else
-		-- Multi-Monitor: Primary gets 1-5, Secondary gets 6-9
+		-- Multi-Monitor: Primary gets 1-5, Secondary gets 6-10
 		for w = 1, 5 do
 			hl.workspace_rule({
 				workspace = tostring(w),
@@ -61,7 +61,7 @@ local function setup_monitors_and_workspaces()
 			})
 		end
 		local secondary = mons[2]
-		for w = 6, 9 do
+		for w = 6, 10 do
 			hl.workspace_rule({
 				workspace = tostring(w),
 				monitor = secondary.name,
@@ -145,6 +145,7 @@ for i = 1, 10 do
 	hl.bind(main_mod .. " + " .. key,         hl.dsp.focus({ workspace = i }))
 	hl.bind(main_mod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
+
 
 -- Mouse Window Drag & Resize
 hl.bind(main_mod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })

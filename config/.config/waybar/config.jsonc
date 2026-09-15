@@ -4,86 +4,111 @@
     "output": ["DP-1"],
     "layer": "top",
     "position": "top",
-    "height": 32,
-    "margin-top": 4,
-    "margin-left": 8,
-    "margin-right": 8,
-    "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock", "custom/uptime"],
-    "modules-right": ["cpu", "memory", "network", "pulseaudio", "tray"],
+    "height": 36,
+    "margin-top": 6,
+    "margin-left": 12,
+    "margin-right": 12,
+    "spacing": 6,
+    "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window"],
+    "modules-center": ["custom/media-prev", "custom/media", "custom/media-next", "clock"],
+    "modules-right": ["cpu", "memory", "network", "tray", "pulseaudio", "custom/power"],
+    "custom/arch": {
+      "format": "󰣇",
+      "tooltip-format": "Media Control Center\n\n• Left-Click: App Launcher\n• Right-Click: Music Player",
+      "on-click": "wofi --show drun",
+      "on-click-right": "amberol || spotify || rhythmbox"
+    },
     "hyprland/workspaces": {
       "all-outputs": false,
       "active-only": false,
       "on-click": "activate",
-      "format": "{name}"
+      "format": "{name}",
+      "tooltip": true,
+      "tooltip-format": "Workspace {name}\n{windows}"
     },
     "hyprland/window": {
-      "format": "{title}",
-      "max-length": 45,
+      "format": "󰘔 {title}",
+      "max-length": 32,
       "separate-outputs": true
     },
+    "custom/media-prev": {
+      "format": "󰒮",
+      "tooltip-format": "Previous Track",
+      "on-click": "playerctl previous"
+    },
+    "custom/media": {
+      "format": "{icon} {text}",
+      "return-type": "json",
+      "format-icons": {
+        "Playing": "󰎈",
+        "Paused": "󰏤"
+      },
+      "escape": true,
+      "exec": "playerctl metadata --format '{\"text\": \"{{artist}} — {{title}}\", \"alt\": \"{{status}}\", \"tooltip\": \"Title: {{title}}\\nArtist: {{artist}}\\nAlbum: {{album}}\\nStatus: {{status}}\"}' 2>/dev/null || echo '{\"text\": \"No Media Playing\", \"alt\": \"Paused\", \"tooltip\": \"No active media player\"}'",
+      "on-click": "playerctl play-pause",
+      "on-scroll-up": "playerctl next",
+      "on-scroll-down": "playerctl previous",
+      "max-length": 38
+    },
+    "custom/media-next": {
+      "format": "󰒭",
+      "tooltip-format": "Next Track",
+      "on-click": "playerctl next"
+    },
     "clock": {
-      "format": " {:%I:%M %p}",
-      "format-alt": " {:%a %d/%m   %I:%M %p}",
+      "format": "󰥔 {:%I:%M %p}",
+      "format-alt": "󰃭 {:%a %d %b  󰥔 %I:%M %p}",
       "tooltip-format": "<tt><small>{calendar}</small></tt>",
       "calendar": {
         "mode": "month",
         "mode-mon-col": 3,
         "weeks-pos": "right",
         "format": {
-          "months": "<span color='#c6a0f6'><b>{}</b></span>",
-          "days": "<span color='#cad3f5'><b>{}</b></span>",
-          "weeks": "<span color='#8bd5ca'><b>W{}</b></span>",
-          "weekdays": "<span color='#eed49f'><b>{}</b></span>",
-          "today": "<span color='#ed8796'><b><u>{}</u></b></span>"
+          "months": "<span color=\"#a6e3a1\"><b>{}</b></span>",
+          "days": "<span color=\"#cdd6f4\"><b>{}</b></span>",
+          "weeks": "<span color=\"#89dceb\"><b>W{}</b></span>",
+          "weekdays": "<span color=\"#f9e2af\"><b>{}</b></span>",
+          "today": "<span color=\"#f5c2e7\"><b><u>{}</u></b></span>"
         }
       }
     },
-    "custom/uptime": {
-      "format": " {}",
-      "interval": 60,
-      "exec": "uptime -p | sed 's/up //;s/ days/d/;s/ day/d/;s/ hours/h/;s/ hour/h/;s/ minutes/m/;s/ minute/m/'",
-      "tooltip": false
-    },
-    "cpu": {
-      "format": " {usage}%",
-      "interval": 2,
-      "tooltip": true
-    },
-    "memory": {
-      "format": " {used:0.1f}G",
-      "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB ({percentage}%)\nSwap: {swapUsed:0.1f}GiB / {swapTotal:0.1f}GiB",
-      "interval": 2
-    },
-    "network": {
-      "interval": 2,
-      "format-wifi": " ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
-      "format-ethernet": "󰈀 ⬇{bandwidthDownBytes} ⬆{bandwidthUpBytes}",
-      "format-disconnected": "󰤮 Disconnected",
-      "min-length": 16,
-      "tooltip-format-wifi": "SSID: {essid} ({signalStrength}%)\nIP: {ipaddr}\nGW: {gwaddr}",
-      "tooltip-format-ethernet": "Interface: {ifname}\nIP: {ipaddr}\nGW: {gwaddr}",
-      "tooltip-format-disconnected": "Network disconnected",
-      "on-click": "wezterm start nmtui"
-    },
     "pulseaudio": {
       "format": "{icon} {volume}%",
-      "format-muted": "婢 Muted",
+      "format-muted": "󰝟 Muted",
       "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
-        "portable": "",
-        "car": "",
-        "default": ["", "", ""]
+        "headphone": "󰋋",
+        "hands-free": "󰋎",
+        "headset": "󰋎",
+        "phone": "󰏲",
+        "portable": "󰏲",
+        "car": "󰄋",
+        "default": ["󰕿", "󰖀", "󰕾"]
       },
       "scroll-step": 5,
       "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
       "on-click-right": "pavucontrol",
       "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
       "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+    },
+    "cpu": {
+      "format": " {usage}%",
+      "interval": 2,
+      "tooltip": true,
+      "on-click": "wezterm start btop"
+    },
+    "memory": {
+      "format": " {used:0.1f}G",
+      "tooltip-format": "RAM: {used:0.1f}GiB / {total:0.1f}GiB ({percentage}%)",
+      "interval": 2,
+      "on-click": "wezterm start btop"
+    },
+    "network": {
+      "interval": 2,
+      "format-wifi": "󰤨 󰇚{bandwidthDownBytes}",
+      "format-ethernet": "󰈀 󰇚{bandwidthDownBytes}",
+      "format-disconnected": "󰤮 Offline",
+      "min-length": 14,
+      "on-click": "wezterm start nmtui"
     },
     "battery": {
       "states": {
@@ -92,12 +117,17 @@
       },
       "format": "{icon} {capacity}%",
       "format-charging": "󰂄 {capacity}%",
-      "format-plugged": " {capacity}%",
-      "format-icons": ["", "", "", "", ""]
+      "format-plugged": "󰚥 {capacity}%",
+      "format-icons": ["󰂎", "󰁺", "󰁼", "󰁾", "󰂀", "󰁹"]
     },
     "tray": {
       "icon-size": 16,
       "spacing": 8
+    },
+    "custom/power": {
+      "format": "󰐥",
+      "tooltip-format": "Power Options",
+      "on-click": "bash ~/.config/waybar/scripts/power-menu.sh"
     }
   },
   {
@@ -105,47 +135,29 @@
     "output": ["HDMI-A-1"],
     "layer": "top",
     "position": "top",
-    "height": 32,
-    "margin-top": 4,
-    "margin-left": 8,
-    "margin-right": 8,
-    "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["clock"],
-    "modules-right": ["pulseaudio"],
+    "height": 36,
+    "margin-top": 6,
+    "margin-left": 12,
+    "margin-right": 12,
+    "spacing": 6,
+    "modules-left": ["hyprland/workspaces"],
+    "modules-center": ["hyprland/window"],
+    "modules-right": ["clock"],
     "hyprland/workspaces": {
       "all-outputs": false,
       "active-only": false,
       "on-click": "activate",
-      "format": "{name}"
+      "format": "{name}",
+      "tooltip": true,
+      "tooltip-format": "Workspace {name}\n{windows}"
     },
     "hyprland/window": {
-      "format": "{title}",
-      "max-length": 45,
+      "format": "󰘔 {title}",
+      "max-length": 32,
       "separate-outputs": true
     },
     "clock": {
-      "format": " {:%I:%M %p}",
-      "format-alt": " {:%a %d/%m   %I:%M %p}",
-      "tooltip-format": "<tt><small>{calendar}</small></tt>"
-    },
-    "pulseaudio": {
-      "format": "{icon} {volume}%",
-      "format-muted": "婢 Muted",
-      "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
-        "portable": "",
-        "car": "",
-        "default": ["", "", ""]
-      },
-      "scroll-step": 5,
-      "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
-      "on-click-right": "pavucontrol",
-      "on-scroll-up": "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+",
-      "on-scroll-down": "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+      "format": "󰥔 {:%I:%M %p}"
     }
   }
 ]

@@ -129,6 +129,7 @@ DESKTOP_UTILS=(
     pavucontrol
     brightnessctl
     playerctl
+    btop
 
     # Editor, Linting, & Git Tools
     neovim
@@ -152,6 +153,7 @@ DESKTOP_UTILS=(
 AUR_PACKAGES=(
     otf-symbola
     zsh-vi-mode
+    wlogout
 )
 
 # --- 1. GPU Detection & Driver Selection ---
