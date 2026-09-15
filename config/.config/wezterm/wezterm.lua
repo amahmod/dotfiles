@@ -5,6 +5,11 @@ pcall(function()
   theme = require('theme')
 end)
 
+local opacity = { opacity = 1.0 }
+pcall(function()
+  opacity = require('opacity')
+end)
+
 return {
   -- Font {{{
   font = wezterm.font_with_fallback({
@@ -13,7 +18,7 @@ return {
   }),
   font_size = 12,
   line_height = 1.0,
-  text_background_opacity = 1,
+  text_background_opacity = opacity.opacity,
   bold_brightens_ansi_colors = true,
   bidi_enabled = true,
   -- }}}
@@ -29,7 +34,7 @@ return {
     top = 0,
     bottom = 0,
   },
-  window_background_opacity = 0.8,
+  window_background_opacity = opacity.opacity,
   adjust_window_size_when_changing_font_size = false,
   -- }}}
 

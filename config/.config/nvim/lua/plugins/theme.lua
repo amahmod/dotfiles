@@ -5,7 +5,7 @@ return {
         priority = 1000,
         opts = {
             flavour = 'macchiato',
-            transparent_background = false,
+            transparent_background = true,
             integrations = {
                 cmp = true,
                 gitsigns = true,
@@ -24,18 +24,25 @@ return {
         'folke/tokyonight.nvim',
         lazy = false,
         priority = 1000,
-        opts = {},
+        opts = {
+            transparent = true,
+        },
     },
     {
         'shaunsingh/nord.nvim',
         lazy = false,
         priority = 1000,
+        config = function()
+            vim.g.nord_disable_background = true
+        end,
     },
     {
         'ellisonleao/gruvbox.nvim',
         lazy = false,
         priority = 1000,
-        opts = {},
+        opts = {
+            transparent_mode = true,
+        },
     },
     {
         dir = vim.fn.stdpath('config'),

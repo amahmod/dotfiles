@@ -60,3 +60,15 @@ vim.api.nvim_create_autocmd({ 'BufEnter' }, {
         vim.cmd 'setlocal formatoptions-=cro'
     end,
 })
+
+-- Ensure transparent background across all colorschemes
+vim.api.nvim_create_autocmd('ColorScheme', {
+    group = augroup 'transparent_bg',
+    pattern = '*',
+    callback = function()
+        vim.cmd 'highlight Normal guibg=NONE ctermbg=NONE'
+        vim.cmd 'highlight NormalNC guibg=NONE ctermbg=NONE'
+        vim.cmd 'highlight SignColumn guibg=NONE ctermbg=NONE'
+        vim.cmd 'highlight EndOfBuffer guibg=NONE ctermbg=NONE'
+    end,
+})

@@ -175,6 +175,9 @@ hl.bind(main_mod .. " + SHIFT + B", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.conf
 hl.bind(main_mod .. " + SHIFT + T", hl.dsp.exec_cmd("bash " .. os.getenv("HOME") .. "/.config/hypr/scripts/theme-switch.sh menu"))
 hl.bind(main_mod .. " + ALT + T",   hl.dsp.exec_cmd("bash " .. os.getenv("HOME") .. "/.config/hypr/scripts/theme-switch.sh next"))
 
+-- Terminal Opacity Toggle
+hl.bind(main_mod .. " + SHIFT + O", hl.dsp.exec_cmd("bash " .. os.getenv("HOME") .. "/.config/hypr/scripts/toggle-opacity.sh"))
+
 ---------------------------------
 -------- WINDOW RULES -----------
 ---------------------------------
