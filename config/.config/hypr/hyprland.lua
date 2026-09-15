@@ -7,6 +7,15 @@ hl.config({
 			scale = 1,
 		},
 	},
+
+	general = {
+		layout = "dwindle",
+	},
+
+	dwindle = {
+		preserve_split = true,
+		force_split = 2, -- Always split to the right/bottom
+	},
 })
 
 -------------------------
@@ -83,11 +92,6 @@ hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd([[sh -c 'grim - | wl-copy &&
 ---------------------------------
 -------- WINDOW RULES -----------
 ---------------------------------
-hl.window_rule({
-	name  = "thunar-float",
-	match = { class = "thunar" },
-	float = true,
-})
 hl.window_rule({
 	name  = "file-roller-float",
 	match = { class = "org.gnome.FileRoller" },
