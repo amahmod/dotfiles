@@ -66,6 +66,10 @@ OFFICIAL_PACKAGES=(
     wezterm
     sddm
     wofi
+    zsh
+    starship
+    zsh-autosuggestions
+    zsh-syntax-highlighting
 )
 
 FONT_PACKAGES=(
@@ -129,6 +133,7 @@ DESKTOP_UTILS=(
 
 AUR_PACKAGES=(
     otf-symbola
+    zsh-vi-mode
 )
 
 # --- 1. GPU Detection & Driver Selection ---
@@ -195,6 +200,12 @@ if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
     log_success "AUR packages installed."
 fi
 
+# Fallback setup for zsh-vi-mode if not installed via system package
+if [[ ! -d "$HOME/.local/share/zsh-vi-mode" && ! -f "/usr/share/zsh/plugins/zsh-vi-mode/zsh-vi-mode.plugin.zsh" ]]; then
+    log_info "Cloning zsh-vi-mode plugin..."
+    git clone --depth=1 https://github.com/jeffreytse/zsh-vi-mode.git "$HOME/.local/share/zsh-vi-mode" 2>/dev/null || true
+fi
+
 # --- 4. SSH Keys & Private Fonts ---
 log_step "Configuring SSH keys and private fonts..."
 mkdir -p "$HOME/.ssh"
@@ -242,10 +253,23 @@ if [[ -f "$HOME/.bash_profile" && ! -L "$HOME/.bash_profile" ]]; then
     mv "$HOME/.bash_profile" "$HOME/.bash_profile.bak"
 fi
 
+# Backup .zshrc if it's a regular file (not a symlink)
+if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
+    log_info "Backing up existing ~/.zshrc to ~/.zshrc.bak"
+    mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
+fi
+
 # Ensure ~/.config exists as a real directory to prevent tree folding
 mkdir -p "$HOME/.config"
 (cd "$REPO_DIR" && stow -R --no-folding --target="$HOME" config)
 log_success "Dotfiles linked to $HOME."
+
+# Set default user shell to Zsh if installed
+if [[ "$SHELL" != */zsh ]] && command -v zsh &>/dev/null; then
+    log_info "Setting default user shell to zsh..."
+    sudo chsh -s "$(which zsh)" "$USER" 2>/dev/null || true
+    log_success "Default shell set to zsh."
+fi
 
 # --- 6. Services ---
 log_step "Configuring system services..."

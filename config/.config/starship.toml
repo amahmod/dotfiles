@@ -1,0 +1,96 @@
+# ====================================================================
+#  Starship Prompt Configuration - Catppuccin Macchiato
+# ====================================================================
+
+palette = "catppuccin_macchiato"
+
+format = """
+$os\
+$directory\
+$git_branch\
+$git_status\
+$rust\
+$golang\
+$nodejs\
+$python\
+$cmd_duration\
+$line_break\
+$character"""
+
+[directory]
+style = "bold lavender"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " 󰌾"
+
+[git_branch]
+style = "bold mauve"
+format = "on [$symbol$branch]($style) "
+symbol = " "
+
+[git_status]
+style = "bold red"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+style = "bold yellow"
+format = "took [$duration]($style) "
+min_time = 2_000
+
+# Vi Mode Indicators
+[character]
+success_symbol = "[λ](bold blue) "
+error_symbol = "[λ](bold red) "
+vimcmd_symbol = "[NORMAL](bold green) "
+vimcmd_replace_one_symbol = "[REPLACE](bold maroon) "
+vimcmd_replace_symbol = "[REPLACE](bold maroon) "
+vimcmd_visual_symbol = "[VISUAL](bold yellow) "
+
+[nodejs]
+symbol = " "
+style = "bold green"
+format = "via [$symbol($version )]($style)"
+
+[rust]
+symbol = "󱘗 "
+style = "bold peach"
+format = "via [$symbol($version )]($style)"
+
+[golang]
+symbol = " "
+style = "bold sapphire"
+format = "via [$symbol($version )]($style)"
+
+[python]
+symbol = " "
+style = "bold yellow"
+format = "via [${symbol}${pyenv_prefix}(${version} )(\\($virtualenv\\) )]($style)"
+
+# --- Catppuccin Macchiato Color Palette ---
+[palettes.catppuccin_macchiato]
+rosewater = "#f4dbd6"
+flamingo = "#f0c6c6"
+pink = "#f5bde6"
+mauve = "#c6a0f6"
+red = "#ed8796"
+maroon = "#ee99a0"
+peach = "#f5a97f"
+yellow = "#eed49f"
+green = "#a6da95"
+teal = "#8bd5ca"
+sky = "#91d7e3"
+sapphire = "#7dc4e4"
+blue = "#8aadf4"
+lavender = "#b7bdf8"
+text = "#cad3f5"
+subtext1 = "#b8c0e0"
+subtext0 = "#a5adcb"
+overlay2 = "#939ab7"
+overlay1 = "#8087a2"
+overlay0 = "#6e738d"
+surface2 = "#5b6078"
+surface1 = "#494d64"
+surface0 = "#363a4f"
+base = "#24273a"
+mantle = "#1e2030"
+crust = "#181926"
