@@ -3,9 +3,15 @@
 # Directory of Waybar config
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Terminate existing Waybar instances cleanly
-killall -q waybar || true
-while pgrep -u "$UID" -x waybar >/dev/null; do sleep 0.1; done
+# Lock file to prevent concurrent executions of launch.sh
+exec 200>"/tmp/waybar-launch.lock"
+if ! flock -n 200; then
+    exit 0
+fi
+
+# Terminate existing Waybar instances cleanly & forcefully
+killall -9 waybar 2>/dev/null || true
+while pgrep -u "$UID" -x waybar >/dev/null; do sleep 0.05; done
 
 # Check if hyprctl is available
 if ! command -v hyprctl &>/dev/null; then
@@ -410,4 +416,4 @@ EOF
 fi
 
 # Launch Waybar
-waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" &
+waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" 200>&- &
