@@ -61,7 +61,7 @@ if [ "$COUNT" -le 1 ]; then
   "margin-right": 12,
   "spacing": 6,
   "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window"],
-  "modules-center": ["custom/media-prev", "custom/media", "custom/media-next", "clock"],
+  "modules-center": ["custom/media", "clock"],
   "modules-right": ["cpu", "memory", "network"__BATTERY__, "tray", "pulseaudio", "custom/power"],
   "custom/arch": {
     "format": "󰣇",
@@ -82,29 +82,17 @@ if [ "$COUNT" -le 1 ]; then
     "max-length": 32,
     "separate-outputs": true
   },
-  "custom/media-prev": {
-    "format": "󰒮",
-    "tooltip-format": "Previous Track",
-    "on-click": "playerctl previous"
-  },
   "custom/media": {
-    "format": "{icon} {text}",
+    "format": "{text}",
     "return-type": "json",
-    "format-icons": {
-      "Playing": "󰎈",
-      "Paused": "󰏤"
-    },
-    "escape": true,
-    "exec": "playerctl metadata --format '{\"text\": \"{{artist}} — {{title}}\", \"alt\": \"{{status}}\", \"tooltip\": \"Title: {{title}}\\nArtist: {{artist}}\\nAlbum: {{album}}\\nStatus: {{status}}\"}' 2>/dev/null || echo '{\"text\": \"No Media Playing\", \"alt\": \"Paused\", \"tooltip\": \"No active media player\"}'",
+    "exec": "bash ~/.config/waybar/scripts/media-player.sh",
     "on-click": "playerctl play-pause",
+    "on-click-right": "playerctl next",
+    "on-click-middle": "playerctl previous",
     "on-scroll-up": "playerctl next",
     "on-scroll-down": "playerctl previous",
-    "max-length": 38
-  },
-  "custom/media-next": {
-    "format": "󰒭",
-    "tooltip-format": "Next Track",
-    "on-click": "playerctl next"
+    "max-length": 42,
+    "escape": true
   },
   "clock": {
     "format": "󰥔 {:%I:%M %p}",
@@ -223,7 +211,7 @@ else
     "margin-right": 12,
     "spacing": 6,
     "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window"],
-    "modules-center": ["custom/media-prev", "custom/media", "custom/media-next", "clock"],
+    "modules-center": ["custom/media", "clock"],
     "modules-right": ["cpu", "memory", "network"__BATTERY__, "tray", "pulseaudio", "custom/power"],
     "custom/arch": {
       "format": "󰣇",
@@ -244,29 +232,17 @@ else
       "max-length": 32,
       "separate-outputs": true
     },
-    "custom/media-prev": {
-      "format": "󰒮",
-      "tooltip-format": "Previous Track",
-      "on-click": "playerctl previous"
-    },
     "custom/media": {
-      "format": "{icon} {text}",
+      "format": "{text}",
       "return-type": "json",
-      "format-icons": {
-        "Playing": "󰎈",
-        "Paused": "󰏤"
-      },
-      "escape": true,
-      "exec": "playerctl metadata --format '{\"text\": \"{{artist}} — {{title}}\", \"alt\": \"{{status}}\", \"tooltip\": \"Title: {{title}}\\nArtist: {{artist}}\\nAlbum: {{album}}\\nStatus: {{status}}\"}' 2>/dev/null || echo '{\"text\": \"No Media Playing\", \"alt\": \"Paused\", \"tooltip\": \"No active media player\"}'",
+      "exec": "bash ~/.config/waybar/scripts/media-player.sh",
       "on-click": "playerctl play-pause",
+      "on-click-right": "playerctl next",
+      "on-click-middle": "playerctl previous",
       "on-scroll-up": "playerctl next",
       "on-scroll-down": "playerctl previous",
-      "max-length": 38
-    },
-    "custom/media-next": {
-      "format": "󰒭",
-      "tooltip-format": "Next Track",
-      "on-click": "playerctl next"
+      "max-length": 42,
+      "escape": true
     },
     "clock": {
       "format": "󰥔 {:%I:%M %p}",
