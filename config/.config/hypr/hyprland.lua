@@ -18,12 +18,78 @@ hl.config({
 	},
 })
 
+-----------------------------------------
+---- DYNAMIC MONITORS & WORKSPACES ------
+-----------------------------------------
+local function setup_monitors_and_workspaces()
+	local mons = hl.get_monitors()
+	if not mons or #mons == 0 then return end
+
+	-- Sort monitors left-to-right (primary is leftmost / ID 0)
+	table.sort(mons, function(a, b)
+		if a.x ~= b.x then return a.x < b.x end
+		return a.id < b.id
+	end)
+
+	local primary = mons[1]
+
+	if #mons == 1 then
+		-- Single Monitor: Workspaces 1-9 on primary
+		for w = 1, 9 do
+			hl.workspace_rule({
+				workspace = tostring(w),
+				monitor = primary.name,
+				default = (w == 1),
+				persistent = true,
+			})
+		end
+	else
+		-- Multi-Monitor: Primary gets 1-5, Secondary gets 6-9
+		for w = 1, 5 do
+			hl.workspace_rule({
+				workspace = tostring(w),
+				monitor = primary.name,
+				default = (w == 1),
+				persistent = true,
+			})
+		end
+		local secondary = mons[2]
+		for w = 6, 9 do
+			hl.workspace_rule({
+				workspace = tostring(w),
+				monitor = secondary.name,
+				default = (w == 6),
+				persistent = true,
+			})
+		end
+	end
+
+	-- Reload / launch Waybar with detected monitors
+	hl.exec_cmd(os.getenv("HOME") .. "/.config/waybar/launch.sh")
+end
+
+-- Run monitor configuration
+setup_monitors_and_workspaces()
+
 -------------------------
 ---- AUTOSTART APPS -----
 -------------------------
 hl.on("hyprland.start", function()
 	hl.exec_cmd("systemctl --user start hyprpolkitagent")
 	hl.exec_cmd("dunst")
+	setup_monitors_and_workspaces()
+end)
+
+hl.on("monitor.added", function()
+	setup_monitors_and_workspaces()
+end)
+
+hl.on("monitor.removed", function()
+	setup_monitors_and_workspaces()
+end)
+
+hl.on("monitor.layout_changed", function()
+	setup_monitors_and_workspaces()
 end)
 
 --------------------------
@@ -89,6 +155,9 @@ hl.bind("XF86AudioMicMute",     hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_S
 hl.bind(main_mod .. " + SHIFT + S", hl.dsp.exec_cmd([[sh -c 'grim -g "$(slurp)" - | wl-copy && notify-send "Screenshot" "Selection copied to clipboard" -i camera-photo']]))
 hl.bind(main_mod .. " + S",         hl.dsp.exec_cmd([[sh -c 'grim - | wl-copy && notify-send "Screenshot" "Screen captured to clipboard" -i camera-photo']]))
 
+-- Waybar Controls
+hl.bind(main_mod .. " + SHIFT + B", hl.dsp.exec_cmd(os.getenv("HOME") .. "/.config/waybar/launch.sh"))
+
 ---------------------------------
 -------- WINDOW RULES -----------
 ---------------------------------
@@ -96,4 +165,13 @@ hl.window_rule({
 	name  = "file-roller-float",
 	match = { class = "org.gnome.FileRoller" },
 	float = true,
+})
+
+---------------------------------
+-------- LAYER RULES ------------
+---------------------------------
+hl.layer_rule({
+	name = "waybar",
+	blur = true,
+	blur_popups = true,
 })

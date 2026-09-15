@@ -119,6 +119,12 @@ DESKTOP_UTILS=(
     zoxide
     jq
     imagemagick
+
+    # Bar & Media Controls
+    waybar
+    pavucontrol
+    brightnessctl
+    playerctl
 )
 
 AUR_PACKAGES=(

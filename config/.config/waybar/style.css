@@ -1,0 +1,175 @@
+/* -----------------------------------------------------
+ * Catppuccin Macchiato Theme for Waybar
+ * ----------------------------------------------------- */
+
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font Mono", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: #cad3f5;
+}
+
+/* --- Common Module Pill Styling --- */
+#workspaces,
+#window,
+#clock,
+#custom-uptime,
+#cpu,
+#memory,
+#network,
+#pulseaudio,
+#battery,
+#tray {
+    background-color: #24273a;
+    border: 1px solid #363a4f;
+    border-radius: 12px;
+    padding: 2px 10px;
+    margin: 3px 3px;
+    color: #cad3f5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Workspaces --- */
+#workspaces {
+    padding: 2px 4px;
+}
+
+#workspaces button {
+    padding: 0 7px;
+    margin: 1px 2px;
+    border-radius: 9px;
+    color: #a5adcb;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+}
+
+#workspaces button:hover {
+    background-color: #363a4f;
+    color: #8aadf4;
+}
+
+#workspaces button.active {
+    background-color: #8aadf4;
+    color: #181926;
+    font-weight: 700;
+}
+
+#workspaces button.urgent {
+    background-color: #ed8796;
+    color: #181926;
+    font-weight: 700;
+}
+
+/* --- Window Title --- */
+#window {
+    color: #b7bdf8;
+    padding: 2px 12px;
+}
+
+window#waybar.empty #window {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+/* --- Center Modules --- */
+#clock {
+    color: #8aadf4;
+    font-weight: 600;
+}
+
+#custom-uptime {
+    color: #8bd5ca;
+}
+
+/* --- Hardware & Network Modules --- */
+#cpu {
+    color: #8bd5ca;
+}
+
+#memory {
+    color: #91d7e3;
+}
+
+#network {
+    color: #eed49f;
+}
+
+#network.disconnected {
+    color: #ed8796;
+}
+
+/* --- Audio --- */
+#pulseaudio {
+    color: #a6da95;
+}
+
+#pulseaudio.muted {
+    color: #ee99a0;
+    background-color: #363a4f;
+}
+
+/* --- Battery --- */
+#battery {
+    color: #a6da95;
+}
+
+#battery.charging {
+    color: #a6da95;
+}
+
+#battery.warning:not(.charging) {
+    color: #eed49f;
+    background-color: #363a4f;
+}
+
+#battery.critical:not(.charging) {
+    color: #ed8796;
+    background-color: #363a4f;
+    animation-name: blink;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ed8796;
+        color: #181926;
+    }
+}
+
+/* --- Tray --- */
+#tray {
+    padding: 2px 8px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #ed8796;
+}
+
+/* --- Tooltips --- */
+tooltip {
+    background-color: #1e2030;
+    border: 1px solid #363a4f;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+tooltip label {
+    color: #cad3f5;
+    font-family: "JetBrainsMono Nerd Font", monospace;
+}
