@@ -101,6 +101,7 @@ setup_monitors_and_workspaces()
 hl.on('hyprland.start', function()
     hl.exec_cmd 'systemctl --user start hyprpolkitagent'
     hl.exec_cmd 'dunst'
+    hl.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/set-wallpaper.sh --restore')
 
     setup_monitors_and_workspaces()
 end)

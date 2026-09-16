@@ -4,4 +4,5 @@ prepend_keymap = [
     { on = [ "<C-e>" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
     { on = [ "<C-t>" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
     { on = [ "g", "t" ], run = 'shell "thunar ." --orphan --confirm', desc = "Open Thunar in current directory" },
+    { on = [ "w" ], run = "shell 'bash ~/.config/hypr/scripts/set-wallpaper.sh \"%h\"' --confirm", desc = "Set selected image as wallpaper" },
 ]

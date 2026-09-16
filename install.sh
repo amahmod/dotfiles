@@ -131,7 +131,8 @@ DESKTOP_UTILS=(
     jq
     imagemagick
 
-    # Bar & Media Controls
+    # Wallpaper, Bar & Media Controls
+    awww
     waybar
     mpv
     pavucontrol
