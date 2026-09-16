@@ -415,5 +415,8 @@ else
 EOF
 fi
 
+# Ensure the CSS import target exists so @import never fails
+[ -f "$DIR/bg-override.css" ] || printf '/* Waybar module backgrounds are enabled by default. */\n' > "$DIR/bg-override.css"
+
 # Launch Waybar
 waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" 200>&- &

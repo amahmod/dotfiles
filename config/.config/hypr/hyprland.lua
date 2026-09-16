@@ -575,6 +575,11 @@ hl.bind(main_mod .. ' + mouse:273', hl.dsp.window.resize(), {
 
 hl.bind(main_mod .. ' + SHIFT + b', hl.dsp.exec_cmd(os.getenv 'HOME' .. '/.config/waybar/launch.sh'))
 
+hl.bind(
+    main_mod .. ' + SHIFT + g',
+    hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/toggle-waybar-bg.sh')
+)
+
 ---------------------------------
 -------- THEME -------------------
 ---------------------------------
