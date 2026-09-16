@@ -1,0 +1,68 @@
+# Shared shell aliases - sourced by zsh and bash
+
+# Navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias c='clear'
+alias h='history'
+alias reload='exec $SHELL -l'
+
+# Listing
+alias ls='ls --color=auto'
+alias ll='ls -la --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+alias lt='ls -lt --color=auto'
+
+# Search
+alias grep='grep --color=auto'
+alias ports='ss -tulpn'
+
+# Editors
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
+
+# Package runners
+alias p='pnpm'
+
+# Git
+alias g='git'
+alias gst='git status'
+alias gl='git log --oneline'
+alias glo='git log --oneline --graph --decorate'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gca='git commit --amend'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gp='git push'
+alias gpl='git pull'
+alias gf='git fetch'
+alias gcl='git clone'
+alias gr='git remote -v'
+alias gsh='git stash'
+alias gshp='git stash pop'
+alias grs='git restore'
+alias grss='git restore --staged'
+alias gclean='git clean -fd'
+
+# Pacman (Arch)
+alias pac='sudo pacman'
+alias pacs='sudo pacman -S'
+alias pacsy='sudo pacman -Syu'
+alias pacr='sudo pacman -Rns'
+alias pacq='pacman -Q'
+alias pacqs='pacman -Qs'
+
+# System
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'

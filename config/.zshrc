@@ -105,15 +105,8 @@ command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 # Starship prompt
 command -v starship &>/dev/null && eval "$(starship init zsh)"
 
-# --- Aliases & Functions ---
-alias ls='ls --color=auto'
-alias ll='ls -la --color=auto'
-alias la='ls -A --color=auto'
-alias grep='grep --color=auto'
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-alias g='git'
+# --- Functions ---
+# Aliases live in ~/.config/aliasrc (sourced at the bottom of this file).
 
 # Yazi working directory change on exit
 function yy() {
