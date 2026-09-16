@@ -30,6 +30,7 @@ hl.config({
 	misc = {
 		enable_swallow = true,
 		swallow_regex = "^(org.wezfurlong.wezterm|wezterm|kitty)$",
+		swallow_exception_regex = "^(.*node.*|.*npx.*|.*npm.*|.*pnpm.*|.*yarn.*|.*bun.*|.*deno.*|.*python.*|.*bash.*|.*zsh.*|.*yazi.*|.*nvim.*|.*wezterm.*|.*kitty.*)$",
 	},
 })
 
