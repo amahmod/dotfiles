@@ -10,6 +10,11 @@ hl.config {
         window_direction_monitor_fallback = true,
     },
 
+    input = {
+        repeat_delay = 200,
+        repeat_rate = 50,
+    },
+
     general = {
         layout = 'dwindle',
         gaps_in = 0,
