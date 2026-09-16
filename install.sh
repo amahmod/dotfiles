@@ -107,6 +107,7 @@ DESKTOP_UTILS=(
     grim
     slurp
     wl-clipboard
+    wtype
     swappy
     satty
 
@@ -161,6 +162,7 @@ AUR_PACKAGES=(
     otf-symbola
     zsh-vi-mode
     wlogout
+    wofi-emoji
 )
 
 # --- 1. GPU Detection & Driver Selection ---

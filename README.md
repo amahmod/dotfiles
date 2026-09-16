@@ -101,6 +101,7 @@ chmod +x install.sh
 | :--- | :--- |
 | `SUPER + Return` | Open Terminal (**WezTerm**) |
 | `SUPER + SPACE` | Open Application Launcher (**Wofi**) |
+| `SUPER + I` | Open Emoji Picker (**wofi-emoji**) |
 | `SUPER + E` | Open Terminal File Manager (**Yazi**) |
 | `SUPER + SHIFT + E` | Open GUI File Manager (**Thunar**) |
 | `SUPER + Q` | Close Active Window |

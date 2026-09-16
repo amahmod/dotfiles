@@ -197,8 +197,8 @@ hl.bind(main_mod .. ' + space', hl.dsp.exec_cmd 'wofi -show drun')
 -- Terminal
 hl.bind(main_mod .. ' + Return', hl.dsp.exec_cmd(terminal))
 
--- Emoji
-hl.bind(main_mod .. ' + i', hl.dsp.exec_cmd 'wofi -modi emoji -show emoji')
+-- Emoji Picker
+hl.bind(main_mod .. ' + i', hl.dsp.exec_cmd 'wofi-emoji')
 
 ---------------------------------
 ------ APPLICATION SUBMAP --------
