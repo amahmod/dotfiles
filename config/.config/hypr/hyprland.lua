@@ -452,6 +452,21 @@ for i = 1, 10 do
     )
 end
 
+-- Next/previous workspace on the current monitor (1-5 primary, 6-10 secondary)
+hl.bind(
+    main_mod .. ' + bracketright',
+    hl.dsp.focus {
+        workspace = 'm+1',
+    }
+)
+
+hl.bind(
+    main_mod .. ' + bracketleft',
+    hl.dsp.focus {
+        workspace = 'm-1',
+    }
+)
+
 ---------------------------------
 -------- WINDOW MOVE -------------
 ---------------------------------
