@@ -52,10 +52,10 @@ if [ "$COUNT" -le 1 ]; then
     for w in $(seq 1 10); do
         is_default="false"
         [ "$w" -eq 1 ] && is_default="true"
-        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$PRIMARY', default = $is_default, persistent = true })" > /dev/null 2>&1 || true
+        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$PRIMARY', default = $is_default, persistent = true })" >/dev/null 2>&1 || true
     done
 
-    sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" << 'EOF' > "$DIR/config.jsonc"
+    sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" <<'EOF' >"$DIR/config.jsonc"
 {
   "name": "main",
   "output": ["__PRIMARY__"],
@@ -209,17 +209,17 @@ else
     for w in $(seq 1 5); do
         is_default="false"
         [ "$w" -eq 1 ] && is_default="true"
-        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$PRIMARY', default = $is_default, persistent = true })" > /dev/null 2>&1 || true
+        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$PRIMARY', default = $is_default, persistent = true })" >/dev/null 2>&1 || true
     done
 
     # Secondary gets workspaces 6-10
     for w in $(seq 6 10); do
         is_default="false"
         [ "$w" -eq 6 ] && is_default="true"
-        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$SECONDARY', default = $is_default, persistent = true })" > /dev/null 2>&1 || true
+        hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$SECONDARY', default = $is_default, persistent = true })" >/dev/null 2>&1 || true
     done
 
-    sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__SECONDARY__/$SECONDARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" << 'EOF' > "$DIR/config.jsonc"
+    sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__SECONDARY__/$SECONDARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" <<'EOF' >"$DIR/config.jsonc"
 [
   {
     "name": "primary",
@@ -416,7 +416,7 @@ EOF
 fi
 
 # Ensure the CSS import target exists so @import never fails
-[ -f "$DIR/bg-override.css" ] || printf '/* Waybar module backgrounds are enabled by default. */\n' > "$DIR/bg-override.css"
+[ -f "$DIR/bg-override.css" ] || printf '/* Waybar module backgrounds are enabled by default. */\n' >"$DIR/bg-override.css"
 
 # Launch Waybar
 waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" 200>&- &
