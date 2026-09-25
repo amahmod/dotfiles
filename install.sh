@@ -11,11 +11,11 @@ YELLOW="\033[33m"
 RED="\033[31m"
 PURPLE="\033[35m"
 
-log_step()    { echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}$1${RESET}"; }
-log_info()    { echo -e "  ${CYAN}ℹ${RESET} $1"; }
+log_step() { echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}$1${RESET}"; }
+log_info() { echo -e "  ${CYAN}ℹ${RESET} $1"; }
 log_success() { echo -e "  ${GREEN}✔${RESET} $1"; }
-log_warn()    { echo -e "  ${YELLOW}▲${RESET} $1"; }
-log_error()   { echo -e "  ${RED}✖${RESET} $1"; }
+log_warn() { echo -e "  ${YELLOW}▲${RESET} $1"; }
+log_error() { echo -e "  ${RED}✖${RESET} $1"; }
 
 # --- Safety & Privilege Checks ---
 if [[ "$EUID" -eq 0 ]]; then
@@ -38,7 +38,7 @@ trap cleanup EXIT INT TERM
 
 # --- Header Banner ---
 echo -e "${CYAN}${BOLD}"
-cat << "EOF"
+cat <<"EOF"
     /\         Arch Linux + Hyprland Setup
    /  \        ---------------------------
   /\   \       Personal Dotfiles & Environment Installer
@@ -50,7 +50,11 @@ echo -e "${RESET}"
 # --- Keep sudo alive ---
 log_step "Authenticating sudo credentials..."
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+    sudo -n true
+    sleep 60
+    kill -0 "$$" || exit
+done 2>/dev/null &
 
 # --- Package Lists ---
 OFFICIAL_PACKAGES=(
@@ -68,6 +72,7 @@ OFFICIAL_PACKAGES=(
     wofi
     zsh
     starship
+    gtop
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
@@ -214,7 +219,7 @@ log_success "Core packages, GPU drivers, fonts, and desktop utilities installed.
 
 # --- 3. AUR Helper (yay) & AUR Packages ---
 log_step "Checking AUR helper (yay)..."
-if command -v yay &> /dev/null; then
+if command -v yay &>/dev/null; then
     log_success "yay is already installed."
 else
     log_info "Compiling and installing yay..."
@@ -259,7 +264,7 @@ if [[ ! -d "$HOME/.local/share/fonts/private-fonts" && ! -d "$HOME/.local/share/
     if [[ -f "$HOME/.ssh/id_rsa" ]]; then
         log_info "Cloning private fonts repository..."
         touch "$HOME/.ssh/known_hosts"
-        ssh-keyscan -H github.com >> "$HOME/.ssh/known_hosts" 2>/dev/null || true
+        ssh-keyscan -H github.com >>"$HOME/.ssh/known_hosts" 2>/dev/null || true
         GIT_SSH_COMMAND="ssh -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=accept-new" \
             git clone git@github.com:amahmod/fonts.git "$HOME/.local/share/fonts/private-fonts"
         log_success "Private fonts repository cloned."
@@ -271,7 +276,7 @@ else
 fi
 
 log_step "Updating font cache..."
-fc-cache -f > /dev/null
+fc-cache -f >/dev/null
 log_success "Font cache updated."
 
 # --- 5. Dotfiles Deployment (Stow) ---
@@ -311,7 +316,7 @@ else
 fi
 
 # --- Summary ---
-ELAPSED=$(( $(date +%s) - START_TIME ))
+ELAPSED=$(($(date +%s) - START_TIME))
 echo -e "\n${BOLD}${GREEN}==========================================="
 echo -e "  ✔ Installation Complete! (${ELAPSED}s)"
 echo -e "===========================================${RESET}"
