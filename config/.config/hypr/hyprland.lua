@@ -226,6 +226,9 @@ hl.define_submap('apps', 'reset', function()
     -- SUPER + O, T
     hl.bind('t', hl.dsp.exec_cmd 'thunar')
 
+    -- SUPER + O, L
+    hl.bind('l', hl.dsp.exec_cmd 'localsend')
+
     -- Escape
     hl.bind('escape', hl.dsp.submap 'reset')
 end)
@@ -246,6 +249,9 @@ hl.define_submap('terminal_apps', 'reset', function()
 
     -- SUPER + T, N
     hl.bind('n', hl.dsp.exec_cmd(terminal .. ' start nvim'))
+
+    -- SUPER + T, P
+    hl.bind('p', hl.dsp.exec_cmd(terminal .. ' start phone-transfer'))
 
     -- SUPER + T, Y
     -- hl.bind('y', hl.dsp.exec_cmd(terminal .. ' start yazi'))

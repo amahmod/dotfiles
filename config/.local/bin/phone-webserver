@@ -1,0 +1,435 @@
+#!/usr/bin/env python3
+"""
+phone-webserver: Lightweight local Wi-Fi file transfer server with QR code.
+Allows instant two-way file sharing between PC and any mobile phone via browser.
+No mobile app required. Works with Android and iOS alike.
+"""
+
+import argparse
+import html
+import http.server
+import json
+import os
+import shutil
+import socket
+import socketserver
+import subprocess
+import sys
+import urllib.parse
+from pathlib import Path
+
+
+def get_local_ip():
+    """Detect the local Wi-Fi / LAN IP address."""
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(('1.1.1.1', 80))
+        return s.getsockname()[0]
+    except Exception:
+        try:
+            return socket.gethostbyname(socket.gethostname())
+        except Exception:
+            return '127.0.0.1'
+    finally:
+        s.close()
+
+
+def format_size(size_bytes):
+    """Format bytes to human-readable string."""
+    for unit in ['B', 'KB', 'MB', 'GB']:
+        if size_bytes < 1024.0:
+            return f'{size_bytes:.1f} {unit}'
+        size_bytes /= 1024.0
+    return f'{size_bytes:.1f} TB'
+
+
+def notify_desktop(filename, size_str):
+    """Send desktop notification when a file upload completes."""
+    try:
+        subprocess.run(
+            [
+                'notify-send',
+                '-i',
+                'phone',
+                '-a',
+                'Phone Web Share',
+                '📱 File Received from Phone',
+                f'{filename} ({size_str})',
+            ],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+    except Exception:
+        pass
+
+
+def make_safe_filename(target_dir, raw_name):
+    """Sanitize and prevent path traversal; generate unique filename if exists."""
+    clean = os.path.basename(urllib.parse.unquote(raw_name)).strip()
+    if not clean:
+        clean = 'uploaded_file'
+    base, ext = os.path.splitext(clean)
+    candidate = clean
+    counter = 1
+    while os.path.exists(os.path.join(target_dir, candidate)):
+        candidate = f'{base} ({counter}){ext}'
+        counter += 1
+    return candidate
+
+
+HTML_PAGE = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>⚡ High-Speed Phone Share</title>
+  <style>
+    :root {
+      --bg: #1e1e2e;
+      --card-bg: #252538;
+      --accent: #c6a0f6;
+      --accent-hover: #b48ded;
+      --text: #cdd6f4;
+      --subtext: #a6adc8;
+      --border: #313244;
+      --success: #a6e3a1;
+      --progress-bg: #45475a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    .container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; }
+    header { text-align: center; margin: 12px 0; }
+    header h1 { font-size: 1.6rem; color: var(--accent); margin-bottom: 6px; }
+    header p { font-size: 0.9rem; color: var(--subtext); }
+    
+    .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 14px; padding: 20px; box-shadow: 0 4px 14px rgba(0,0,0,0.3); }
+    .card h2 { font-size: 1.2rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    
+    /* Upload Zone */
+    .drop-zone {
+      border: 2px dashed var(--accent);
+      border-radius: 12px;
+      padding: 32px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: rgba(198, 160, 246, 0.05);
+    }
+    .drop-zone:active, .drop-zone.dragover { background: rgba(198, 160, 246, 0.15); border-color: var(--accent-hover); }
+    .drop-zone svg { width: 48px; height: 48px; fill: var(--accent); margin-bottom: 10px; }
+    .drop-zone p { font-size: 1rem; font-weight: bold; margin-bottom: 4px; }
+    .drop-zone span { font-size: 0.8rem; color: var(--subtext); }
+    input[type="file"] { display: none; }
+    
+    /* Progress items */
+    .progress-list { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .progress-item { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+    .progress-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+    .progress-bar-bg { width: 100%; height: 8px; background: var(--progress-bg); border-radius: 4px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--accent); width: 0%; transition: width 0.1s linear; }
+    .progress-bar-fill.done { background: var(--success); }
+    
+    /* File list */
+    .file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 380px; overflow-y: auto; }
+    .file-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; text-decoration: none; color: inherit; }
+    .file-name { font-size: 0.9rem; word-break: break-all; font-weight: 500; }
+    .file-meta { font-size: 0.75rem; color: var(--subtext); margin-top: 2px; }
+    .btn-download { background: var(--accent); color: #11111b; font-weight: bold; padding: 6px 14px; border-radius: 6px; font-size: 0.8rem; text-decoration: none; white-space: nowrap; margin-left: 12px; }
+    .btn-download:active { background: var(--accent-hover); }
+    .empty-msg { text-align: center; color: var(--subtext); font-size: 0.85rem; padding: 16px 0; }
+    
+    .refresh-btn { background: none; border: 1px solid var(--border); color: var(--subtext); border-radius: 6px; padding: 4px 10px; font-size: 0.8rem; cursor: pointer; float: right; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚡ High-Speed Phone Share</h1>
+      <p>Instant file transfer between Phone & Arch Linux</p>
+    </header>
+
+    <!-- Upload Card -->
+    <div class="card">
+      <h2>📤 Send to PC</h2>
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+        <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+        <p>Tap to Choose Photos, Videos & Files</p>
+        <span>Transfers at full local Wi-Fi speed</span>
+      </div>
+      <input type="file" id="fileInput" multiple>
+      <div class="progress-list" id="progressList"></div>
+    </div>
+
+    <!-- Download Card -->
+    <div class="card">
+      <h2>
+        📥 Download from PC
+        <button class="refresh-btn" onclick="fetchFiles()">↻ Refresh</button>
+      </h2>
+      <div class="file-list" id="fileList">
+        <p class="empty-msg">Loading files...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const progressList = document.getElementById('progressList');
+    const fileList = document.getElementById('fileList');
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files.length > 0) {
+        uploadFiles(Array.from(fileInput.files));
+        fileInput.value = '';
+      }
+    });
+
+    function uploadFiles(files) {
+      files.forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'progress-item';
+        item.innerHTML = `
+          <div class="progress-header">
+            <span style="font-weight: 500;">${file.name}</span>
+            <span class="pct">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill"></div>
+          </div>
+        `;
+        progressList.prepend(item);
+
+        const pctElem = item.querySelector('.pct');
+        const fillElem = item.querySelector('.progress-bar-fill');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/api/upload?filename=' + encodeURIComponent(file.name));
+
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) {
+            const pct = Math.round((e.loaded / e.total) * 100);
+            pctElem.textContent = pct + '%';
+            fillElem.style.width = pct + '%';
+          }
+        };
+
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            pctElem.textContent = '✔ Done';
+            pctElem.style.color = 'var(--success)';
+            fillElem.classList.add('done');
+            setTimeout(fetchFiles, 800);
+          } else {
+            pctElem.textContent = '✖ Error';
+            pctElem.style.color = '#ed8796';
+          }
+        };
+
+        xhr.onerror = () => {
+          pctElem.textContent = '✖ Failed';
+          pctElem.style.color = '#ed8796';
+        };
+
+        xhr.send(file);
+      });
+    }
+
+    function fetchFiles() {
+      fetch('/api/files')
+        .then(res => res.json())
+        .then(files => {
+          if (!files || files.length === 0) {
+            fileList.innerHTML = '<p class="empty-msg">No files currently in shared folder on PC.</p>';
+            return;
+          }
+          fileList.innerHTML = '';
+          files.forEach(f => {
+            const el = document.createElement('div');
+            el.className = 'file-item';
+            el.innerHTML = `
+              <div>
+                <div class="file-name">${f.name}</div>
+                <div class="file-meta">${f.size_formatted}</div>
+              </div>
+              <a class="btn-download" href="/download/${encodeURIComponent(f.name)}" download>Download</a>
+            `;
+            fileList.appendChild(el);
+          });
+        })
+        .catch(() => {
+          fileList.innerHTML = '<p class="empty-msg">Failed to load files from PC.</p>';
+        });
+    }
+
+    fetchFiles();
+  </script>
+</body>
+</html>
+"""
+
+
+class FastTransferHandler(http.server.BaseHTTPRequestHandler):
+    share_dir = ""
+
+    def log_message(self, format, *args):
+        # Clean terminal logging
+        pass
+
+    def do_GET(self):
+        parsed = urllib.parse.urlparse(self.path)
+        path = parsed.path
+
+        if path in ['/', '/index.html']:
+            self.send_response(200)
+            self.send_header('Content-Type', 'text/html; charset=utf-8')
+            self.end_headers()
+            self.wfile.write(HTML_PAGE.encode('utf-8'))
+            return
+
+        if path == '/api/files':
+            files_data = []
+            try:
+                for entry in sorted(os.scandir(self.share_dir), key=lambda e: e.name.lower()):
+                    if entry.is_file() and not entry.name.startswith('.'):
+                        stat = entry.stat()
+                        files_data.append({
+                            'name': entry.name,
+                            'size': stat.st_size,
+                            'size_formatted': format_size(stat.st_size),
+                            'mtime': stat.st_mtime,
+                        })
+            except Exception as e:
+                print(f"Error reading directory: {e}")
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps(files_data).encode('utf-8'))
+            return
+
+        if path.startswith('/download/'):
+            filename = urllib.parse.unquote(path[len('/download/'):])
+            safe_name = os.path.basename(filename)
+            file_path = os.path.join(self.share_dir, safe_name)
+
+            if os.path.isfile(file_path):
+                file_size = os.path.getsize(file_path)
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/octet-stream')
+                self.send_header(
+                    'Content-Disposition',
+                    f'attachment; filename="{safe_name}"',
+                )
+                self.send_header('Content-Length', str(file_size))
+                self.end_headers()
+                with open(file_path, 'rb') as f:
+                    shutil.copyfileobj(f, self.wfile)
+                print(f"  \033[32m✔\033[0m Downloaded to phone: {safe_name} ({format_size(file_size)})")
+            else:
+                self.send_error(404, "File Not Found")
+            return
+
+        self.send_error(404, "Not Found")
+
+    def do_POST(self):
+        parsed = urllib.parse.urlparse(self.path)
+        if parsed.path == '/api/upload':
+            query = urllib.parse.parse_qs(parsed.query)
+            raw_filename = query.get('filename', ['upload.bin'])[0]
+            safe_filename = make_safe_filename(self.share_dir, raw_filename)
+            dest_path = os.path.join(self.share_dir, safe_filename)
+
+            try:
+                content_length = int(self.headers.get('Content-Length', 0))
+            except ValueError:
+                content_length = 0
+
+            remaining = content_length
+            chunk_size = 1024 * 1024  # 1MB buffer
+
+            with open(dest_path, 'wb') as f:
+                while remaining > 0:
+                    read_len = min(remaining, chunk_size)
+                    chunk = self.rfile.read(read_len)
+                    if not chunk:
+                        break
+                    f.write(chunk)
+                    remaining -= len(chunk)
+
+            size_str = format_size(content_length)
+            print(f"  \033[32m✔\033[0m Uploaded from phone: \033[1m{safe_filename}\033[0m ({size_str})")
+            notify_desktop(safe_filename, size_str)
+
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+            self.wfile.write(json.dumps({'status': 'ok', 'filename': safe_filename, 'size': content_length}).encode('utf-8'))
+            return
+
+        self.send_error(404, "Not Found")
+
+
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    allow_reuse_address = True
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Phone Web Share Server")
+    parser.add_argument('--dir', default=os.path.expanduser('~/Downloads/Phone_Transfer'), help="Directory to share and save files")
+    parser.add_argument('--port', type=int, default=8080, help="Port to listen on")
+    args = parser.parse_args()
+
+    share_dir = os.path.abspath(os.path.expanduser(args.dir))
+    os.makedirs(share_dir, exist_ok=True)
+    FastTransferHandler.share_dir = share_dir
+
+    local_ip = get_local_ip()
+    port = args.port
+
+    server = None
+    for p in range(port, port + 20):
+        try:
+            server = ThreadedTCPServer(('0.0.0.0', p), FastTransferHandler)
+            port = p
+            break
+        except OSError:
+            continue
+
+    if not server:
+        print(f"\033[31mError:\033[0m Could not bind to port {args.port} or subsequent ports.")
+        sys.exit(1)
+
+    url = f"http://{local_ip}:{port}"
+
+    print("\n\033[1m\033[36m╭──────────────────────────────────────────────────────────╮\033[0m")
+    print(f"\033[1m\033[36m│\033[0m  \033[1m📱 Instant Phone Web Share\033[0m                              \033[1m\033[36m│\033[0m")
+    print(f"\033[1m\033[36m│\033[0m  Shared Folder: \033[33m{share_dir[:40]:<40}\033[0m \033[1m\033[36m│\033[0m")
+    print(f"\033[1m\033[36m│\033[0m  URL:           \033[1m\033[32m{url:<40}\033[0m \033[1m\033[36m│\033[0m")
+    print("\033[1m\033[36m╰──────────────────────────────────────────────────────────╯\033[0m\n")
+
+    # Generate QR Code if qrencode is available
+    if shutil.which('qrencode'):
+        print("  \033[1mScan with your phone camera to connect:\033[0m\n")
+        try:
+            subprocess.run(['qrencode', '-t', 'UTF8', '-m', '2', url], check=False)
+        except Exception:
+            pass
+    else:
+        print(f"  Open \033[1m\033[32m{url}\033[0m in your phone's browser.")
+        print("  \033[90m(Install 'qrencode' to display a scannable QR code directly here)\033[0m\n")
+
+    print(f"  \033[34mℹ\033[0m Ready! Uploaded files will be saved to: {share_dir}")
+    print("  \033[90mPress Ctrl+C to stop the server.\033[0m\n")
+
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\n  \033[33mStopping server...\033[0m")
+        server.shutdown()
+        server.server_close()
+
+
+if __name__ == '__main__':
+    main()

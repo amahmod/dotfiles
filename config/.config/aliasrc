@@ -66,3 +66,14 @@ alias pacqs='pacman -Qs'
 alias df='df -h'
 alias du='du -h'
 alias free='free -h'
+
+# Mobile & Phone Transfer
+alias pt='phone-transfer'
+alias phone='phone-transfer'
+alias pm='phone-mount mount'
+alias pu='phone-mount unmount'
+alias phone-web='phone-transfer web'
+alias phone-push='phone-transfer push'
+alias phone-pull='phone-transfer pull'
+alias phone-mirror='phone-transfer mirror'
+

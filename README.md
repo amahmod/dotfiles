@@ -29,9 +29,15 @@ A minimal, high-performance, and beautifully crafted Arch Linux desktop environm
   - Restricts `l` key navigation to open files like `Enter`.
   - Integrated MPV video launcher (`open-mpv.sh`).
   - Transparent theme integration matching terminal background.
+- **📱 High-Speed Phone Transfer Suite (Thunar & Yazi)**
+  - Seamless two-way copy & paste between PC and mobile (Android & iOS).
+  - Native **Thunar** sidebar device mounting & right-click high-speed ADB actions.
+  - Dedicated **Yazi** bindings: `g p` (jump to phone filesystem), `m p` (high-speed ADB push), `m c` (pull camera).
+  - Built-in `phone-transfer` CLI with ADB turbo transfers (up to 100+ MB/s), wireless ADB, screen mirroring (`scrcpy`), and zero-app QR code web sharing (`phone-transfer web`).
 - **🛠️ Fully Automated Installer (`install.sh`)**
   - Automatic GPU hardware detection (AMD, Intel, NVIDIA drivers & VA-API video acceleration).
   - Package installation via `pacman` and `yay` (AUR helper).
+  - Mobile device stack installation (`android-tools`, `android-udev`, `gvfs-mtp`, `localsend-bin`, `usbmuxd`).
   - Automated Ansible Vault decryption for SSH keys (`.keys/id_rsa`).
   - Private font repository cloning and GNU Stow dotfile deployment.
 
@@ -44,8 +50,15 @@ A minimal, high-performance, and beautifully crafted Arch Linux desktop environm
 ├── install.sh                     # Automated installation script
 ├── config/
 │   ├── .bash_profile              # Shell launch profile
+│   ├── .local/
+│   │   └── bin/
+│   │       ├── phone-transfer     # High-speed phone transfer suite & CLI
+│   │       ├── phone-mount        # Mounts phone to ~/Phone for Yazi/terminal
+│   │       └── phone-webserver    # Instant QR code web transfer server
 │   ├── .zshrc                     # Zsh configuration (Starship, Vi mode, zoxide)
 │   └── .config/
+│       ├── Thunar/
+│       │   └── uca.xml            # Thunar custom right-click actions (ADB Push/Pull)
 │       ├── dunst/                 # Notification daemon config
 │       ├── hypr/
 │       │   ├── hyprland.lua       # Hyprland compositor config & keybindings
@@ -135,6 +148,58 @@ chmod +x install.sh
 | `XF86AudioRaiseVolume` / `SUPER + =` | Raise Audio Volume 5% |
 | `XF86AudioLowerVolume` / `SUPER + -` | Lower Audio Volume 5% |
 | `XF86AudioMute` | Toggle Audio Mute |
+
+### 📱 Phone & Mobile Transfer Keybindings
+| Shortcut / Keymap | Context | Action |
+| :--- | :--- | :--- |
+| `g p` | **Yazi** | Mount & jump to `~/Phone` (browse & copy/paste) |
+| `m p` | **Yazi** | Turbo push selected file(s) to phone via ADB |
+| `m c` | **Yazi** | Pull phone camera photos into current folder |
+| `m d` | **Yazi** | Pull phone downloads into current folder |
+| `m m` / `m u` | **Yazi** | Mount / unmount `~/Phone` |
+| `m s` | **Yazi** | Launch interactive `phone-transfer` menu |
+| Right-Click | **Thunar** | **⚡ Send to Phone (High Speed ADB)** |
+| Right-Click | **Thunar** | **📸 Pull Photos from Phone** |
+| Right-Click | **Thunar** | **📥 Pull Downloads from Phone** |
+| Right-Click | **Thunar** | **📱 Mirror Phone Screen (`scrcpy`)** |
+| `SUPER + O, L` | **Hyprland** | Launch **LocalSend** (cross-platform AirDrop) |
+| `SUPER + T, P` | **Hyprland** | Launch **Phone Transfer CLI** in terminal |
+
+---
+
+## 📱 High-Speed Mobile File Transfer Guide (Thunar & Yazi)
+
+Seamlessly transfer files between your Arch Linux machine and mobile devices (Android & iOS) at maximum hardware and network speeds:
+
+### 1. In Thunar (GUI File Manager - `SUPER + SHIFT + E`)
+- **Native Drag-and-Drop & Copy/Paste (`Ctrl+C` / `Ctrl+V`):**
+  - Plug your phone via USB and select **File Transfer / MTP** on your phone.
+  - Your phone immediately appears under **Devices** in the Thunar sidebar.
+  - Click to browse internal storage and copy/paste files normally.
+- **Right-Click Context Menu Actions (High-Speed ADB):**
+  - Right-click any file/folder → **⚡ Send to Phone (High Speed ADB)**: Pushes directly to `/sdcard/Download/` at up to 100+ MB/s.
+  - Right-click any directory → **📸 Pull Photos from Phone**: Downloads `/sdcard/DCIM/Camera` into that folder.
+  - Right-click any directory → **📥 Pull Downloads from Phone**: Downloads `/sdcard/Download` into that folder.
+  - Right-click → **📱 Mirror Phone Screen**: Launches `scrcpy` with drag-and-drop file transfer support.
+
+### 2. In Yazi (Terminal File Manager - `SUPER + E`)
+- **Direct Filesystem Copy/Paste (`y` / `p`):**
+  - Press `g p` (Go to Phone): Automatically mounts your phone and jumps to `~/Phone`.
+  - Press `y` to yank (copy) any file from phone or PC, navigate to target folder, and press `p` to paste.
+- **Fast Action Shortcuts:**
+  - `m p`: Select files in Yazi and press `m p` to push directly to `/sdcard/Download/` via ADB at wire speed.
+  - `m c`: Navigate to your pictures directory and press `m c` to pull camera photos.
+  - `m d`: Press `m d` to pull phone downloads into the current folder.
+  - `m s`: Open the interactive transfer menu without leaving Yazi.
+
+### 3. CLI & Wireless Transfers (`phone-transfer`)
+- `phone-transfer` (or `pt`): Interactive terminal menu with device diagnostics (battery, storage, model).
+- `phone-transfer push <files...>`: High-speed push to phone via ADB with automatic gallery media scan.
+- `phone-transfer pull [photos|downloads|all]`: High-speed pull from phone to PC.
+- `phone-transfer tcpip`: Disconnect your USB cable and continue transferring over Wi-Fi!
+- `phone-transfer web`: Starts instant local web server and prints a terminal QR code. Scan with your phone camera to upload or download files in your phone's browser (no app required).
+- `phone-transfer mirror`: Screen mirroring via `scrcpy`. Drag and drop any file into the phone window to transfer.
+- `SUPER + O, L`: Launch **LocalSend** (cross-platform peer-to-peer AirDrop alternative).
 
 ---
 

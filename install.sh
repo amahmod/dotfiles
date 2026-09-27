@@ -164,11 +164,33 @@ DESKTOP_UTILS=(
     zip
 )
 
+PHONE_TRANSFER_PACKAGES=(
+    # Android High-Speed ADB & Universal Device Rules
+    android-tools           # ADB & Fastboot for max USB/Wi-Fi transfer speed
+    android-udev            # Udev rules for all Android phones (non-root access)
+    scrcpy                  # Screen mirror & drag-drop file transfer
+
+    # Android MTP & Camera GUI Support (Thunar / GVFS)
+    gvfs-mtp                # MTP backend for Thunar & GVFS to browse Android
+    gvfs-gphoto2            # PTP camera protocol backend
+
+    # Apple iOS Device Support
+    usbmuxd                 # USB multiplexer daemon for iOS
+    libimobiledevice        # iOS communication protocol library
+    ifuse                   # FUSE filesystem driver for iPhone/iPad
+    gvfs-afc                # AFC backend for Thunar to browse iOS files
+
+    # Network & Terminal Transfer Utilities
+    qrencode                # Generates terminal QR codes for instant mobile sharing
+)
+
 AUR_PACKAGES=(
     otf-symbola
     zsh-vi-mode
     wlogout
     wofi-emoji
+    localsend-bin           # Cross-platform AirDrop alternative over local Wi-Fi
+    simple-mtpfs            # FUSE driver for direct MTP mounting
 )
 
 # --- 1. GPU Detection & Driver Selection ---
@@ -214,8 +236,9 @@ sudo pacman -S --needed --noconfirm \
     "${OFFICIAL_PACKAGES[@]}" \
     "${FONT_PACKAGES[@]}" \
     "${DESKTOP_UTILS[@]}" \
+    "${PHONE_TRANSFER_PACKAGES[@]}" \
     "${GPU_PACKAGES[@]}"
-log_success "Core packages, GPU drivers, fonts, and desktop utilities installed."
+log_success "Core packages, GPU drivers, fonts, desktop utilities, and mobile transfer tools installed."
 
 # --- 3. AUR Helper (yay) & AUR Packages ---
 log_step "Checking AUR helper (yay)..."
@@ -294,8 +317,15 @@ if [[ -f "$HOME/.zshrc" && ! -L "$HOME/.zshrc" ]]; then
     mv "$HOME/.zshrc" "$HOME/.zshrc.bak"
 fi
 
-# Ensure ~/.config exists as a real directory to prevent tree folding
+# Backup Thunar uca.xml if it's a regular file (not a symlink)
+if [[ -f "$HOME/.config/Thunar/uca.xml" && ! -L "$HOME/.config/Thunar/uca.xml" ]]; then
+    log_info "Backing up existing ~/.config/Thunar/uca.xml to ~/.config/Thunar/uca.xml.bak"
+    mv "$HOME/.config/Thunar/uca.xml" "$HOME/.config/Thunar/uca.xml.bak"
+fi
+
+# Ensure target directories exist as real directories to prevent tree folding
 mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.local/bin"
 (cd "$REPO_DIR" && stow -R --no-folding --target="$HOME" config)
 log_success "Dotfiles linked to $HOME."
 
@@ -306,8 +336,8 @@ if [[ "$SHELL" != */zsh ]] && command -v zsh &>/dev/null; then
     log_success "Default shell set to zsh."
 fi
 
-# --- 6. Services ---
-log_step "Configuring system services..."
+# --- 6. Services & Device Permissions ---
+log_step "Configuring system services and permissions..."
 if ! systemctl is-enabled --quiet sddm 2>/dev/null; then
     sudo systemctl enable sddm
     log_success "SDDM display manager enabled."
@@ -315,15 +345,45 @@ else
     log_info "SDDM is already enabled."
 fi
 
+# Configure Android udev rules and non-root user permissions
+log_info "Configuring Android udev rules and user groups..."
+if ! getent group adbusers >/dev/null 2>&1; then
+    sudo groupadd -f adbusers
+fi
+if ! id -nG "$USER" | grep -qw "adbusers"; then
+    log_info "Adding $USER to 'adbusers' group for non-root ADB access..."
+    sudo usermod -aG adbusers "$USER"
+    log_success "User added to adbusers group."
+fi
+sudo udevadm control --reload-rules 2>/dev/null || true
+sudo udevadm trigger 2>/dev/null || true
+
+# Enable usbmuxd service for Apple iOS device support if present
+if systemctl list-unit-files usbmuxd.service &>/dev/null; then
+    if ! systemctl is-enabled --quiet usbmuxd 2>/dev/null; then
+        sudo systemctl enable usbmuxd.service 2>/dev/null || true
+        log_success "usbmuxd (iOS support) service enabled."
+    fi
+fi
+
 # --- Summary ---
 ELAPSED=$(($(date +%s) - START_TIME))
 echo -e "\n${BOLD}${GREEN}==========================================="
 echo -e "  ✔ Installation Complete! (${ELAPSED}s)"
 echo -e "===========================================${RESET}"
-echo -e "  Keybindings:
+echo -e "  Core Keybindings:
     ${CYAN}SUPER + Return${RESET}       : Terminal (Wezterm)
     ${CYAN}SUPER + Space${RESET}        : App Launcher (Wofi)
     ${CYAN}SUPER + E${RESET}            : Terminal File Manager (Yazi)
     ${CYAN}SUPER + Shift + E${RESET}    : GUI File Manager (Thunar)
     ${CYAN}SUPER + Q${RESET}            : Close Window
-    ${CYAN}SUPER + Alt + Q${RESET}      : Exit Hyprland\n"
+    ${CYAN}SUPER + Alt + Q${RESET}      : Exit Hyprland
+
+  📱 Phone & Mobile File Transfer:
+    ${CYAN}phone-transfer (pt)${RESET}   : High-Speed CLI Transfer & Web QR Share
+    ${CYAN}phone-mount (pm)${RESET}      : Mount Phone to ~/Phone for Yazi & Terminal
+    ${CYAN}In Thunar (GUI)${RESET}       : Sidebar Devices for MTP | Right-click -> Send to Phone
+    ${CYAN}In Yazi (TUI)${RESET}         : 'g p' (Go to Phone), 'm p' (Push file), 'm c' (Pull photos)
+    ${CYAN}SUPER + O, L${RESET}         : Launch LocalSend (Cross-Platform AirDrop)
+    ${CYAN}SUPER + T, P${RESET}         : Launch Phone Transfer CLI\n"
+

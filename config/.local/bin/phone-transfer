@@ -1,0 +1,474 @@
+#!/usr/bin/env bash
+
+# ====================================================================
+#  phone-transfer: High-Speed Mobile File Transfer Suite
+#  Supports USB ADB, Wireless ADB, Web QR Share, LocalSend, and MTP
+# ====================================================================
+
+set -eo pipefail
+
+# --- Colors & Styling ---
+BOLD="\033[1m"
+RESET="\033[0m"
+CYAN="\033[36m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+RED="\033[31m"
+PURPLE="\033[35m"
+GRAY="\033[90m"
+
+log_info() { echo -e "  ${CYAN}ℹ${RESET} $1"; }
+log_success() { echo -e "  ${GREEN}✔${RESET} $1"; }
+log_warn() { echo -e "  ${YELLOW}▲${RESET} $1"; }
+log_error() { echo -e "  ${RED}✖${RESET} $1"; }
+
+notify() {
+    local title="$1"
+    local msg="$2"
+    local urgency="${3:-normal}"
+    if command -v notify-send &>/dev/null; then
+        notify-send -u "$urgency" -i phone -a "Phone Transfer" "$title" "$msg" 2>/dev/null || true
+    fi
+}
+
+# --- Device Selection Helper ---
+select_device() {
+    if ! command -v adb &>/dev/null; then
+        log_error "adb (android-tools) is not installed."
+        log_info "Run ~/.arch_setup/install.sh or 'sudo pacman -S android-tools' to install."
+        return 1
+    fi
+
+    local devices=()
+    while IFS= read -r line; do
+        [[ -z "$line" ]] && continue
+        devices+=("$line")
+    done < <(adb devices | awk 'NR>1 && $2=="device" {print $1}')
+
+    if [[ ${#devices[@]} -eq 0 ]]; then
+        # Check for unauthorized devices
+        local unauth
+        unauth=$(adb devices | awk 'NR>1 && $2=="unauthorized" {print $1}')
+        if [[ -n "$unauth" ]]; then
+            log_warn "Device ($unauth) detected but UNAUTHORIZED!"
+            log_info "Please check your phone screen and tap 'Always allow from this computer'."
+            notify "Phone Unauthorized" "Unlock your phone and allow USB debugging" "critical"
+            return 1
+        fi
+        log_error "No online ADB device found."
+        log_info "1. Plug in your phone with a USB cable."
+        log_info "2. Enable Developer Options -> USB Debugging on your phone."
+        log_info "3. Or run 'phone-transfer wifi' to connect wirelessly."
+        notify "No Phone Connected" "Please connect your phone via USB or Wi-Fi" "normal"
+        return 1
+    elif [[ ${#devices[@]} -eq 1 ]]; then
+        SELECTED_DEVICE="${devices[0]}"
+    else
+        echo -e "${BOLD}${PURPLE}Multiple devices detected:${RESET}"
+        for i in "${!devices[@]}"; do
+            echo -e "  [$i] ${CYAN}${devices[$i]}${RESET}"
+        done
+        read -r -p "Select device [0-$((${#devices[@]} - 1))]: " choice
+        SELECTED_DEVICE="${devices[$choice]:-${devices[0]}}"
+    fi
+    export ANDROID_SERIAL="$SELECTED_DEVICE"
+    return 0
+}
+
+# --- Trigger Android Media Scanner ---
+scan_phone_media() {
+    local path="$1"
+    if [[ -n "$SELECTED_DEVICE" ]]; then
+        adb -s "$SELECTED_DEVICE" shell am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file://$path" &>/dev/null || true
+        adb -s "$SELECTED_DEVICE" shell cmd media_session scan-file "$path" &>/dev/null || true
+    fi
+}
+
+# --- 1. Push Files to Phone ---
+cmd_push() {
+    local target_dir="${PHONE_DEST:-/sdcard/Download}"
+    local files=()
+
+    if [[ $# -gt 0 ]]; then
+        files=("$@")
+    else
+        # Interactive selection
+        if command -v fzf &>/dev/null; then
+            echo -e "${BOLD}${CYAN}Select file(s) or folder to push (TAB to select multiple, Enter to confirm):${RESET}"
+            while IFS= read -r f; do
+                [[ -n "$f" ]] && files+=("$f")
+            done < <(fzf -m --prompt="Files to push: " --preview='ls -la {}' 2>/dev/null || true)
+        fi
+
+        if [[ ${#files[@]} -eq 0 ]]; then
+            read -r -e -p "Enter path to file or directory to send: " input_path
+            input_path="${input_path/#\~/$HOME}"
+            if [[ -e "$input_path" ]]; then
+                files+=("$input_path")
+            else
+                log_error "File or path not found: $input_path"
+                return 1
+            fi
+        fi
+    fi
+
+    select_device || return 1
+
+    echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}Pushing to Phone (${CYAN}$SELECTED_DEVICE${RESET}${BOLD}): $target_dir${RESET}"
+    local count=0
+    local start_time
+    start_time=$(date +%s)
+
+    for item in "${files[@]}"; do
+        if [[ ! -e "$item" ]]; then
+            log_warn "Skipping non-existent path: $item"
+            continue
+        fi
+
+        local item_name
+        item_name=$(basename "$item")
+        log_info "Transferring: ${BOLD}$item_name${RESET}..."
+
+        if adb -s "$SELECTED_DEVICE" push -p "$item" "$target_dir/"; then
+            count=$((count + 1))
+            scan_phone_media "$target_dir/$item_name"
+        else
+            log_error "Failed to transfer $item_name"
+        fi
+    done
+
+    local duration=$(($(date +%s) - start_time))
+    if [[ $count -gt 0 ]]; then
+        log_success "Transferred $count item(s) to phone in ${duration}s."
+        notify "Transfer Complete" "$count item(s) transferred to Phone ($target_dir)" "normal"
+    fi
+}
+
+# --- 2. Pull Files from Phone ---
+cmd_pull() {
+    local preset="${1:-photos}"
+    local dest="${2:-.}"
+    dest="${dest/#\~/$HOME}"
+
+    select_device || return 1
+
+    local remote_src=""
+    local local_target=""
+
+    case "$preset" in
+        photos|camera|dcim)
+            remote_src="/sdcard/DCIM/Camera"
+            local_target="${dest:-$HOME/Pictures/Phone_Camera}"
+            mkdir -p "$local_target"
+            echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}Pulling Camera Photos from Phone...${RESET}"
+            ;;
+        downloads|download)
+            remote_src="/sdcard/Download"
+            local_target="${dest:-$HOME/Downloads/Phone_Downloads}"
+            mkdir -p "$local_target"
+            echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}Pulling Downloads from Phone...${RESET}"
+            ;;
+        all)
+            remote_src="/sdcard/"
+            local_target="${dest:-$HOME/Phone_Backup}"
+            mkdir -p "$local_target"
+            echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}Pulling Entire SDCard from Phone...${RESET}"
+            ;;
+        *)
+            remote_src="$preset"
+            local_target="$dest"
+            mkdir -p "$local_target"
+            echo -e "\n${BOLD}${PURPLE}==>${RESET} ${BOLD}Pulling $remote_src from Phone...${RESET}"
+            ;;
+    esac
+
+    log_info "Source: ${CYAN}$remote_src${RESET}"
+    log_info "Destination: ${GREEN}$local_target${RESET}"
+
+    local start_time
+    start_time=$(date +%s)
+
+    if adb -s "$SELECTED_DEVICE" pull -a "$remote_src" "$local_target/"; then
+        local duration=$(($(date +%s) - start_time))
+        log_success "Pull complete in ${duration}s."
+        notify "Download Complete" "Pulled files from phone to $local_target" "normal"
+    else
+        log_error "Failed to pull from $remote_src"
+        notify "Download Failed" "Failed to pull files from phone" "critical"
+        return 1
+    fi
+}
+
+# --- 3. Switch USB Phone to Wireless ADB ---
+cmd_tcpip() {
+    select_device || return 1
+
+    log_info "Switching device ($SELECTED_DEVICE) to TCP/IP mode on port 5555..."
+    adb -s "$SELECTED_DEVICE" tcpip 5555
+    sleep 2
+
+    # Discover phone's Wi-Fi IP address
+    local phone_ip
+    phone_ip=$(adb -s "$SELECTED_DEVICE" shell ip -f inet addr show wlan0 2>/dev/null | awk '/inet / {print $2}' | cut -d/ -f1 | head -n 1)
+
+    if [[ -z "$phone_ip" ]]; then
+        phone_ip=$(adb -s "$SELECTED_DEVICE" shell ip route 2>/dev/null | awk '{print $9}' | grep -E '^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | head -n 1 || true)
+    fi
+
+    if [[ -n "$phone_ip" ]]; then
+        log_info "Found phone IP: ${CYAN}$phone_ip${RESET}"
+        log_info "Connecting wirelessly..."
+        if adb connect "$phone_ip:5555"; then
+            echo -e "\n${BOLD}${GREEN}✔ Wireless ADB Connected!${RESET}"
+            echo -e "  You can now ${BOLD}unplug the USB cable${RESET} and transfer files wirelessly at high speed."
+            notify "Wireless ADB Connected" "You can now unplug the USB cable ($phone_ip:5555)" "normal"
+            return 0
+        fi
+    fi
+
+    echo -e "${YELLOW}Could not automatically determine phone IP.${RESET}"
+    read -r -p "Enter your phone's Wi-Fi IP address: " manual_ip
+    if [[ -n "$manual_ip" ]]; then
+        adb connect "$manual_ip:5555"
+        notify "Wireless ADB Connected" "Connected to $manual_ip:5555" "normal"
+    fi
+}
+
+# --- 4. Connect to Wireless ADB manually ---
+cmd_wifi() {
+    local target="$1"
+    if [[ -z "$target" ]]; then
+        read -r -p "Enter phone IP:Port (e.g. 192.168.0.50:5555 or pair code): " target
+    fi
+
+    if [[ "$target" == *"pair"* ]] || [[ "$2" == "pair" ]]; then
+        read -r -p "Enter pairing IP:Port (from Phone -> Wireless debugging -> Pair with code): " pair_addr
+        read -r -p "Enter 6-digit Wi-Fi pairing code: " pair_code
+        adb pair "$pair_addr" "$pair_code"
+        read -r -p "Now enter connection IP:Port (from main Wireless debugging screen): " connect_addr
+        adb connect "$connect_addr"
+    else
+        adb connect "$target"
+    fi
+}
+
+# --- 5. Screen Mirror & Drag-Drop Transfer (scrcpy) ---
+cmd_mirror() {
+    if ! command -v scrcpy &>/dev/null; then
+        log_error "scrcpy is not installed. Install via 'sudo pacman -S scrcpy'."
+        return 1
+    fi
+    select_device || return 1
+
+    log_info "Launching scrcpy screen mirror..."
+    echo -e "  ${PURPLE}💡 Tip:${RESET} Drag and drop any file from Thunar or Yazi into the phone window to transfer it instantly!"
+    scrcpy -s "$SELECTED_DEVICE" --stay-awake --window-title "Phone Mirror (Drag & Drop to Transfer)" &>/dev/null &
+    disown
+}
+
+# --- 6. Instant Web Share with QR Code ---
+cmd_web() {
+    local share_dir="${1:-$HOME/Downloads/Phone_Transfer}"
+    share_dir="${share_dir/#\~/$HOME}"
+    mkdir -p "$share_dir"
+
+    if command -v phone-webserver &>/dev/null; then
+        phone-webserver --dir "$share_dir"
+    elif [[ -f "$(dirname "${BASH_SOURCE[0]}")/phone-webserver" ]]; then
+        "$(dirname "${BASH_SOURCE[0]}")/phone-webserver" --dir "$share_dir"
+    else
+        log_error "phone-webserver helper not found."
+    fi
+}
+
+# --- 7. Launch LocalSend ---
+cmd_localsend() {
+    if command -v localsend &>/dev/null; then
+        log_info "Launching LocalSend..."
+        localsend &>/dev/null &
+        disown
+    elif command -v localsend-bin &>/dev/null; then
+        localsend-bin &>/dev/null &
+        disown
+    else
+        log_warn "LocalSend is not installed."
+        log_info "Install it from AUR: 'yay -S localsend-bin' or run ./install.sh"
+    fi
+}
+
+# --- Status & Diagnostic Display ---
+show_status() {
+    echo -e "\n${BOLD}${CYAN}=== Mobile Connection Status ===${RESET}"
+
+    # Local Wi-Fi IP
+    local local_ip
+    local_ip=$(ip route get 1.1.1.1 2>/dev/null | awk '{print $7; exit}' || echo "Not connected")
+    echo -e "  ${BOLD}PC Local IP:${RESET}      ${CYAN}$local_ip${RESET}"
+
+    # ADB Status
+    if command -v adb &>/dev/null; then
+        local adb_list
+        adb_list=$(adb devices -l 2>/dev/null | awk 'NR>1 && NF>0' || true)
+        if [[ -n "$adb_list" ]]; then
+            echo -e "  ${BOLD}ADB Devices:${RESET}"
+            while IFS= read -r dev; do
+                local serial state model
+                serial=$(echo "$dev" | awk '{print $1}')
+                state=$(echo "$dev" | awk '{print $2}')
+                model=$(echo "$dev" | grep -o 'model:[^ ]*' | cut -d: -f2 || echo "Unknown")
+                if [[ "$state" == "device" ]]; then
+                    echo -e "    ${GREEN}●${RESET} ${BOLD}$serial${RESET} ($model) - ${GREEN}ONLINE${RESET}"
+                    # Battery and storage
+                    local batt storage
+                    batt=$(adb -s "$serial" shell dumpsys battery 2>/dev/null | awk '/level:/ {print $2"%"}' || echo "N/A")
+                    storage=$(adb -s "$serial" shell df -h /sdcard 2>/dev/null | awk 'NR==2 {print $4" free of "$2}' || echo "N/A")
+                    echo -e "      ${GRAY}Battery: $batt | Storage: $storage${RESET}"
+                elif [[ "$state" == "unauthorized" ]]; then
+                    echo -e "    ${YELLOW}●${RESET} ${BOLD}$serial${RESET} - ${YELLOW}UNAUTHORIZED (Check phone prompt)${RESET}"
+                else
+                    echo -e "    ${RED}●${RESET} ${BOLD}$serial${RESET} - ${RED}$state${RESET}"
+                fi
+            done <<< "$adb_list"
+        else
+            echo -e "  ${BOLD}ADB Devices:${RESET}      ${GRAY}None detected${RESET}"
+        fi
+    fi
+
+    # MTP / GVFS status
+    local gvfs_mounts
+    gvfs_mounts=$(ls -d "/run/user/$(id -u)/gvfs/"* 2>/dev/null || true)
+    if [[ -n "$gvfs_mounts" ]]; then
+        echo -e "  ${BOLD}GVFS Mounts:${RESET}"
+        for m in $gvfs_mounts; do
+            echo -e "    ${GREEN}●${RESET} $(basename "$m")"
+        done
+        if [[ -L "$HOME/Phone" ]]; then
+            echo -e "    ${CYAN}🔗 ~/Phone -> $(readlink "$HOME/Phone")${RESET}"
+        fi
+    else
+        echo -e "  ${BOLD}GVFS Mounts:${RESET}      ${GRAY}None active${RESET}"
+    fi
+
+    # USB Hardware scan
+    local usb_phone
+    usb_phone=$(lsusb 2>/dev/null | grep -iE 'samsung|google|xiaomi|huawei|oneplus|motorola|apple|sony|lg|oppo|vivo|realme|transsion|tecno|infinix' || true)
+    if [[ -n "$usb_phone" ]]; then
+        echo -e "  ${BOLD}USB Phone Hardware:${RESET}"
+        while IFS= read -r u; do
+            echo -e "    ${PURPLE}●${RESET} $u"
+        done <<< "$usb_phone"
+    fi
+    echo ""
+}
+
+# --- Interactive Main Menu ---
+interactive_menu() {
+    clear
+    echo -e "${CYAN}${BOLD}"
+    cat <<"EOF"
+    ┌──────────────────────────────────────────────┐
+    │     📱 High-Speed Phone Transfer Suite       │
+    │     Arch Linux + Hyprland + Thunar + Yazi    │
+    └──────────────────────────────────────────────┘
+EOF
+    echo -e "${RESET}"
+
+    show_status
+
+    echo -e "${BOLD}Select an action:${RESET}"
+    echo -e "  ${CYAN}[1]${RESET} ${BOLD}⚡ Push Files to Phone${RESET} ${GRAY}(Max USB/Wi-Fi speed via ADB)${RESET}"
+    echo -e "  ${CYAN}[2]${RESET} ${BOLD}📸 Pull Photos & Camera${RESET} ${GRAY}(Phone /sdcard/DCIM -> ~/Pictures)${RESET}"
+    echo -e "  ${CYAN}[3]${RESET} ${BOLD}📥 Pull Downloads${RESET} ${GRAY}(Phone /sdcard/Download -> ~/Downloads)${RESET}"
+    echo -e "  ${CYAN}[4]${RESET} ${BOLD}📶 Switch USB to Wireless ADB${RESET} ${GRAY}(Unplug cable & stay connected)${RESET}"
+    echo -e "  ${CYAN}[5]${RESET} ${BOLD}🌐 Instant Web & QR Share${RESET} ${GRAY}(No app needed on phone)${RESET}"
+    echo -e "  ${CYAN}[6]${RESET} ${BOLD}📱 Screen Mirror & Drag-Drop${RESET} ${GRAY}(scrcpy on Hyprland)${RESET}"
+    echo -e "  ${CYAN}[7]${RESET} ${BOLD}🚀 Launch LocalSend${RESET} ${GRAY}(Cross-platform AirDrop GUI)${RESET}"
+    echo -e "  ${CYAN}[8]${RESET} ${BOLD}📂 Mount Phone to ~/Phone${RESET} ${GRAY}(For Yazi & Terminal copy/paste)${RESET}"
+    echo -e "  ${CYAN}[9]${RESET} ${BOLD}📁 Open in Thunar${RESET} ${GRAY}(GUI File Manager)${RESET}"
+    echo -e "  ${CYAN}[0]${RESET} Exit\n"
+
+    read -r -p "Choice [0-9]: " choice
+    case "$choice" in
+        1) cmd_push ;;
+        2) cmd_pull photos ;;
+        3) cmd_pull downloads ;;
+        4) cmd_tcpip ;;
+        5) cmd_web ;;
+        6) cmd_mirror ;;
+        7) cmd_localsend ;;
+        8)
+            if command -v phone-mount &>/dev/null; then
+                phone-mount mount
+            else
+                "$(dirname "${BASH_SOURCE[0]}")/phone-mount" mount
+            fi
+            ;;
+        9) thunar "${HOME}/Phone" 2>/dev/null || thunar ;;
+        0|q|exit) exit 0 ;;
+        *) log_warn "Invalid option." ;;
+    esac
+}
+
+# --- CLI Dispatcher ---
+case "${1:-}" in
+    push|send)
+        shift
+        cmd_push "$@"
+        ;;
+    pull)
+        shift
+        cmd_pull "${1:-photos}" "${2:-.}"
+        ;;
+    tcpip|wireless)
+        cmd_tcpip
+        ;;
+    wifi|connect)
+        shift
+        cmd_wifi "$@"
+        ;;
+    mirror|scrcpy)
+        cmd_mirror
+        ;;
+    web|qr)
+        shift
+        cmd_web "$@"
+        ;;
+    localsend)
+        cmd_localsend
+        ;;
+    status)
+        show_status
+        ;;
+    mount)
+        if command -v phone-mount &>/dev/null; then
+            phone-mount mount
+        else
+            "$(dirname "${BASH_SOURCE[0]}")/phone-mount" mount
+        fi
+        ;;
+    unmount)
+        if command -v phone-mount &>/dev/null; then
+            phone-mount unmount
+        else
+            "$(dirname "${BASH_SOURCE[0]}")/phone-mount" unmount
+        fi
+        ;;
+    -h|--help|help)
+        echo -e "${BOLD}phone-transfer${RESET} - High-speed mobile file transfer suite"
+        echo -e "\n${BOLD}Usage:${RESET}"
+        echo -e "  phone-transfer                       Launch interactive menu"
+        echo -e "  phone-transfer push <file/dir...>    Push file(s) to phone (/sdcard/Download/)"
+        echo -e "  phone-transfer pull [photos|downloads|all|<path>] [dest] Pull from phone"
+        echo -e "  phone-transfer tcpip                 Switch plugged USB phone to Wireless ADB"
+        echo -e "  phone-transfer wifi [ip:port]        Connect to wireless ADB"
+        echo -e "  phone-transfer web [dir]             Instant QR Code Web Server (No app needed)"
+        echo -e "  phone-transfer mirror                Mirror phone screen & drag-drop transfer"
+        echo -e "  phone-transfer localsend             Launch LocalSend GUI"
+        echo -e "  phone-transfer mount                 Mount phone to ~/Phone (for Yazi/terminal)"
+        echo -e "  phone-transfer unmount               Unmount ~/Phone"
+        echo -e "  phone-transfer status                Show phone connection & battery diagnostics"
+        ;;
+    *)
+        interactive_menu
+        ;;
+esac

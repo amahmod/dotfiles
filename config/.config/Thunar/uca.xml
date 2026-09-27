@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+<action>
+	<icon>utilities-terminal</icon>
+	<name>Open Terminal Here</name>
+	<submenu></submenu>
+	<unique-id>1789476037393826-1</unique-id>
+	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<description>Open terminal in the selected directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<startup-notify/>
+	<directories/>
+</action>
+<action>
+	<icon>phone</icon>
+	<name>⚡ Send to Phone (High Speed ADB)</name>
+	<submenu></submenu>
+	<unique-id>phone-transfer-push</unique-id>
+	<command>phone-transfer push %F</command>
+	<description>Push selected files/folders to phone at maximum USB/Wi-Fi speed</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+	<audio-files/>
+	<image-files/>
+	<other-files/>
+	<text-files/>
+	<video-files/>
+</action>
+<action>
+	<icon>camera-photo</icon>
+	<name>📸 Pull Photos from Phone (ADB)</name>
+	<submenu></submenu>
+	<unique-id>phone-transfer-pull-photos</unique-id>
+	<command>phone-transfer pull photos %f</command>
+	<description>Pull camera photos from phone into this directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>folder-download</icon>
+	<name>📥 Pull Downloads from Phone (ADB)</name>
+	<submenu></submenu>
+	<unique-id>phone-transfer-pull-downloads</unique-id>
+	<command>phone-transfer pull downloads %f</command>
+	<description>Pull downloaded files from phone into this directory</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>phone</icon>
+	<name>📱 Mirror Phone Screen (scrcpy)</name>
+	<submenu></submenu>
+	<unique-id>phone-mirror-scrcpy</unique-id>
+	<command>scrcpy --stay-awake</command>
+	<description>Mirror phone screen on Hyprland (drag and drop files to transfer)</description>
+	<range></range>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+</actions>

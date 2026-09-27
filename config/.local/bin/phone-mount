@@ -1,0 +1,180 @@
+#!/usr/bin/env bash
+
+# ====================================================================
+#  phone-mount: Mount mobile phone filesystem to ~/Phone
+#  Provides seamless copy/paste in Yazi, Thunar, and Terminal
+# ====================================================================
+
+set -eo pipefail
+
+BOLD="\033[1m"
+RESET="\033[0m"
+CYAN="\033[36m"
+GREEN="\033[32m"
+YELLOW="\033[33m"
+RED="\033[31m"
+
+PHONE_LINK="$HOME/Phone"
+GVFS_DIR="/run/user/$(id -u)/gvfs"
+QUIET=0
+
+for arg in "$@"; do
+    case "$arg" in
+        -q|--quiet) QUIET=1 ;;
+    esac
+done
+
+log() { [[ $QUIET -eq 0 ]] && echo -e "$1"; }
+
+notify() {
+    local title="$1"
+    local msg="$2"
+    local urgency="${3:-normal}"
+    if command -v notify-send &>/dev/null; then
+        notify-send -u "$urgency" -i phone -a "Phone Mount" "$title" "$msg" 2>/dev/null || true
+    fi
+}
+
+find_gvfs_mount() {
+    if [[ -d "$GVFS_DIR" ]]; then
+        local found
+        found=$(find "$GVFS_DIR" -maxdepth 1 -mindepth 1 \( -name 'mtp:host=*' -o -name 'afc:host=*' \) -print -quit 2>/dev/null)
+        if [[ -n "$found" && -d "$found" ]]; then
+            # If "Internal shared storage" exists inside, point directly into it
+            local storage
+            storage=$(find "$found" -maxdepth 1 -mindepth 1 -iname "*internal*storage*" -print -quit 2>/dev/null)
+            if [[ -n "$storage" && -d "$storage" ]]; then
+                echo "$storage"
+            else
+                echo "$found"
+            fi
+            return 0
+        fi
+    fi
+    return 1
+}
+
+do_mount() {
+    # 1. Check if already mounted
+    local active_mount
+    if active_mount=$(find_gvfs_mount); then
+        ln -sfn "$active_mount" "$PHONE_LINK"
+        log "${GREEN}✔${RESET} Phone already mounted via GVFS."
+        log "  ${CYAN}🔗 ~/Phone -> $active_mount${RESET}"
+        return 0
+    fi
+
+    if mountpoint -q "$PHONE_LINK" 2>/dev/null; then
+        log "${GREEN}✔${RESET} Phone is already mounted at ~/Phone."
+        return 0
+    fi
+
+    # 2. Try mounting via GIO (GVFS MTP)
+    log "${CYAN}ℹ${RESET} Searching for connected MTP/iOS devices..."
+    if command -v gio &>/dev/null; then
+        # Check if gio detects unmounted MTP device
+        local unmounted_dev
+        unmounted_dev=$(gio mount -li 2>/dev/null | grep -B 5 -i "can_mount=1" | grep -o 'unix-device: '\''[^'\'']*' | cut -d"'" -f2 | head -n 1 || true)
+        if [[ -n "$unmounted_dev" ]]; then
+            log "  Mounting device: $unmounted_dev..."
+            gio mount -d "$unmounted_dev" 2>/dev/null || true
+            sleep 1
+        fi
+    fi
+
+    # Check GVFS again after gio mount attempt
+    if active_mount=$(find_gvfs_mount); then
+        ln -sfn "$active_mount" "$PHONE_LINK"
+        log "${GREEN}✔${RESET} Phone mounted successfully via GVFS!"
+        log "  ${CYAN}🔗 ~/Phone -> $active_mount${RESET}"
+        notify "📱 Phone Mounted" "Phone storage is now available at ~/Phone" "normal"
+        return 0
+    fi
+
+    # 3. Fallback to simple-mtpfs if installed
+    if command -v simple-mtpfs &>/dev/null; then
+        log "  Attempting mount via simple-mtpfs..."
+        rm -f "$PHONE_LINK" 2>/dev/null || true
+        mkdir -p "$PHONE_LINK"
+        if simple-mtpfs "$PHONE_LINK" 2>/dev/null; then
+            log "${GREEN}✔${RESET} Phone mounted to ~/Phone via simple-mtpfs!"
+            notify "📱 Phone Mounted" "Phone mounted at ~/Phone via simple-mtpfs" "normal"
+            return 0
+        else
+            rmdir "$PHONE_LINK" 2>/dev/null || true
+        fi
+    fi
+
+    log "${RED}✖${RESET} No phone filesystem detected."
+    log "  ${YELLOW}Make sure your phone is:${RESET}"
+    log "    1. Connected via USB cable"
+    log "    2. Unlocked"
+    log "    3. USB mode set to 'File Transfer / MTP'"
+    notify "Mount Failed" "Phone not detected. Set USB mode to 'File Transfer / MTP'" "critical"
+    return 1
+}
+
+do_unmount() {
+    local unmounted=0
+
+    # If simple-mtpfs mount
+    if mountpoint -q "$PHONE_LINK" 2>/dev/null; then
+        if command -v fusermount3 &>/dev/null; then
+            fusermount3 -u "$PHONE_LINK" && unmounted=1
+        elif command -v fusermount &>/dev/null; then
+            fusermount -u "$PHONE_LINK" && unmounted=1
+        fi
+    fi
+
+    # If symlink to GVFS
+    if [[ -L "$PHONE_LINK" ]]; then
+        local target
+        target=$(readlink "$PHONE_LINK")
+        rm -f "$PHONE_LINK"
+        unmounted=1
+        if command -v gio &>/dev/null; then
+            # Unmount the backing GVFS mount
+            gio mount -u "$target" 2>/dev/null || true
+        fi
+    fi
+
+    if [[ $unmounted -eq 1 ]]; then
+        log "${GREEN}✔${RESET} Phone unmounted successfully."
+        notify "📱 Phone Unmounted" "$HOME/Phone unmounted" "normal"
+    else
+        log "${YELLOW}▲${RESET} Phone was not mounted."
+    fi
+}
+
+do_status() {
+    if [[ -L "$PHONE_LINK" ]]; then
+        local target
+        target=$(readlink "$PHONE_LINK")
+        echo -e "${GREEN}●${RESET} ${BOLD}Mounted (GVFS Symlink):${RESET}"
+        echo -e "  Location: ${CYAN}$target${RESET}"
+        echo -e "  Link:     ${CYAN}$PHONE_LINK${RESET}"
+        df -h "$PHONE_LINK" 2>/dev/null | awk 'NR==2 {print "  Storage:  " $4 " available (" $5 " used)"}' || true
+    elif mountpoint -q "$PHONE_LINK" 2>/dev/null; then
+        echo -e "${GREEN}●${RESET} ${BOLD}Mounted (FUSE):${RESET}"
+        echo -e "  Mount:    ${CYAN}$PHONE_LINK${RESET}"
+        df -h "$PHONE_LINK" 2>/dev/null | awk 'NR==2 {print "  Storage:  " $4 " available (" $5 " used)"}' || true
+    else
+        echo -e "${GRAY}○ Phone is not currently mounted to ~/Phone.${RESET}"
+    fi
+}
+
+case "${1:-mount}" in
+    mount)
+        do_mount
+        ;;
+    unmount|umount)
+        do_unmount
+        ;;
+    status)
+        do_status
+        ;;
+    *)
+        echo "Usage: phone-mount [mount|unmount|status] [-q|--quiet]"
+        exit 1
+        ;;
+esac
