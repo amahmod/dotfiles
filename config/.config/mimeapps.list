@@ -10,3 +10,5 @@ image/jpeg=imv.desktop
 image/webp=imv.desktop
 image/gif=imv.desktop
 image/svg+xml=imv.desktop
+x-scheme-handler/dbx=dbx-handler.desktop
+x-scheme-handler/bruno=bruno.desktop

@@ -55,6 +55,12 @@ if [ "$COUNT" -le 1 ]; then
         hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$PRIMARY', default = $is_default, persistent = true })" >/dev/null 2>&1 || true
     done
 
+    # Ensure primary monitor is on an expected workspace (1-10)
+    PRIM_WS=$(hyprctl monitors -j 2>/dev/null | jq -r ".[] | select(.name == \"$PRIMARY\") | .activeWorkspace.id" 2>/dev/null || echo "")
+    if [ -n "$PRIM_WS" ] && { [ "$PRIM_WS" -lt 1 ] || [ "$PRIM_WS" -gt 10 ]; }; then
+        hyprctl dispatch "hl.dsp.focus { workspace = 1 }" >/dev/null 2>&1 || true
+    fi
+
     sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" <<'EOF' >"$DIR/config.jsonc"
 {
   "name": "main",
@@ -218,6 +224,14 @@ else
         [ "$w" -eq 6 ] && is_default="true"
         hyprctl eval "hl.workspace_rule({ workspace = '$w', monitor = '$SECONDARY', default = $is_default, persistent = true })" >/dev/null 2>&1 || true
     done
+
+    # Ensure secondary monitor is on an expected workspace (6-10) and not fallback workspace 11
+    SEC_WS=$(hyprctl monitors -j 2>/dev/null | jq -r ".[] | select(.name == \"$SECONDARY\") | .activeWorkspace.id" 2>/dev/null || echo "")
+    if [ -n "$SEC_WS" ] && { [ "$SEC_WS" -lt 6 ] || [ "$SEC_WS" -gt 10 ]; }; then
+        PRIM_WS=$(hyprctl monitors -j 2>/dev/null | jq -r ".[] | select(.name == \"$PRIMARY\") | .activeWorkspace.id" 2>/dev/null || echo "1")
+        hyprctl dispatch "hl.dsp.focus { workspace = 6 }" >/dev/null 2>&1 || true
+        hyprctl dispatch "hl.dsp.focus { workspace = ${PRIM_WS:-1} }" >/dev/null 2>&1 || true
+    fi
 
     sed -e "s/__PRIMARY__/$PRIMARY/g" -e "s/__SECONDARY__/$SECONDARY/g" -e "s/__BATTERY__/$BATTERY_MODULE/g" <<'EOF' >"$DIR/config.jsonc"
 [
@@ -420,3 +434,4 @@ fi
 
 # Launch Waybar
 waybar -c "$DIR/config.jsonc" -s "$DIR/style.css" 200>&- &
+disown

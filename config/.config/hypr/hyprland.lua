@@ -42,7 +42,7 @@ hl.config {
 ---- DYNAMIC MONITORS & WORKSPACES ------
 -----------------------------------------
 
-local function setup_monitors_and_workspaces()
+local function setup_monitors_and_workspaces(skip_waybar)
     local mons = hl.get_monitors()
 
     if not mons or #mons == 0 then
@@ -70,6 +70,11 @@ local function setup_monitors_and_workspaces()
                 persistent = true,
             }
         end
+
+        local prim_ws = primary.active_workspace and primary.active_workspace.id
+        if prim_ws and (prim_ws < 1 or prim_ws > 10) then
+            hl.dispatch(hl.dsp.focus { workspace = 1 })
+        end
     else
         -- Primary monitor: workspaces 1-5.
         for w = 1, 5 do
@@ -92,9 +97,22 @@ local function setup_monitors_and_workspaces()
                 persistent = true,
             }
         end
+
+        -- Ensure secondary monitor starts on workspace 6 and not fallback workspace 11
+        local sec_ws = secondary.active_workspace and secondary.active_workspace.id
+        if not sec_ws or (sec_ws < 6 or sec_ws > 10) then
+            hl.dispatch(hl.dsp.focus { workspace = 6 })
+            if primary.active_workspace then
+                hl.dispatch(hl.dsp.focus { workspace = primary.active_workspace.id })
+            else
+                hl.dispatch(hl.dsp.focus { workspace = 1 })
+            end
+        end
     end
 
-    hl.exec_cmd(os.getenv 'HOME' .. '/.config/waybar/launch.sh')
+    if not skip_waybar then
+        hl.exec_cmd(os.getenv 'HOME' .. '/.config/waybar/launch.sh')
+    end
 end
 
 setup_monitors_and_workspaces()
@@ -109,6 +127,11 @@ hl.on('hyprland.start', function()
     hl.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/set-wallpaper.sh --restore')
 
     setup_monitors_and_workspaces()
+
+    -- Catch any monitors initializing asynchronously after hyprland.start
+    hl.timer(function()
+        setup_monitors_and_workspaces(true)
+    end, { timeout = 500 })
 end)
 
 hl.on('monitor.added', function()
