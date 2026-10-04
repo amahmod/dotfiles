@@ -1,0 +1,478 @@
+[
+  {
+    "app": "Hyprland",
+    "category": "System",
+    "key": "SUPER + SHIFT + r",
+    "title": "Reboot",
+    "description": "Reboot"
+  },
+  {
+    "app": "Hyprland",
+    "category": "System",
+    "key": "SUPER + SHIFT + d",
+    "title": "Shutdown",
+    "description": "Shutdown"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "SUPER + equal",
+    "title": "Volume up",
+    "description": "Volume up"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "XF86AudioRaiseVolume",
+    "title": "Raise audio volume 5%",
+    "description": "Raise audio volume 5%"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "SUPER + minus",
+    "title": "Volume down",
+    "description": "Volume down"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "XF86AudioLowerVolume",
+    "title": "Lower audio volume 5%",
+    "description": "Lower audio volume 5%"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "SUPER + m",
+    "title": "Mute",
+    "description": "Mute"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "XF86AudioMute",
+    "title": "Toggle audio mute",
+    "description": "Toggle audio mute"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Volume",
+    "key": "XF86AudioMicMute",
+    "title": "Microphone mute",
+    "description": "Microphone mute"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Screenshots",
+    "key": "SUPER + s",
+    "title": "Screenshot",
+    "description": "Screenshot"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Screenshots",
+    "key": "SUPER + SHIFT + s",
+    "title": "Screenshot area/script",
+    "description": "Screenshot area/script"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Launcher",
+    "key": "SUPER + space",
+    "title": "Wofi",
+    "description": "Wofi"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Launcher",
+    "key": "SUPER + Return",
+    "title": "Terminal",
+    "description": "Terminal"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Launcher",
+    "key": "SUPER + i",
+    "title": "Emoji Picker",
+    "description": "Emoji Picker"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Launcher",
+    "key": "SUPER + slash",
+    "title": "Keybindings Cheatsheet",
+    "description": "Keybindings Cheatsheet"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Apps",
+    "key": "SUPER + o, C",
+    "title": "Launch Google Chrome",
+    "description": "Launch Google Chrome"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Apps",
+    "key": "SUPER + o, B",
+    "title": "Launch Brave Browser",
+    "description": "Launch Brave Browser"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Apps",
+    "key": "SUPER + o, F",
+    "title": "Launch Firefox",
+    "description": "Launch Firefox"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Apps",
+    "key": "SUPER + o, T",
+    "title": "Launch Thunar File Manager",
+    "description": "Launch Thunar File Manager"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Apps",
+    "key": "SUPER + o, L",
+    "title": "Launch LocalSend (AirDrop alternative)",
+    "description": "Launch LocalSend (AirDrop alternative)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Terminal_Apps",
+    "key": "SUPER + t, L",
+    "title": "Launch Yazi (Terminal File Manager)",
+    "description": "Launch Yazi (Terminal File Manager)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Terminal_Apps",
+    "key": "SUPER + t, H",
+    "title": "Launch Htop (System Monitor)",
+    "description": "Launch Htop (System Monitor)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Terminal_Apps",
+    "key": "SUPER + t, N",
+    "title": "Launch Neovim IDE",
+    "description": "Launch Neovim IDE"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Submap: Terminal_Apps",
+    "key": "SUPER + t, P",
+    "title": "Launch Phone Transfer Suite",
+    "description": "Launch Phone Transfer Suite"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window",
+    "key": "SUPER + q",
+    "title": "Close window",
+    "description": "Close window"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window",
+    "key": "SUPER + f",
+    "title": "Fullscreen",
+    "description": "Fullscreen"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window",
+    "key": "SUPER + SHIFT + f",
+    "title": "Toggle floating",
+    "description": "Toggle floating"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window",
+    "key": "SUPER + ALT + q",
+    "title": "Quit Hyprland",
+    "description": "Quit Hyprland"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + h",
+    "title": "Focus window left",
+    "description": "Focus window left"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + j",
+    "title": "Focus window down",
+    "description": "Focus window down"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + k",
+    "title": "Focus window up",
+    "description": "Focus window up"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + l",
+    "title": "Focus window right",
+    "description": "Focus window right"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + left",
+    "title": "Focus window left (arrow key)",
+    "description": "Focus window left (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + down",
+    "title": "Focus window down (arrow key)",
+    "description": "Focus window down (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + up",
+    "title": "Focus window up (arrow key)",
+    "description": "Focus window up (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + right",
+    "title": "Focus window right (arrow key)",
+    "description": "Focus window right (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + Tab",
+    "title": "Focus last active window",
+    "description": "Focus last active window"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + comma",
+    "title": "Focus previous monitor",
+    "description": "Focus previous monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Focus",
+    "key": "SUPER + period",
+    "title": "Focus next monitor",
+    "description": "Focus next monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + h",
+    "title": "Swap with window left",
+    "description": "Swap with window left"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + j",
+    "title": "Swap with window down",
+    "description": "Swap with window down"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + k",
+    "title": "Swap with window up",
+    "description": "Swap with window up"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + l",
+    "title": "Swap with window right",
+    "description": "Swap with window right"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + left",
+    "title": "Swap with window left (arrow key)",
+    "description": "Swap with window left (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + down",
+    "title": "Swap with window down (arrow key)",
+    "description": "Swap with window down (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + up",
+    "title": "Swap with window up (arrow key)",
+    "description": "Swap with window up (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Swap / Move",
+    "key": "SUPER + SHIFT + right",
+    "title": "Swap with window right (arrow key)",
+    "description": "Swap with window right (arrow key)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Workspaces",
+    "key": "SUPER + bracketright",
+    "title": "Next workspace on current monitor",
+    "description": "Next workspace on current monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Workspaces",
+    "key": "SUPER + bracketleft",
+    "title": "Previous workspace on current monitor",
+    "description": "Previous workspace on current monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + SHIFT + comma",
+    "title": "Move window to previous/left monitor",
+    "description": "Move window to previous/left monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + SHIFT + period",
+    "title": "Move window to next/right monitor",
+    "description": "Move window to next/right monitor"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + CTRL + h",
+    "title": "Move floating window left",
+    "description": "Move floating window left"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + CTRL + l",
+    "title": "Move floating window right",
+    "description": "Move floating window right"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + CTRL + k",
+    "title": "Move floating window up",
+    "description": "Move floating window up"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Move",
+    "key": "SUPER + CTRL + j",
+    "title": "Move floating window down",
+    "description": "Move floating window down"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + h",
+    "title": "Resize window left",
+    "description": "Resize window left"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + l",
+    "title": "Resize window right",
+    "description": "Resize window right"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + k",
+    "title": "Resize window up",
+    "description": "Resize window up"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + j",
+    "title": "Resize window down",
+    "description": "Resize window down"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Mouse",
+    "key": "SUPER + mouse:272",
+    "title": "Move/drag floating window with mouse",
+    "description": "Move/drag floating window with mouse"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Mouse",
+    "key": "SUPER + mouse:273",
+    "title": "Resize floating window with mouse",
+    "description": "Resize floating window with mouse"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Waybar",
+    "key": "SUPER + SHIFT + b",
+    "title": "Reload Waybar status bar",
+    "description": "Reload Waybar status bar"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Waybar",
+    "key": "SUPER + SHIFT + g",
+    "title": "Toggle Waybar module background style",
+    "description": "Toggle Waybar module background style"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Theme",
+    "key": "SUPER + SHIFT + t",
+    "title": "Open theme switcher menu",
+    "description": "Open theme switcher menu"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Theme",
+    "key": "SUPER + ALT + t",
+    "title": "Cycle to next theme",
+    "description": "Cycle to next theme"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Opacity",
+    "key": "SUPER + SHIFT + o",
+    "title": "Toggle active window opacity (100% / 85%)",
+    "description": "Toggle active window opacity (100% / 85%)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Workspaces",
+    "key": "SUPER + 1 .. 9 / 0",
+    "title": "Switch Workspace 1–10",
+    "description": "Switch focus to workspace 1 through 10"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Workspaces",
+    "key": "SUPER + SHIFT + 1 .. 9 / 0",
+    "title": "Move Window to Workspace 1–10",
+    "description": "Send focused window to workspace 1 through 10"
+  }
+]

@@ -19,7 +19,7 @@ return {
                 function()
                     require('harpoon.mark').add_file()
                 end,
-                desc = 'Harpoon File 1',
+                desc = 'Harpoon Mark File',
             },
             {
                 '<leader>1',

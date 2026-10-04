@@ -1,0 +1,114 @@
+[
+  {
+    "app": "Thunar",
+    "category": "Context Menu (Actions)",
+    "key": "Right-Click",
+    "title": "Open Terminal Here",
+    "description": "Open terminal in the selected directory"
+  },
+  {
+    "app": "Thunar",
+    "category": "Context Menu (Actions)",
+    "key": "Right-Click",
+    "title": "⚡ Send to Phone (High Speed ADB)",
+    "description": "Push selected files/folders to phone at maximum USB/Wi-Fi speed"
+  },
+  {
+    "app": "Thunar",
+    "category": "Context Menu (Actions)",
+    "key": "Right-Click",
+    "title": "📸 Pull Photos from Phone (ADB)",
+    "description": "Pull camera photos from phone into this directory"
+  },
+  {
+    "app": "Thunar",
+    "category": "Context Menu (Actions)",
+    "key": "Right-Click",
+    "title": "📥 Pull Downloads from Phone (ADB)",
+    "description": "Pull downloaded files from phone into this directory"
+  },
+  {
+    "app": "Thunar",
+    "category": "Context Menu (Actions)",
+    "key": "Right-Click",
+    "title": "📱 Mirror Phone Screen (scrcpy)",
+    "description": "Mirror phone screen on Hyprland (drag and drop files to transfer)"
+  },
+  {
+    "app": "Thunar",
+    "category": "Navigation",
+    "key": "Alt + Up",
+    "title": "Parent Directory",
+    "description": "Open parent directory"
+  },
+  {
+    "app": "Thunar",
+    "category": "Navigation",
+    "key": "Alt + Left / Right",
+    "title": "History Back / Forward",
+    "description": "Go back or forward in folder navigation history"
+  },
+  {
+    "app": "Thunar",
+    "category": "Navigation",
+    "key": "Ctrl + L",
+    "title": "Location Bar",
+    "description": "Focus address / location bar for path typing"
+  },
+  {
+    "app": "Thunar",
+    "category": "Tabs & Windows",
+    "key": "Ctrl + T",
+    "title": "New Tab",
+    "description": "Open a new tab in current window"
+  },
+  {
+    "app": "Thunar",
+    "category": "Tabs & Windows",
+    "key": "Ctrl + W",
+    "title": "Close Tab",
+    "description": "Close active tab or window"
+  },
+  {
+    "app": "Thunar",
+    "category": "Tabs & Windows",
+    "key": "Ctrl + N",
+    "title": "New Window",
+    "description": "Open a new file manager window"
+  },
+  {
+    "app": "Thunar",
+    "category": "View",
+    "key": "Ctrl + H",
+    "title": "Toggle Hidden Files",
+    "description": "Show or hide dotfiles"
+  },
+  {
+    "app": "Thunar",
+    "category": "View",
+    "key": "Ctrl + 1 / 2 / 3",
+    "title": "View Modes",
+    "description": "Switch between Icon View, Detailed List, and Compact View"
+  },
+  {
+    "app": "Thunar",
+    "category": "File Operations",
+    "key": "F2",
+    "title": "Rename",
+    "description": "Rename the selected file or folder"
+  },
+  {
+    "app": "Thunar",
+    "category": "File Operations",
+    "key": "Delete",
+    "title": "Move to Trash",
+    "description": "Send selected file(s) to system trash"
+  },
+  {
+    "app": "Thunar",
+    "category": "File Operations",
+    "key": "Shift + Delete",
+    "title": "Permanent Delete",
+    "description": "Permanently erase file without using trash"
+  }
+]

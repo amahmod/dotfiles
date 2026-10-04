@@ -1,0 +1,177 @@
+[
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "h",
+    "title": "Pan image left",
+    "description": "Pan image left (pan -50 0)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "j",
+    "title": "Pan image down",
+    "description": "Pan image down (pan 0 50)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "k",
+    "title": "Pan image up",
+    "description": "Pan image up (pan 0 -50)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "l",
+    "title": "Pan image right",
+    "description": "Pan image right (pan 50 0)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "n",
+    "title": "Next image in directory",
+    "description": "Next image in directory (next)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "p",
+    "title": "Previous image in directory",
+    "description": "Previous image in directory (prev)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "gg",
+    "title": "Jump to first image",
+    "description": "Jump to first image (goto 0)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "G",
+    "title": "Jump to last image",
+    "description": "Jump to last image (goto -1)"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "i",
+    "title": "Zoom in",
+    "description": "Zoom in (zoom 1)"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "o",
+    "title": "Zoom out",
+    "description": "Zoom out (zoom -1)"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "z",
+    "title": "Scale to 100% actual size",
+    "description": "Scale to 100% actual size (scale actual)"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "Z",
+    "title": "Scale image to fit window",
+    "description": "Scale image to fit window (scale fit)"
+  },
+  {
+    "app": "IMV",
+    "category": "Rotation",
+    "key": "r",
+    "title": "Rotate 90 degrees clockwise",
+    "description": "Rotate 90 degrees clockwise (rotate 90)"
+  },
+  {
+    "app": "IMV",
+    "category": "Rotation",
+    "key": "R",
+    "title": "Rotate 90 degrees counter-clockwise",
+    "description": "Rotate 90 degrees counter-clockwise (rotate 270)"
+  },
+  {
+    "app": "IMV",
+    "category": "Display & System",
+    "key": "d",
+    "title": "Toggle overlay info (index, name, resolution)",
+    "description": "Toggle overlay info (index, name, resolution) (overlay)"
+  },
+  {
+    "app": "IMV",
+    "category": "Display & System",
+    "key": "f",
+    "title": "Toggle fullscreen mode",
+    "description": "Toggle fullscreen mode (fullscreen)"
+  },
+  {
+    "app": "IMV",
+    "category": "Display & System",
+    "key": "q",
+    "title": "Quit IMV",
+    "description": "Quit IMV (quit)"
+  },
+  {
+    "app": "IMV",
+    "category": "Display & System",
+    "key": "<Escape>",
+    "title": "Quit IMV",
+    "description": "Quit IMV (quit)"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "h / j / k / l",
+    "title": "Pan Image",
+    "description": "Pan image left / down / up / right"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "n / p",
+    "title": "Next / Prev Image",
+    "description": "View next or previous image in directory"
+  },
+  {
+    "app": "IMV",
+    "category": "Navigation",
+    "key": "g g / G",
+    "title": "First / Last Image",
+    "description": "Jump to first image or last image"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "+ / -",
+    "title": "Zoom In / Out",
+    "description": "Zoom in or zoom out on image"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "s",
+    "title": "Scale to Window",
+    "description": "Scale image to fit current window size"
+  },
+  {
+    "app": "IMV",
+    "category": "Zoom & Scaling",
+    "key": "c",
+    "title": "Center Image",
+    "description": "Re-center image in the viewport"
+  },
+  {
+    "app": "IMV",
+    "category": "General",
+    "key": "x",
+    "title": "Close Image",
+    "description": "Close current image and proceed to next"
+  }
+]

@@ -129,33 +129,51 @@ return {
         }
 
         local function setup_keymaps(bufnr, client)
-            local opts = { buffer = bufnr, silent = true }
+            local function map(mode, lhs, rhs, desc)
+                vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
+            end
 
             -- Navigation
-            vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-            vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-            vim.keymap.set('n', 'gT', vim.lsp.buf.type_definition, opts)
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-            vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-            vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+            map('n', 'gd', vim.lsp.buf.definition, 'LSP: Go to Definition')
+            map('n', 'gD', vim.lsp.buf.declaration, 'LSP: Go to Declaration')
+            map('n', 'gT', vim.lsp.buf.type_definition, 'LSP: Go to Type Definition')
+            map('n', 'K', vim.lsp.buf.hover, 'LSP: Hover Documentation')
+            map('n', 'gi', vim.lsp.buf.implementation, 'LSP: Go to Implementation')
+            map('n', 'gr', vim.lsp.buf.references, 'LSP: References')
 
             -- Actions
-            vim.keymap.set('n', '<leader>hd', vim.diagnostic.open_float, opts)
-            vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-            vim.keymap.set({ 'n', 'x' }, '<leader>ca', function()
+            map('n', '<leader>hd', vim.diagnostic.open_float, 'LSP: Show Line Diagnostics')
+            map('n', '<leader>rn', vim.lsp.buf.rename, 'LSP: Rename Symbol')
+            map({ 'n', 'x' }, '<leader>ca', function()
                 vim.lsp.buf.code_action {}
-            end, opts)
+            end, 'LSP: Code Action')
 
             -- Diagnostics navigation
-            vim.keymap.set('n', '[d', function() vim.diagnostic.jump { count = -1 } end, opts)
-            vim.keymap.set('n', ']d', function() vim.diagnostic.jump { count = 1 } end, opts)
-            vim.keymap.set('n', '[e', function() vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR } end, opts)
-            vim.keymap.set('n', ']e', function() vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR } end, opts)
-            vim.keymap.set('n', '[w', function() vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.WARN } end, opts)
-            vim.keymap.set('n', ']w', function() vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.WARN } end, opts)
+            map('n', '[d', function()
+                vim.diagnostic.jump { count = -1 }
+            end, 'LSP: Previous Diagnostic')
+            map('n', ']d', function()
+                vim.diagnostic.jump { count = 1 }
+            end, 'LSP: Next Diagnostic')
+            map('n', '[e', function()
+                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.ERROR }
+            end, 'LSP: Previous Error')
+            map('n', ']e', function()
+                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.ERROR }
+            end, 'LSP: Next Error')
+            map('n', '[w', function()
+                vim.diagnostic.jump { count = -1, severity = vim.diagnostic.severity.WARN }
+            end, 'LSP: Previous Warning')
+            map('n', ']w', function()
+                vim.diagnostic.jump { count = 1, severity = vim.diagnostic.severity.WARN }
+            end, 'LSP: Next Warning')
 
-            vim.keymap.set('i', '<C-h>', function() vim.lsp.buf.signature_help() end, opts)
-            vim.keymap.set('n', '<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end, { desc = 'Toggle Inlay Hint' })
+            map('i', '<C-h>', function()
+                vim.lsp.buf.signature_help()
+            end, 'LSP: Signature Help')
+            map('n', '<leader>th', function()
+                vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+            end, 'LSP: Toggle Inlay Hints')
         end
 
         -- Setup mason-lspconfig

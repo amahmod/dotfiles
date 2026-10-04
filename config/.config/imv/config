@@ -11,29 +11,47 @@ overlay_font = JetBrainsMono Nerd Font:10
 overlay_text = [${index}/${total}] ${filename} (${width}x${height})
 
 [binds]
-# Navigation (Vim hjkl)
+# --- Navigation ---
+# Pan image left
 h = pan -50 0
+# Pan image down
 j = pan 0 50
+# Pan image up
 k = pan 0 -50
+# Pan image right
 l = pan 50 0
 
+# Next image in directory
 n = next
+# Previous image in directory
 p = prev
+# Jump to first image
 gg = goto 0
+# Jump to last image
 G = goto -1
 
-# Scaling & Zoom
+# --- Zoom & Scaling ---
+# Zoom in
 i = zoom 1
+# Zoom out
 o = zoom -1
+# Scale to 100% actual size
 z = scale actual
+# Scale image to fit window
 Z = scale fit
 
-# Rotation
+# --- Rotation ---
+# Rotate 90 degrees clockwise
 r = rotate 90
+# Rotate 90 degrees counter-clockwise
 R = rotate 270
 
-# Overlay & Modes
+# --- Display & System ---
+# Toggle overlay info (index, name, resolution)
 d = overlay
+# Toggle fullscreen mode
 f = fullscreen
+# Quit IMV
 q = quit
+# Quit IMV
 <Escape> = quit

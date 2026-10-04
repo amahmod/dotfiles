@@ -54,9 +54,19 @@ set recolor-darkcolor "#cad3f5"
 set recolor-reverse-video "true"
 set recolor-keephues "true"
 
-# Keybindings (Vim-style shortcuts)
+# --- Keybindings (Vim-style shortcuts) ---
+
+# Toggle dark mode / color inversion
 map i recolor
+
+# Reload document from disk
 map r reload
+
+# Rotate document 90 degrees clockwise
 map R rotate
+
+# [Fullscreen] Adjust zoom to fit entire page in window
 map [fullscreen] a adjust_window best-fit
+
+# [Fullscreen] Adjust zoom to fit page width to window
 map [fullscreen] s adjust_window width

@@ -1,0 +1,191 @@
+[
+  {
+    "app": "Yazi",
+    "category": "Custom Shortcuts",
+    "key": "<C-s>",
+    "title": "Open shell in current directory",
+    "description": "Open shell in current directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Custom Shortcuts",
+    "key": "<C-e>",
+    "title": "Open Thunar in current directory",
+    "description": "Open Thunar in current directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Custom Shortcuts",
+    "key": "<C-t>",
+    "title": "Open Thunar in current directory",
+    "description": "Open Thunar in current directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Custom Shortcuts",
+    "key": "g t",
+    "title": "Open Thunar in current directory",
+    "description": "Open Thunar in current directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Custom Shortcuts",
+    "key": "w",
+    "title": "Set selected image as wallpaper",
+    "description": "Set selected image as wallpaper"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "g p",
+    "title": "Mount & go to Phone",
+    "description": "Mount & go to Phone (~/Phone)"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m p",
+    "title": "Fast push selected file",
+    "description": "Fast push selected file(s) to phone (ADB)"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m c",
+    "title": "Pull phone photos into current dir",
+    "description": "Pull phone photos into current dir"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m d",
+    "title": "Pull phone downloads into current dir",
+    "description": "Pull phone downloads into current dir"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m m",
+    "title": "Mount phone to ~/Phone",
+    "description": "Mount phone to ~/Phone"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m u",
+    "title": "Unmount ~/Phone",
+    "description": "Unmount ~/Phone"
+  },
+  {
+    "app": "Yazi",
+    "category": "Mobile Transfer",
+    "key": "m s",
+    "title": "Open phone transfer menu",
+    "description": "Open phone transfer menu"
+  },
+  {
+    "app": "Yazi",
+    "category": "Core Navigation",
+    "key": "h / j / k / l",
+    "title": "Navigate",
+    "description": "Parent directory / Down / Up / Enter directory or open file"
+  },
+  {
+    "app": "Yazi",
+    "category": "Core Navigation",
+    "key": "Enter",
+    "title": "Open File",
+    "description": "Open file or enter selected directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Core Navigation",
+    "key": "g g / G",
+    "title": "Jump Top / Bottom",
+    "description": "Jump to top or bottom of directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "y",
+    "title": "Yank (Copy)",
+    "description": "Copy selected files to internal clipboard"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "x",
+    "title": "Cut",
+    "description": "Cut selected files for moving"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "p",
+    "title": "Paste",
+    "description": "Paste yanked or cut files into current folder"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "d",
+    "title": "Move to Trash",
+    "description": "Soft delete selected file(s) into system trash"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "D",
+    "title": "Permanent Delete",
+    "description": "Permanently remove file(s) from disk"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "a",
+    "title": "Create File/Folder",
+    "description": "Create a new file (append / to create a folder)"
+  },
+  {
+    "app": "Yazi",
+    "category": "File Operations",
+    "key": "r",
+    "title": "Rename",
+    "description": "Rename the currently highlighted file"
+  },
+  {
+    "app": "Yazi",
+    "category": "Searching & View",
+    "key": "/",
+    "title": "Fuzzy Search",
+    "description": "Fuzzy search files within current directory"
+  },
+  {
+    "app": "Yazi",
+    "category": "Searching & View",
+    "key": "z",
+    "title": "Jump via Zoxide",
+    "description": "Fuzzy jump to recent directory using zoxide"
+  },
+  {
+    "app": "Yazi",
+    "category": "Searching & View",
+    "key": ".",
+    "title": "Toggle Hidden Files",
+    "description": "Show or hide dotfiles in file list"
+  },
+  {
+    "app": "Yazi",
+    "category": "Searching & View",
+    "key": "v",
+    "title": "Visual Selection",
+    "description": "Toggle continuous visual selection mode"
+  },
+  {
+    "app": "Yazi",
+    "category": "Searching & View",
+    "key": "q",
+    "title": "Quit Yazi",
+    "description": "Exit terminal file manager"
+  }
+]

@@ -1,0 +1,247 @@
+[
+  {
+    "app": "WezTerm",
+    "category": "Copy/Paste",
+    "key": "ALT + Enter",
+    "title": "Activate terminal copy mode",
+    "description": "Activate terminal copy mode"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Copy/Paste",
+    "key": "ALT + c",
+    "title": "Copy selection to clipboard",
+    "description": "Copy selection to clipboard"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Copy/Paste",
+    "key": "ALT + v",
+    "title": "Paste from clipboard",
+    "description": "Paste from clipboard"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Scroll",
+    "key": "ALT + u",
+    "title": "Scroll half page up",
+    "description": "Scroll half page up"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Scroll",
+    "key": "ALT + d",
+    "title": "Scroll half page down",
+    "description": "Scroll half page down"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Scroll",
+    "key": "ALT + g",
+    "title": "Scroll to top of scrollback",
+    "description": "Scroll to top of scrollback"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Scroll",
+    "key": "ALT + SHIFT + G",
+    "title": "Scroll to bottom of scrollback",
+    "description": "Scroll to bottom of scrollback"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Navigation",
+    "key": "ALT + h",
+    "title": "Focus pane to the left",
+    "description": "Focus pane to the left"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Navigation",
+    "key": "ALT + j",
+    "title": "Focus pane below",
+    "description": "Focus pane below"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Navigation",
+    "key": "ALT + k",
+    "title": "Focus pane above",
+    "description": "Focus pane above"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Navigation",
+    "key": "ALT + l",
+    "title": "Focus pane to the right",
+    "description": "Focus pane to the right"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + SHIFT + H",
+    "title": "Resize pane left",
+    "description": "Resize pane left"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + SHIFT + J",
+    "title": "Resize pane down",
+    "description": "Resize pane down"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + SHIFT + K",
+    "title": "Resize pane up",
+    "description": "Resize pane up"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + SHIFT + L",
+    "title": "Resize pane right",
+    "description": "Resize pane right"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Close",
+    "key": "ALT + q",
+    "title": "Close active pane",
+    "description": "Close active pane"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Close",
+    "key": "ALT + SHIFT + Q",
+    "title": "Close active tab",
+    "description": "Close active tab"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + n",
+    "title": "Create new tab",
+    "description": "Create new tab"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + .",
+    "title": "Switch to next tab",
+    "description": "Switch to next tab"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + ,",
+    "title": "Switch to previous tab",
+    "description": "Switch to previous tab"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 1",
+    "title": "Switch to tab 1",
+    "description": "Switch to tab 1"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 2",
+    "title": "Switch to tab 2",
+    "description": "Switch to tab 2"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 3",
+    "title": "Switch to tab 3",
+    "description": "Switch to tab 3"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 4",
+    "title": "Switch to tab 4",
+    "description": "Switch to tab 4"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 5",
+    "title": "Switch to tab 5",
+    "description": "Switch to tab 5"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 6",
+    "title": "Switch to tab 6",
+    "description": "Switch to tab 6"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 7",
+    "title": "Switch to tab 7",
+    "description": "Switch to tab 7"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 8",
+    "title": "Switch to tab 8",
+    "description": "Switch to tab 8"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Tabs",
+    "key": "ALT + 9",
+    "title": "Switch to tab 9",
+    "description": "Switch to tab 9"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Font Size",
+    "key": "ALT + =",
+    "title": "Increase font size",
+    "description": "Increase font size"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Font Size",
+    "key": "ALT + +",
+    "title": "Increase font size",
+    "description": "Increase font size"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Font Size",
+    "key": "ALT + -",
+    "title": "Decrease font size",
+    "description": "Decrease font size"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Font Size",
+    "key": "ALT + 0",
+    "title": "Reset font size to default",
+    "description": "Reset font size to default"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Font Size",
+    "key": "ALT + Numpad0",
+    "title": "Reset font size to default",
+    "description": "Reset font size to default"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Search",
+    "key": "ALT + Space",
+    "title": "Show WezTerm launcher menu",
+    "description": "Show WezTerm launcher menu"
+  }
+]

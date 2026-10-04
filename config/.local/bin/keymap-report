@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# ====================================================================
+#  keymap-report: Auto-generate keybinding report from all listed apps
+#  Generates KEYMAPS.md or outputs to custom file/stdout
+# ====================================================================
+
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KEYMAPS_BIN="$SCRIPT_DIR/keymaps"
+
+if [ ! -x "$KEYMAPS_BIN" ]; then
+    KEYMAPS_BIN="$(command -v keymaps || echo "")"
+fi
+
+if [ -z "$KEYMAPS_BIN" ] || [ ! -x "$KEYMAPS_BIN" ]; then
+    echo "Error: 'keymaps' binary not found." >&2
+    exit 1
+fi
+
+exec "$KEYMAPS_BIN" report "$@"

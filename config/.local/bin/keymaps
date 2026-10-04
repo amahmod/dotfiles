@@ -1,0 +1,1273 @@
+#!/usr/bin/env python3
+"""
+keymaps: Multi-Application Keybinding Helper & Cheatsheet Generator
+Supports Hyprland, WezTerm, Neovim, Yazi, Thunar, IMV, Zathura, and Kitty.
+
+Commands:
+  keymaps [--menu]       Launch interactive GUI fuzzy finder (Wofi)
+  keymaps --fzf          Launch interactive terminal fuzzy finder (Fzf)
+  keymaps --app <name>   Filter by specific application
+  keymaps sync           Extract keymaps & comments from configs into ~/.config/keymaps/
+  keymaps report [-o F]  Generate a comprehensive Markdown cheatsheet report
+  keymaps list [--json]  Print all keymaps as plain text or JSON
+"""
+
+import os
+import sys
+import re
+import json
+import shutil
+import argparse
+import subprocess
+import xml.etree.ElementTree as ET
+from pathlib import Path
+from typing import List, Dict, Any, Optional
+
+HOME = Path.home()
+
+
+def find_repo_root() -> Path:
+    p = Path(__file__).resolve()
+    for parent in p.parents:
+        if (parent / ".git").exists() or (parent / "install.sh").exists():
+            return parent
+    return HOME / ".arch_setup"
+
+
+REPO_ROOT = find_repo_root()
+DOTFILES_CONFIG = REPO_ROOT / "config" / ".config"
+USER_CONFIG = Path(os.environ.get("XDG_CONFIG_HOME", HOME / ".config"))
+
+SUPPORTED_APPS = [
+    "hypr",
+    "wezterm",
+    "nvim",
+    "yazi",
+    "thunar",
+    "imv",
+    "zathura",
+    "kitty",
+]
+
+APP_DISPLAY_NAMES = {
+    "hypr": "Hyprland",
+    "wezterm": "WezTerm",
+    "nvim": "Neovim",
+    "yazi": "Yazi",
+    "thunar": "Thunar",
+    "imv": "IMV",
+    "zathura": "Zathura",
+    "kitty": "Kitty",
+}
+
+APP_ICONS = {
+    "hypr": "",
+    "wezterm": "",
+    "nvim": "",
+    "yazi": "󰇥",
+    "thunar": "󰉋",
+    "imv": "",
+    "zathura": "",
+    "kitty": "󰄛",
+}
+
+
+def get_config_file(rel_path: str) -> Optional[Path]:
+    """Finds a config file either in ~/.config or within the dotfiles repository."""
+    p_user = USER_CONFIG / rel_path
+    if p_user.exists():
+        return p_user
+    p_repo = DOTFILES_CONFIG / rel_path
+    if p_repo.exists():
+        return p_repo
+    return None
+
+
+def get_keymaps_dir() -> Path:
+    """Returns the directory where app JSON files are stored."""
+    repo_km = DOTFILES_CONFIG / "keymaps"
+    if DOTFILES_CONFIG.exists():
+        repo_km.mkdir(parents=True, exist_ok=True)
+        return repo_km
+    user_km = USER_CONFIG / "keymaps"
+    user_km.mkdir(parents=True, exist_ok=True)
+    return user_km
+
+
+# ---------------------------------------------------------------------------
+# DEFAULT APP BASELINES (Curated built-in shortcuts for apps)
+# ---------------------------------------------------------------------------
+
+APP_BASELINES: Dict[str, List[Dict[str, str]]] = {
+    "yazi": [
+        {"category": "Core Navigation", "key": "h / j / k / l", "title": "Navigate", "description": "Parent directory / Down / Up / Enter directory or open file"},
+        {"category": "Core Navigation", "key": "Enter", "title": "Open File", "description": "Open file or enter selected directory"},
+        {"category": "Core Navigation", "key": "g g / G", "title": "Jump Top / Bottom", "description": "Jump to top or bottom of directory"},
+        {"category": "File Operations", "key": "y", "title": "Yank (Copy)", "description": "Copy selected files to internal clipboard"},
+        {"category": "File Operations", "key": "x", "title": "Cut", "description": "Cut selected files for moving"},
+        {"category": "File Operations", "key": "p", "title": "Paste", "description": "Paste yanked or cut files into current folder"},
+        {"category": "File Operations", "key": "d", "title": "Move to Trash", "description": "Soft delete selected file(s) into system trash"},
+        {"category": "File Operations", "key": "D", "title": "Permanent Delete", "description": "Permanently remove file(s) from disk"},
+        {"category": "File Operations", "key": "a", "title": "Create File/Folder", "description": "Create a new file (append / to create a folder)"},
+        {"category": "File Operations", "key": "r", "title": "Rename", "description": "Rename the currently highlighted file"},
+        {"category": "Searching & View", "key": "/", "title": "Fuzzy Search", "description": "Fuzzy search files within current directory"},
+        {"category": "Searching & View", "key": "z", "title": "Jump via Zoxide", "description": "Fuzzy jump to recent directory using zoxide"},
+        {"category": "Searching & View", "key": ".", "title": "Toggle Hidden Files", "description": "Show or hide dotfiles in file list"},
+        {"category": "Searching & View", "key": "v", "title": "Visual Selection", "description": "Toggle continuous visual selection mode"},
+        {"category": "Searching & View", "key": "q", "title": "Quit Yazi", "description": "Exit terminal file manager"},
+    ],
+    "zathura": [
+        {"category": "Navigation", "key": "h / j / k / l", "title": "Scroll", "description": "Scroll left / down / up / right through document"},
+        {"category": "Navigation", "key": "J / K", "title": "Next / Prev Page", "description": "Jump to next or previous document page"},
+        {"category": "Navigation", "key": "g g / G", "title": "First / Last Page", "description": "Jump to first page or last page"},
+        {"category": "Navigation", "key": "<PageDown> / <PageUp>", "title": "Page Scroll", "description": "Scroll down or up by a full page"},
+        {"category": "View & Zoom", "key": "r / R", "title": "Rotate Document", "description": "Rotate document 90 degrees clockwise or counter-clockwise"},
+        {"category": "View & Zoom", "key": "a", "title": "Fit Width", "description": "Adjust zoom to fit page width to window"},
+        {"category": "View & Zoom", "key": "s", "title": "Fit Page", "description": "Adjust zoom to fit entire page in window"},
+        {"category": "View & Zoom", "key": "d", "title": "Dual Page Mode", "description": "Toggle side-by-side two-page reading mode"},
+        {"category": "View & Zoom", "key": "+ / - / =", "title": "Zoom In / Out / Reset", "description": "Increase zoom, decrease zoom, or reset to 100%"},
+        {"category": "Colors & Search", "key": "<Ctrl-r>", "title": "Invert Colors", "description": "Toggle dark mode / color inversion for comfortable reading"},
+        {"category": "Colors & Search", "key": "/", "title": "Search Text", "description": "Search forward for text inside PDF document"},
+        {"category": "Colors & Search", "key": "n / N", "title": "Next / Prev Match", "description": "Jump to next or previous search result"},
+        {"category": "Navigation", "key": "f", "title": "Follow Link", "description": "Highlight and follow clickable links using keyboard hints"},
+        {"category": "General", "key": "q", "title": "Quit Zathura", "description": "Close PDF viewer"},
+    ],
+    "imv": [
+        {"category": "Navigation", "key": "h / j / k / l", "title": "Pan Image", "description": "Pan image left / down / up / right"},
+        {"category": "Navigation", "key": "n / p", "title": "Next / Prev Image", "description": "View next or previous image in directory"},
+        {"category": "Navigation", "key": "g g / G", "title": "First / Last Image", "description": "Jump to first image or last image"},
+        {"category": "Zoom & Scaling", "key": "+ / -", "title": "Zoom In / Out", "description": "Zoom in or zoom out on image"},
+        {"category": "Zoom & Scaling", "key": "s", "title": "Scale to Window", "description": "Scale image to fit current window size"},
+        {"category": "Zoom & Scaling", "key": "c", "title": "Center Image", "description": "Re-center image in the viewport"},
+        {"category": "Zoom & Scaling", "key": "r", "title": "Rotate Clockwise", "description": "Rotate image 90 degrees clockwise"},
+        {"category": "Display", "key": "f", "title": "Toggle Fullscreen", "description": "Switch between fullscreen and windowed view"},
+        {"category": "Display", "key": "d", "title": "Toggle Overlay", "description": "Show/hide image info (filename, dimensions, index)"},
+        {"category": "General", "key": "x", "title": "Close Image", "description": "Close current image and proceed to next"},
+        {"category": "General", "key": "q", "title": "Quit IMV", "description": "Exit image viewer"},
+    ],
+    "thunar": [
+        {"category": "Navigation", "key": "Alt + Up", "title": "Parent Directory", "description": "Open parent directory"},
+        {"category": "Navigation", "key": "Alt + Left / Right", "title": "History Back / Forward", "description": "Go back or forward in folder navigation history"},
+        {"category": "Navigation", "key": "Ctrl + L", "title": "Location Bar", "description": "Focus address / location bar for path typing"},
+        {"category": "Tabs & Windows", "key": "Ctrl + T", "title": "New Tab", "description": "Open a new tab in current window"},
+        {"category": "Tabs & Windows", "key": "Ctrl + W", "title": "Close Tab", "description": "Close active tab or window"},
+        {"category": "Tabs & Windows", "key": "Ctrl + N", "title": "New Window", "description": "Open a new file manager window"},
+        {"category": "View", "key": "Ctrl + H", "title": "Toggle Hidden Files", "description": "Show or hide dotfiles"},
+        {"category": "View", "key": "Ctrl + 1 / 2 / 3", "title": "View Modes", "description": "Switch between Icon View, Detailed List, and Compact View"},
+        {"category": "File Operations", "key": "F2", "title": "Rename", "description": "Rename the selected file or folder"},
+        {"category": "File Operations", "key": "Delete", "title": "Move to Trash", "description": "Send selected file(s) to system trash"},
+        {"category": "File Operations", "key": "Shift + Delete", "title": "Permanent Delete", "description": "Permanently erase file without using trash"},
+    ],
+    "kitty": [
+        {"category": "Window Management", "key": "Ctrl + Shift + Enter", "title": "New Window (Split)", "description": "Open a new terminal pane split"},
+        {"category": "Window Management", "key": "Ctrl + Shift + W", "title": "Close Window", "description": "Close currently active terminal pane"},
+        {"category": "Window Management", "key": "Ctrl + Shift + ] / [", "title": "Next / Prev Window", "description": "Cycle focus to next or previous split pane"},
+        {"category": "Window Management", "key": "Ctrl + Shift + L", "title": "Next Layout", "description": "Cycle layout (splits, stack, tall, grid)"},
+        {"category": "Tab Management", "key": "Ctrl + Shift + T", "title": "New Tab", "description": "Create a new terminal tab"},
+        {"category": "Tab Management", "key": "Ctrl + Shift + Q", "title": "Close Tab", "description": "Close active tab"},
+        {"category": "Tab Management", "key": "Ctrl + Shift + Right / Left", "title": "Next / Prev Tab", "description": "Switch to next or previous tab"},
+        {"category": "Scrolling", "key": "Ctrl + Shift + Up / Down", "title": "Scroll Line", "description": "Scroll terminal history by one line"},
+        {"category": "Scrolling", "key": "Ctrl + Shift + Page_Up / Page_Down", "title": "Scroll Page", "description": "Scroll terminal history by full page"},
+        {"category": "Scrolling", "key": "Ctrl + Shift + Home / End", "title": "Scroll Top / Bottom", "description": "Jump to beginning or end of terminal scrollback"},
+        {"category": "Font & Clipboard", "key": "Ctrl + Shift + + / - / Backspace", "title": "Font Size", "description": "Increase, decrease, or reset terminal font size"},
+        {"category": "Font & Clipboard", "key": "Ctrl + Shift + C / V", "title": "Copy / Paste", "description": "Copy selection or paste from system clipboard"},
+    ],
+    "nvim": [
+        {"category": "LSP & Diagnostics", "key": "<leader>lf", "title": "Format Buffer", "description": "Format file using Conform (StyLua, Biome, Ruff, shfmt)"},
+        {"category": "LSP & Diagnostics", "key": "<leader>ca", "title": "Code Action", "description": "Trigger LSP code action menu"},
+        {"category": "LSP & Diagnostics", "key": "<leader>rn", "title": "Rename Symbol", "description": "Rename variable, function, or symbol across project"},
+        {"category": "LSP & Diagnostics", "key": "gd / gD", "title": "Go to Definition", "description": "Jump to definition or declaration of symbol"},
+        {"category": "LSP & Diagnostics", "key": "K", "title": "Hover Documentation", "description": "Show floating LSP documentation for symbol under cursor"},
+        {"category": "LSP & Diagnostics", "key": "[d / ]d", "title": "Prev / Next Diagnostic", "description": "Jump to previous or next lint/syntax error"},
+        {"category": "LSP & Diagnostics", "key": "<leader>hd", "title": "Diagnostic Preview", "description": "Open floating preview of current line diagnostic"},
+        {"category": "Fuzzy Search (fzf-lua)", "key": "<leader>ff", "title": "Find Files", "description": "Search files in project via fzf-lua"},
+        {"category": "Fuzzy Search (fzf-lua)", "key": "<leader>fg", "title": "Live Grep", "description": "Search text across all project files via ripgrep"},
+        {"category": "Fuzzy Search (fzf-lua)", "key": "<leader>fb", "title": "Find Buffers", "description": "List and switch open Neovim buffers"},
+    ],
+}
+
+
+# ---------------------------------------------------------------------------
+# CONFIG PARSERS (Extracts live bindings & comments from dotfiles)
+# ---------------------------------------------------------------------------
+
+def parse_hyprland() -> List[Dict[str, str]]:
+    path = get_config_file("hypr/hyprland.lua")
+    if not path:
+        return []
+
+    with open(path, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    entries: List[Dict[str, str]] = []
+    current_category = "General"
+    last_comment = ""
+    current_submap: Optional[Dict[str, str]] = None
+    i = 0
+
+    while i < len(lines):
+        line = lines[i]
+        trimmed = line.strip()
+
+        # Section headers e.g. -------- WINDOW ------------------
+        header_m = re.match(r"^[-/]{3,}\s*[-*]+\s*([A-Za-z0-9_ &/-]+)\s*[-*]+", trimmed)
+        if header_m:
+            cat = header_m.group(1).strip()
+            cat = re.sub(r"[-*~=_/]+$", "", cat).strip()
+            if cat and cat != "-":
+                current_category = cat.title()
+            i += 1
+            last_comment = ""
+            continue
+
+        # Comments
+        if trimmed.startswith("--"):
+            comment_text = re.sub(r"^--+\s*", "", trimmed).strip()
+            if not re.match(r"^[-=~#*]{3,}$", comment_text) and not comment_text.startswith("{{{") and not comment_text.startswith("}}}"):
+                last_comment = comment_text
+            i += 1
+            continue
+
+        # Submaps start
+        submap_start = re.search(
+            r"hl\.bind\(\s*(?:main_mod\s*\.\.\s*)?['\"](?:\s*\+\s*)?([^'\"]+)['\"]\s*,\s*hl\.dsp\.submap\s*['\"]([^'\"]+)['\"]",
+            trimmed,
+        )
+        if submap_start:
+            prefix_key = submap_start.group(1).strip()
+            if "main_mod" in line:
+                prefix_key = f"SUPER + {prefix_key}"
+            submap_name = submap_start.group(2).strip()
+            current_submap = {"prefix": prefix_key, "name": submap_name}
+            current_category = f"Submap: {submap_name.title()}"
+            i += 1
+            continue
+
+        if "hl.dsp.submap 'reset'" in trimmed or 'hl.dsp.submap "reset"' in trimmed:
+            current_submap = None
+            current_category = "General"
+            i += 1
+            continue
+
+        # Check for hl.bind
+        if "hl.bind(" in trimmed:
+            bind_block = line
+            depth = bind_block.count("(") - bind_block.count(")")
+            while depth > 0 and i + 1 < len(lines):
+                i += 1
+                bind_block += " " + lines[i]
+                depth = bind_block.count("(") - bind_block.count(")")
+
+            key_m = re.search(r"hl\.bind\(\s*(main_mod\s*\.\.\s*)?['\"](?:\s*\+\s*)?([^'\"]+)['\"]", bind_block)
+            if key_m:
+                has_mod = bool(key_m.group(1))
+                key_raw = key_m.group(2).strip()
+                if key_raw.startswith("+"):
+                    key_raw = key_raw.lstrip("+").strip()
+
+                if current_submap and not has_mod and key_raw.lower() != "escape":
+                    full_key = f"{current_submap['prefix']}, {key_raw.upper()}"
+                elif has_mod:
+                    full_key = f"SUPER + {key_raw}"
+                else:
+                    full_key = key_raw
+
+                if full_key.strip() in ("SUPER +", "SUPER", "SUPER + SHIFT +", "SUPER + SHIFT"):
+                    i += 1
+                    continue
+
+                desc = last_comment
+
+                # Submap descriptions
+                if current_submap:
+                    if current_submap["name"] == "apps":
+                        apps_map = {
+                            "c": "Launch Google Chrome",
+                            "b": "Launch Brave Browser",
+                            "f": "Launch Firefox",
+                            "t": "Launch Thunar File Manager",
+                            "l": "Launch LocalSend (AirDrop alternative)",
+                        }
+                        desc = apps_map.get(key_raw.lower(), desc or f"Launch {key_raw}")
+                    elif current_submap["name"] == "terminal_apps":
+                        term_map = {
+                            "l": "Launch Yazi (Terminal File Manager)",
+                            "h": "Launch Htop (System Monitor)",
+                            "n": "Launch Neovim IDE",
+                            "p": "Launch Phone Transfer Suite",
+                        }
+                        desc = term_map.get(key_raw.lower(), desc or f"Launch {key_raw}")
+
+                # Context-aware fallback descriptions
+                if not desc or desc.startswith("hl.dsp.") or desc.startswith("SUPER +"):
+                    if "window.close" in bind_block:
+                        desc = "Close active window"
+                    elif "window.fullscreen" in bind_block:
+                        desc = "Toggle fullscreen mode"
+                    elif "window.float" in bind_block:
+                        desc = "Toggle window floating mode"
+                    elif "exit()" in bind_block:
+                        desc = "Exit Hyprland"
+                    elif "wofi" in bind_block and "drun" in bind_block:
+                        desc = "Open application launcher (Wofi)"
+                    elif "wofi-emoji" in bind_block:
+                        desc = "Open emoji picker (wofi-emoji)"
+                    elif "keymaps" in bind_block:
+                        desc = "Open keybindings cheatsheet menu"
+                    elif "launch.sh" in bind_block:
+                        desc = "Reload Waybar status bar"
+                    elif "theme-switch.sh menu" in bind_block:
+                        desc = "Open system theme switcher menu"
+                    elif "theme-switch.sh next" in bind_block:
+                        desc = "Cycle to next system theme"
+                    elif "toggle-opacity.sh" in bind_block:
+                        desc = "Toggle terminal opacity (100% ↔ 85%)"
+                    elif "toggle-waybar-bg.sh" in bind_block:
+                        desc = "Toggle Waybar module backgrounds"
+                    elif "screenshot" in bind_block or "flameshot" in bind_block or "grim" in bind_block:
+                        desc = "Capture screenshot to clipboard"
+                    elif "direction = 'l'" in bind_block and "swap" in bind_block:
+                        desc = "Swap window with left neighbor"
+                    elif "direction = 'r'" in bind_block and "swap" in bind_block:
+                        desc = "Swap window with right neighbor"
+                    elif "direction = 'u'" in bind_block and "swap" in bind_block:
+                        desc = "Swap window with upper neighbor"
+                    elif "direction = 'd'" in bind_block and "swap" in bind_block:
+                        desc = "Swap window with lower neighbor"
+                    elif "direction = 'l'" in bind_block:
+                        desc = "Focus window to the left"
+                    elif "direction = 'r'" in bind_block:
+                        desc = "Focus window to the right"
+                    elif "direction = 'u'" in bind_block:
+                        desc = "Focus window above"
+                    elif "direction = 'd'" in bind_block:
+                        desc = "Focus window below"
+                    elif "monitor = 'l'" in bind_block:
+                        desc = "Focus previous / left monitor"
+                    elif "monitor = 'r'" in bind_block:
+                        desc = "Focus next / right monitor"
+                    elif "last = true" in bind_block:
+                        desc = "Focus last active window"
+                    elif "workspace = 'm+1'" in bind_block:
+                        desc = "Next workspace on current monitor"
+                    elif "workspace = 'm-1'" in bind_block:
+                        desc = "Previous workspace on current monitor"
+                    elif "window.move" in bind_block:
+                        desc = "Move floating window position"
+                    elif "window.resize" in bind_block:
+                        desc = "Resize window dimensions"
+                    elif "mouse:272" in bind_block:
+                        desc = "Move floating window with mouse"
+                    elif "mouse:273" in bind_block:
+                        desc = "Resize window with mouse"
+                    elif "terminal" in bind_block:
+                        desc = "Launch WezTerm terminal"
+                    elif "reboot" in bind_block:
+                        desc = "Reboot system"
+                    elif "poweroff" in bind_block:
+                        desc = "Power off system"
+                    elif "RaiseVolume" in bind_block or "equal" in bind_block:
+                        desc = "Raise audio volume 5%"
+                    elif "LowerVolume" in bind_block or "minus" in bind_block:
+                        desc = "Lower audio volume 5%"
+                    elif "AudioMute" in bind_block:
+                        desc = "Toggle audio mute"
+                    elif "AudioMicMute" in bind_block:
+                        desc = "Toggle microphone mute"
+
+                # Infer category
+                cat = current_category
+                if cat in ("-", "General"):
+                    if any(w in desc.lower() for w in ["focus", "left", "right", "below", "above", "last active", "monitor"]):
+                        cat = "Focus & Navigation"
+                    elif any(w in desc.lower() for w in ["swap", "floating", "fullscreen", "close", "resize", "move"]):
+                        cat = "Window Management"
+                    elif any(w in desc.lower() for w in ["volume", "mute", "screenshot", "theme", "opacity"]):
+                        cat = "Media & Utilities"
+                    elif any(w in desc.lower() for w in ["reboot", "power", "exit", "terminal", "wofi", "launcher", "emoji"]):
+                        cat = "Launchers & System"
+
+                title = desc.split(":")[0].strip() if ":" in desc else desc
+
+                entries.append({
+                    "app": "Hyprland",
+                    "category": cat,
+                    "key": full_key,
+                    "title": title,
+                    "description": desc,
+                })
+                last_comment = ""
+        i += 1
+
+    entries.append({
+        "app": "Hyprland",
+        "category": "Workspaces",
+        "key": "SUPER + 1 .. 9 / 0",
+        "title": "Switch Workspace 1–10",
+        "description": "Switch focus to workspace 1 through 10",
+    })
+    entries.append({
+        "app": "Hyprland",
+        "category": "Workspaces",
+        "key": "SUPER + SHIFT + 1 .. 9 / 0",
+        "title": "Move Window to Workspace 1–10",
+        "description": "Send focused window to workspace 1 through 10",
+    })
+
+    return entries
+
+
+def parse_wezterm() -> List[Dict[str, str]]:
+    path = get_config_file("wezterm/keybindings.lua")
+    if not path:
+        return []
+
+    entries: List[Dict[str, str]] = []
+    current_category = "General"
+    last_comment = ""
+
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            t = line.strip()
+
+            # Folds e.g. -- {{{ COPY/PASTE (Enter for copy mode, c/v for copy/paste)
+            fold_m = re.search(r"--\s*\{\{\{\s*([A-Za-z0-9_/ -]+)(?:\s*\((.*?)\))?", t)
+            if fold_m:
+                cat = fold_m.group(1).strip()
+                current_category = cat.title()
+                continue
+
+            if t.startswith("--"):
+                comment_text = re.sub(r"^--+\s*", "", t).strip()
+                if not comment_text.startswith("{{{") and not comment_text.startswith("}}}") and not re.match(r"^[-=~#*]{3,}$", comment_text):
+                    last_comment = comment_text
+                continue
+
+            # { key = 'Enter', mods = 'ALT', action = 'ActivateCopyMode' },
+            m = re.search(
+                r"key\s*=\s*['\"]([^'\"]+)['\"]\s*,\s*mods\s*=\s*['\"]([^'\"]*)['\"]\s*,\s*action\s*=\s*(.+)",
+                t,
+            )
+            if m:
+                key = m.group(1)
+                mods = m.group(2)
+                action = m.group(3).rstrip(",").strip()
+
+                parts = []
+                if mods:
+                    parts.extend(m.strip() for m in mods.split("|") if m.strip())
+                parts.append(key)
+                full_key = " + ".join(parts)
+
+                desc = last_comment
+
+                if not desc or "wezterm.action" in desc or desc.startswith("act {"):
+                    if "ActivateCopyMode" in action:
+                        desc = "Activate terminal copy mode"
+                    elif "CopyTo" in action:
+                        desc = "Copy selection to clipboard"
+                    elif "PasteFrom" in action:
+                        desc = "Paste from clipboard"
+                    elif "ScrollByPage(-0.5)" in action:
+                        desc = "Scroll half page up"
+                    elif "ScrollByPage(0.5)" in action:
+                        desc = "Scroll half page down"
+                    elif "ScrollToTop" in action:
+                        desc = "Scroll to top of scrollback"
+                    elif "ScrollToBottom" in action:
+                        desc = "Scroll to bottom of scrollback"
+                    elif "SplitVertical" in action:
+                        desc = "Split pane vertically"
+                    elif "SplitHorizontal" in action:
+                        desc = "Split pane horizontally"
+                    elif "ActivatePaneDirection = 'Left'" in action or ("ActivatePaneDirection" in action and "'Left'" in action):
+                        desc = "Focus pane to the left"
+                    elif "ActivatePaneDirection = 'Right'" in action or ("ActivatePaneDirection" in action and "'Right'" in action):
+                        desc = "Focus pane to the right"
+                    elif "ActivatePaneDirection = 'Up'" in action or ("ActivatePaneDirection" in action and "'Up'" in action):
+                        desc = "Focus pane above"
+                    elif "ActivatePaneDirection = 'Down'" in action or ("ActivatePaneDirection" in action and "'Down'" in action):
+                        desc = "Focus pane below"
+                    elif "AdjustPaneSize" in action and "'Left'" in action:
+                        desc = "Resize pane left"
+                    elif "AdjustPaneSize" in action and "'Right'" in action:
+                        desc = "Resize pane right"
+                    elif "AdjustPaneSize" in action and "'Up'" in action:
+                        desc = "Resize pane up"
+                    elif "AdjustPaneSize" in action and "'Down'" in action:
+                        desc = "Resize pane down"
+                    elif "CloseCurrentPane" in action:
+                        desc = "Close active pane"
+                    elif "CloseCurrentTab" in action:
+                        desc = "Close active tab"
+                    elif "SpawnTab" in action:
+                        desc = "Spawn new tab"
+                    elif "ActivateTabRelativeNoWrap = 1" in action:
+                        desc = "Switch to next tab"
+                    elif "ActivateTabRelativeNoWrap = -1" in action:
+                        desc = "Switch to previous tab"
+                    elif "ActivateTab" in action:
+                        tab_m = re.search(r"ActivateTab\s*=\s*(\d+)", action)
+                        tab_idx = int(tab_m.group(1)) + 1 if tab_m else 1
+                        desc = f"Switch to tab {tab_idx}"
+                    elif "IncreaseFontSize" in action:
+                        desc = "Increase font size"
+                    elif "DecreaseFontSize" in action:
+                        desc = "Decrease font size"
+                    elif "ResetFontSize" in action:
+                        desc = "Reset font size to default"
+                    elif "ShowLauncher" in action:
+                        desc = "Show launcher menu"
+                    elif "QuickSelectArgs" in action:
+                        desc = "QuickSelect and open URL"
+                    elif "Search" in action:
+                        desc = "Search selection text"
+                    else:
+                        desc = action
+
+                title = desc.split(":")[0].strip() if ":" in desc else desc
+
+                entries.append({
+                    "app": "WezTerm",
+                    "category": current_category,
+                    "key": full_key,
+                    "title": title,
+                    "description": desc,
+                })
+                last_comment = ""
+
+    return entries
+
+
+def parse_nvim() -> List[Dict[str, str]]:
+    entries: List[Dict[str, str]] = []
+    seen_keys = set()
+
+    # 1. Parse core mappings (mappings.lua)
+    mappings_path = get_config_file("nvim/lua/mappings.lua")
+    if mappings_path and mappings_path.exists():
+        with open(mappings_path, "r", encoding="utf-8") as f:
+            lines = f.readlines()
+
+        current_category = "Core"
+        i = 0
+        while i < len(lines):
+            line = lines[i].strip()
+            if line.startswith("--") and not line.startswith("---"):
+                cat = re.sub(r"^--+\s*", "", line).strip()
+                if cat and not cat.startswith("="):
+                    current_category = cat.title()
+                i += 1
+                continue
+
+            if "map(" in line:
+                block = line
+                depth = block.count("(") - block.count(")")
+                while depth > 0 and i + 1 < len(lines):
+                    i += 1
+                    block += " " + lines[i].strip()
+                    depth = block.count("(") - block.count(")")
+
+                # map(mode, lhs, rhs, opts)
+                m = re.search(
+                    r"map\(\s*(?:'[^']*'|\"[^\"]*\"|\{[^}]*\}),\s*['\"]([^'\"]+)['\"].*?desc\s*=\s*['\"]([^'\"]+)['\"]",
+                    block,
+                )
+                if m:
+                    key = m.group(1).strip()
+                    desc = m.group(2).strip()
+                    if key not in seen_keys:
+                        entries.append({
+                            "app": "Neovim",
+                            "category": current_category,
+                            "key": key,
+                            "title": desc,
+                            "description": desc,
+                        })
+                        seen_keys.add(key)
+            i += 1
+
+    # 2. Parse plugin keys in nvim/lua/plugins/*.lua
+    nvim_base = mappings_path.parent.parent if mappings_path else None
+    plugins_dir = (nvim_base / "lua/plugins") if nvim_base else None
+
+    if plugins_dir and plugins_dir.exists():
+        plugin_names = {
+            "fzf.lua": "Fzf-Lua (Fuzzy Search)",
+            "neo_tree.lua": "File Explorer (Neo-tree)",
+            "comment_box.lua": "Editing & Comments",
+            "todo_comments.lua": "Code Navigation",
+            "harpoon.lua": "Harpoon",
+            "fugitive.lua": "Git (Fugitive)",
+            "conform.lua": "Formatting",
+            "undotree.lua": "Undo Tree",
+            "lsp.lua": "LSP & Diagnostics",
+            "gitsigns.lua": "Git (Gitsigns)",
+        }
+
+        for p_file in sorted(plugins_dir.glob("*.lua")):
+            fname = p_file.name
+            category = plugin_names.get(fname, fname.replace(".lua", "").title())
+            with open(p_file, "r", encoding="utf-8") as f:
+                p_content = f.read()
+
+            # Extract keys = { ... }
+            km = re.search(r"keys\s*=\s*(\{.+?\n\s*\})", p_content, re.DOTALL)
+            if km:
+                block = km.group(1)
+                items = re.findall(r"(\{[^{}]+(?:\{[^{}]*\}[^{}]*)*\})", block)
+                for it in items:
+                    key_m = re.search(r"['\"]([^\'\"]+)['\"]", it)
+                    desc_m = re.search(r"desc\s*=\s*['\"]([^'\"]+)['\"]", it)
+                    if key_m and desc_m:
+                        key = key_m.group(1).strip()
+                        desc = desc_m.group(1).strip()
+                        if key not in seen_keys:
+                            entries.append({
+                                "app": "Neovim",
+                                "category": category,
+                                "key": key,
+                                "title": desc,
+                                "description": desc,
+                            })
+                            seen_keys.add(key)
+
+            # Extract lsp / gitsigns map(...)
+            for m in re.finditer(
+                r"map\(\s*(?:'[^']*'|\"[^\"]*\"|\{[^}]*\}),\s*['\"]([^'\"]+)['\"].*?,\s*['\"]([^'\"]+)['\"]\s*\)",
+                p_content,
+                re.DOTALL,
+            ):
+                key = m.group(1).strip()
+                desc = m.group(2).strip()
+                if key not in seen_keys:
+                    entries.append({
+                        "app": "Neovim",
+                        "category": category,
+                        "key": key,
+                        "title": desc,
+                        "description": desc,
+                    })
+                    seen_keys.add(key)
+
+    # 3. Add baseline only if no entries were found from configs
+    if not entries:
+        for item in APP_BASELINES.get("nvim", []):
+            entries.append({
+                "app": "Neovim",
+                "category": item["category"],
+                "key": item["key"],
+                "title": item["title"],
+                "description": item["description"],
+            })
+
+    return entries
+
+
+def parse_yazi() -> List[Dict[str, str]]:
+    path = get_config_file("yazi/keymap.toml")
+    entries: List[Dict[str, str]] = []
+    seen_keys = set()
+
+    if path:
+        with open(path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        matches = re.findall(
+            r"\{\s*on\s*=\s*\[(.*?)\]\s*,\s*run\s*=\s*.*?desc\s*=\s*['\"]([^'\"]+)['\"]",
+            content,
+            re.DOTALL,
+        )
+        for keys_raw, desc in matches:
+            keys = [k.strip().strip("'\"") for k in keys_raw.split(",") if k.strip().strip("'\"")]
+            full_key = " ".join(keys)
+            cat = "Mobile Transfer" if "phone" in desc.lower() else "Custom Shortcuts"
+            title = desc.split("(")[0].strip() if "(" in desc else desc
+
+            entries.append({
+                "app": "Yazi",
+                "category": cat,
+                "key": full_key,
+                "title": title,
+                "description": desc,
+            })
+            seen_keys.add(full_key)
+
+    for item in APP_BASELINES.get("yazi", []):
+        if item["key"] not in seen_keys:
+            entries.append({
+                "app": "Yazi",
+                "category": item["category"],
+                "key": item["key"],
+                "title": item["title"],
+                "description": item["description"],
+            })
+
+    return entries
+
+
+def parse_thunar() -> List[Dict[str, str]]:
+    path = get_config_file("Thunar/uca.xml")
+    entries: List[Dict[str, str]] = []
+
+    if path:
+        try:
+            tree = ET.parse(path)
+            root = tree.getroot()
+            for action in root.findall("action"):
+                name = action.findtext("name", "").strip()
+                desc = action.findtext("description", "").strip()
+                entries.append({
+                    "app": "Thunar",
+                    "category": "Context Menu (Actions)",
+                    "key": "Right-Click",
+                    "title": name,
+                    "description": desc or name,
+                })
+        except Exception:
+            pass
+
+    for item in APP_BASELINES.get("thunar", []):
+        entries.append({
+            "app": "Thunar",
+            "category": item["category"],
+            "key": item["key"],
+            "title": item["title"],
+            "description": item["description"],
+        })
+
+    return entries
+
+
+def parse_imv() -> List[Dict[str, str]]:
+    path = get_config_file("imv/config")
+    entries: List[Dict[str, str]] = []
+    seen_keys = set()
+
+    if path:
+        current_category = "Navigation"
+        last_comment = ""
+        with open(path, "r", encoding="utf-8") as f:
+            in_binds = False
+            for line in f:
+                t = line.strip()
+                if t == "[binds]":
+                    in_binds = True
+                    continue
+                if t.startswith("[") and t != "[binds]":
+                    in_binds = False
+                    continue
+                if not in_binds:
+                    continue
+                if t.startswith("#"):
+                    comment = t.lstrip("#").strip()
+                    if not comment or comment.startswith("="):
+                        continue
+                    m_sec = re.match(r"^[-=~*]{2,}\s*(.+?)\s*[-=~*]{2,}$", comment)
+                    if m_sec:
+                        current_category = m_sec.group(1).strip()
+                        last_comment = ""
+                    else:
+                        last_comment = comment
+                    continue
+                if "=" in t:
+                    parts = t.split("=", 1)
+                    key = parts[0].strip()
+                    action = parts[1].strip()
+                    desc = last_comment or action
+                    entries.append({
+                        "app": "IMV",
+                        "category": current_category,
+                        "key": key,
+                        "title": desc,
+                        "description": f"{desc} ({action})" if last_comment else action,
+                    })
+                    seen_keys.add(key)
+                    last_comment = ""
+
+    for item in APP_BASELINES.get("imv", []):
+        if item["key"] not in seen_keys:
+            entries.append({
+                "app": "IMV",
+                "category": item["category"],
+                "key": item["key"],
+                "title": item["title"],
+                "description": item["description"],
+            })
+
+    return entries
+
+
+def parse_zathura() -> List[Dict[str, str]]:
+    path = get_config_file("zathura/zathurarc")
+    entries: List[Dict[str, str]] = []
+    seen_keys = set()
+
+    if path:
+        current_category = "Navigation"
+        last_comment = ""
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                t = line.strip()
+                if t.startswith("#"):
+                    comment = t.lstrip("#").strip()
+                    if not comment or comment.startswith("="):
+                        continue
+                    m_sec = re.match(r"^[-=~*]{2,}\s*(.+?)\s*[-=~*]{2,}$", comment)
+                    if m_sec:
+                        current_category = m_sec.group(1).strip()
+                        last_comment = ""
+                    else:
+                        last_comment = comment
+                    continue
+
+                if t.startswith("map"):
+                    m = re.match(r"^map\s+(\[[^\]]+\]\s+\S+|\S+)\s+(.+)$", t)
+                    if m:
+                        key = m.group(1).strip()
+                        action = m.group(2).strip()
+                        title = last_comment or action
+                        desc = f"{last_comment} ({action})" if last_comment else action
+                        cat = current_category
+                        if "[fullscreen]" in key:
+                            cat = "Fullscreen Mode"
+                        elif any(w in title.lower() for w in ["color", "reload", "rotate"]):
+                            cat = "View & Display"
+
+                        entries.append({
+                            "app": "Zathura",
+                            "category": cat,
+                            "key": key,
+                            "title": title,
+                            "description": desc,
+                        })
+                        seen_keys.add(key)
+                        last_comment = ""
+
+    for item in APP_BASELINES.get("zathura", []):
+        if item["key"] not in seen_keys:
+            entries.append({
+                "app": "Zathura",
+                "category": item["category"],
+                "key": item["key"],
+                "title": item["title"],
+                "description": item["description"],
+            })
+
+    return entries
+
+
+def parse_kitty() -> List[Dict[str, str]]:
+    path = get_config_file("kitty/kitty.conf")
+    entries: List[Dict[str, str]] = []
+    seen_keys = set()
+
+    if path:
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                t = line.strip()
+                if t.startswith("map"):
+                    parts = t.split(None, 2)
+                    if len(parts) >= 3:
+                        key = parts[1]
+                        action = parts[2]
+                        entries.append({
+                            "app": "Kitty",
+                            "category": "Custom Shortcuts",
+                            "key": key,
+                            "title": action,
+                            "description": action,
+                        })
+                        seen_keys.add(key)
+
+    for item in APP_BASELINES.get("kitty", []):
+        if item["key"] not in seen_keys:
+            entries.append({
+                "app": "Kitty",
+                "category": item["category"],
+                "key": item["key"],
+                "title": item["title"],
+                "description": item["description"],
+            })
+
+    return entries
+
+
+PARSERS = {
+    "hypr": parse_hyprland,
+    "wezterm": parse_wezterm,
+    "nvim": parse_nvim,
+    "yazi": parse_yazi,
+    "thunar": parse_thunar,
+    "imv": parse_imv,
+    "zathura": parse_zathura,
+    "kitty": parse_kitty,
+}
+
+
+# ---------------------------------------------------------------------------
+# SYNC: GENERATE JSON FILES
+# ---------------------------------------------------------------------------
+
+def sync_keymaps() -> Dict[str, List[Dict[str, str]]]:
+    """Scrapes configs and generates ~/.config/keymaps/<app>.json."""
+    km_dir = get_keymaps_dir()
+    all_data: Dict[str, List[Dict[str, str]]] = {}
+
+    for app_id, parser_fn in PARSERS.items():
+        items = parser_fn()
+        all_data[app_id] = items
+        out_file = km_dir / f"{app_id}.json"
+        with open(out_file, "w", encoding="utf-8") as f:
+            json.dump(items, f, indent=2, ensure_ascii=False)
+
+    return all_data
+
+
+def load_all_keymaps() -> Dict[str, List[Dict[str, str]]]:
+    """Loads keymaps from JSON files, automatically syncing if missing."""
+    km_dir = get_keymaps_dir()
+    data: Dict[str, List[Dict[str, str]]] = {}
+
+    needs_sync = False
+    for app_id in SUPPORTED_APPS:
+        json_file = km_dir / f"{app_id}.json"
+        if not json_file.exists():
+            needs_sync = True
+            break
+
+    if needs_sync:
+        return sync_keymaps()
+
+    for app_id in SUPPORTED_APPS:
+        json_file = km_dir / f"{app_id}.json"
+        if json_file.exists():
+            try:
+                with open(json_file, "r", encoding="utf-8") as f:
+                    data[app_id] = json.load(f)
+            except Exception:
+                data[app_id] = PARSERS[app_id]()
+        else:
+            data[app_id] = PARSERS[app_id]()
+
+    return data
+
+
+# ---------------------------------------------------------------------------
+# REPORT GENERATOR: COMPILES KEYMAPS.MD
+# ---------------------------------------------------------------------------
+
+def generate_report(data: Dict[str, List[Dict[str, str]]], output_path: Optional[Path] = None) -> str:
+    """Compiles all keymaps into a beautiful, categorized GitHub Markdown report."""
+    total_keys = sum(len(items) for items in data.values())
+
+    lines = [
+        "# ⌨️ System & Application Keybindings Cheatsheet",
+        "",
+        "> Complete keyboard shortcuts and quick-reference guide for all desktop environments and developer tools.",
+        f"> **Total Documented Keybindings:** `{total_keys}`",
+        "",
+        "---",
+        "",
+        "## 🧭 Table of Contents",
+        "",
+    ]
+
+    for app_id in SUPPORTED_APPS:
+        name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+        icon = APP_ICONS.get(app_id, "•")
+        count = len(data.get(app_id, []))
+        anchor = name.lower().replace(" ", "-")
+        lines.append(f"- [{icon} **{name}**](#{anchor}) (`{count}` shortcuts)")
+
+    lines.append("")
+    lines.append("---")
+    lines.append("")
+
+    for app_id in SUPPORTED_APPS:
+        name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+        icon = APP_ICONS.get(app_id, "•")
+        items = data.get(app_id, [])
+
+        lines.append(f"## {icon} {name}")
+        lines.append("")
+
+        if not items:
+            lines.append("*No custom keybindings configured.*")
+            lines.append("")
+            continue
+
+        # Group by category
+        categories: Dict[str, List[Dict[str, str]]] = {}
+        for item in items:
+            cat = item.get("category", "General")
+            categories.setdefault(cat, []).append(item)
+
+        for cat_name, cat_items in categories.items():
+            lines.append(f"### {cat_name}")
+            lines.append("")
+            lines.append("| Keybinding | Title | Description |")
+            lines.append("| :--- | :--- | :--- |")
+
+            for item in cat_items:
+                key = f"`{item['key']}`"
+                title = f"**{item.get('title', '')}**"
+                desc = item.get("description", "").replace("|", "\\|")
+                lines.append(f"| {key} | {title} | {desc} |")
+
+            lines.append("")
+
+        lines.append("---")
+        lines.append("")
+
+    report_content = "\n".join(lines)
+
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(report_content)
+
+    return report_content
+
+
+# ---------------------------------------------------------------------------
+# INTERACTIVE UI: WOFI (GUI) & FZF (CLI)
+# ---------------------------------------------------------------------------
+
+def run_wofi_menu(data: Dict[str, List[Dict[str, str]]], app_filter: Optional[str] = None):
+    """Launches interactive Wofi picker with Pango markup and clipboard copy."""
+    wofi_path = shutil.which("wofi")
+    if not wofi_path:
+        print("Error: 'wofi' executable not found. Falling back to terminal mode.", file=sys.stderr)
+        run_fzf_menu(data, app_filter)
+        return
+
+    flat_list = []
+    lookup: Dict[str, Dict[str, str]] = {}
+
+    for app_id in SUPPORTED_APPS:
+        if app_filter and app_filter.lower() not in (app_id.lower(), APP_DISPLAY_NAMES.get(app_id, "").lower()):
+            continue
+
+        name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+
+        for item in data.get(app_id, []):
+            key = item["key"]
+            title = item.get("title", "")
+            desc = item.get("description", "")
+
+            # Formatted display string for Wofi
+            display = f"[{name}] {key:26} ➔ {title}: {desc}"
+            flat_list.append(display)
+            lookup[display] = item
+
+    if not flat_list:
+        print("No keybindings found.", file=sys.stderr)
+        return
+
+    input_text = "\n".join(flat_list)
+    prompt = f"Keymaps ({APP_DISPLAY_NAMES.get(app_filter, app_filter)})" if app_filter else "Search Keymaps..."
+
+    try:
+        proc = subprocess.Popen(
+            [
+                wofi_path,
+                "--dmenu",
+                "--prompt", prompt,
+                "--width", "950",
+                "--height", "520",
+                "--insensitive",
+                "--allow-markup",
+            ],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        selected, _ = proc.communicate(input=input_text)
+        selected = selected.strip()
+
+        if selected and selected in lookup:
+            chosen = lookup[selected]
+            key = chosen["key"]
+            title = chosen.get("title", "")
+            app = chosen.get("app", "")
+
+            # Copy to clipboard via wl-copy
+            if shutil.which("wl-copy"):
+                subprocess.run(["wl-copy", key], check=False)
+
+            # Send Dunst notification
+            if shutil.which("notify-send"):
+                subprocess.run(
+                    [
+                        "notify-send",
+                        "-a", "Keymaps",
+                        "-i", "input-keyboard",
+                        f"[{app}] {title}",
+                        f"Copied '{key}' to clipboard!",
+                    ],
+                    check=False,
+                )
+
+    except Exception as e:
+        print(f"Wofi error: {e}", file=sys.stderr)
+
+
+def run_fzf_menu(data: Dict[str, List[Dict[str, str]]], app_filter: Optional[str] = None):
+    """Launches interactive terminal FZF picker with split preview."""
+    fzf_path = shutil.which("fzf")
+    if not fzf_path:
+        for app_id in SUPPORTED_APPS:
+            if app_filter and app_filter.lower() not in (app_id.lower(), APP_DISPLAY_NAMES.get(app_id, "").lower()):
+                continue
+            name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+            print(f"\n=== {name} ===")
+            for item in data.get(app_id, []):
+                print(f"  {item['key']:24} | {item['title']}: {item['description']}")
+        return
+
+    flat_list = []
+    lookup: Dict[str, Dict[str, str]] = {}
+
+    for app_id in SUPPORTED_APPS:
+        if app_filter and app_filter.lower() not in (app_id.lower(), APP_DISPLAY_NAMES.get(app_id, "").lower()):
+            continue
+        name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+        for item in data.get(app_id, []):
+            line = f"[{name}] {item['key']:24} ➔ {item['title']}"
+            flat_list.append(line)
+            lookup[line] = item
+
+    input_text = "\n".join(flat_list)
+
+    tmp_json = Path(f"/tmp/keymaps_lookup_{os.getpid()}.json")
+    with open(tmp_json, "w", encoding="utf-8") as f:
+        json.dump(lookup, f)
+
+    preview_cmd = (
+        f"python3 -c '"
+        f"import json, sys; "
+        f"data = json.load(open(\"{tmp_json}\")); "
+        f"item = data.get(sys.argv[1], {{}}); "
+        f"print(\"\\033[1;36mApplication:\\033[0m \" + item.get(\"app\", \"\")); "
+        f"print(\"\\033[1;34mCategory:   \\033[0m \" + item.get(\"category\", \"\")); "
+        f"print(\"\\033[1;33mKeybinding: \\033[0m \" + item.get(\"key\", \"\")); "
+        f"print(\"\\033[1;32mTitle:      \\033[0m \" + item.get(\"title\", \"\")); "
+        f"print(\"\\033[1;37mDescription:\\033[0m \" + item.get(\"description\", \"\")); "
+        f"' {{}}"
+    )
+
+    try:
+        proc = subprocess.Popen(
+            [
+                fzf_path,
+                "--prompt=Keymaps > ",
+                "--header=Enter: Copy keybinding to clipboard | Esc: Exit",
+                "--preview", preview_cmd,
+                "--preview-window=right:50%:wrap",
+            ],
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        selected, _ = proc.communicate(input=input_text)
+        selected = selected.strip()
+
+        if selected and selected in lookup:
+            chosen = lookup[selected]
+            key = chosen["key"]
+            if shutil.which("wl-copy"):
+                subprocess.run(["wl-copy", key], check=False)
+            print(f"Copied '{key}' to clipboard!")
+
+    finally:
+        if tmp_json.exists():
+            tmp_json.unlink(missing_ok=True)
+
+
+# ---------------------------------------------------------------------------
+# MAIN CLI DISPATCHER
+# ---------------------------------------------------------------------------
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Unified Keybinding Helper & Report Generator for Arch Linux + Hyprland",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+
+    parser.add_argument(
+        "command",
+        nargs="?",
+        default="menu",
+        choices=["menu", "fzf", "sync", "report", "list"],
+        help="Command to run (default: menu)",
+    )
+    parser.add_argument("-a", "--app", help="Filter by specific application name")
+    parser.add_argument("-m", "--menu", action="store_true", help="Launch GUI fuzzy searcher (Wofi)")
+    parser.add_argument("-f", "--fzf", action="store_true", help="Launch interactive terminal search (Fzf)")
+    parser.add_argument("-s", "--sync", action="store_true", help="Sync/scrape configs into ~/.config/keymaps/")
+    parser.add_argument("-r", "--report", action="store_true", help="Generate Markdown report")
+    parser.add_argument("-o", "--output", help="Output file path for Markdown report (default: KEYMAPS.md)")
+    parser.add_argument("--json", action="store_true", help="Output list as raw JSON")
+
+    args = parser.parse_args()
+
+    if args.sync:
+        args.command = "sync"
+    elif args.report:
+        args.command = "report"
+    elif args.fzf:
+        args.command = "fzf"
+    elif args.menu:
+        args.command = "menu"
+
+    if args.command == "sync":
+        print("Scanning config files and extracting keybindings...")
+        data = sync_keymaps()
+        km_dir = get_keymaps_dir()
+        for app_id, items in data.items():
+            name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+            print(f"  ✓ {name:12}: {len(items):3} keybindings -> {km_dir / (app_id + '.json')}")
+        print(f"\nAll keymaps synced successfully to: {km_dir}")
+        return
+
+    if args.command == "report":
+        data = load_all_keymaps()
+        out_path = Path(args.output) if args.output else REPO_ROOT / "KEYMAPS.md"
+        generate_report(data, out_path)
+        print(f"Report generated successfully at: {out_path}")
+        return
+
+    if args.command == "list":
+        data = load_all_keymaps()
+        if args.json:
+            print(json.dumps(data, indent=2, ensure_ascii=False))
+        else:
+            for app_id, items in data.items():
+                if args.app and args.app.lower() not in (app_id.lower(), APP_DISPLAY_NAMES.get(app_id, "").lower()):
+                    continue
+                name = APP_DISPLAY_NAMES.get(app_id, app_id.title())
+                print(f"\n=================== {name} ===================")
+                for item in items:
+                    title = item.get('title', '')
+                    desc = item.get('description', '')
+                    desc_text = desc if desc.startswith(title) else f"{title}: {desc}"
+                    print(f"  {item['key']:26} | {desc_text}")
+        return
+
+    if args.command == "fzf":
+        data = load_all_keymaps()
+        run_fzf_menu(data, args.app)
+        return
+
+    # Default: Wofi Menu
+    data = load_all_keymaps()
+    if os.environ.get("WAYLAND_DISPLAY") or os.environ.get("DISPLAY"):
+        run_wofi_menu(data, args.app)
+    else:
+        run_fzf_menu(data, args.app)
+
+
+if __name__ == "__main__":
+    main()

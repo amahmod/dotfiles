@@ -1,0 +1,86 @@
+[
+  {
+    "app": "Kitty",
+    "category": "Window Management",
+    "key": "Ctrl + Shift + Enter",
+    "title": "New Window (Split)",
+    "description": "Open a new terminal pane split"
+  },
+  {
+    "app": "Kitty",
+    "category": "Window Management",
+    "key": "Ctrl + Shift + W",
+    "title": "Close Window",
+    "description": "Close currently active terminal pane"
+  },
+  {
+    "app": "Kitty",
+    "category": "Window Management",
+    "key": "Ctrl + Shift + ] / [",
+    "title": "Next / Prev Window",
+    "description": "Cycle focus to next or previous split pane"
+  },
+  {
+    "app": "Kitty",
+    "category": "Window Management",
+    "key": "Ctrl + Shift + L",
+    "title": "Next Layout",
+    "description": "Cycle layout (splits, stack, tall, grid)"
+  },
+  {
+    "app": "Kitty",
+    "category": "Tab Management",
+    "key": "Ctrl + Shift + T",
+    "title": "New Tab",
+    "description": "Create a new terminal tab"
+  },
+  {
+    "app": "Kitty",
+    "category": "Tab Management",
+    "key": "Ctrl + Shift + Q",
+    "title": "Close Tab",
+    "description": "Close active tab"
+  },
+  {
+    "app": "Kitty",
+    "category": "Tab Management",
+    "key": "Ctrl + Shift + Right / Left",
+    "title": "Next / Prev Tab",
+    "description": "Switch to next or previous tab"
+  },
+  {
+    "app": "Kitty",
+    "category": "Scrolling",
+    "key": "Ctrl + Shift + Up / Down",
+    "title": "Scroll Line",
+    "description": "Scroll terminal history by one line"
+  },
+  {
+    "app": "Kitty",
+    "category": "Scrolling",
+    "key": "Ctrl + Shift + Page_Up / Page_Down",
+    "title": "Scroll Page",
+    "description": "Scroll terminal history by full page"
+  },
+  {
+    "app": "Kitty",
+    "category": "Scrolling",
+    "key": "Ctrl + Shift + Home / End",
+    "title": "Scroll Top / Bottom",
+    "description": "Jump to beginning or end of terminal scrollback"
+  },
+  {
+    "app": "Kitty",
+    "category": "Font & Clipboard",
+    "key": "Ctrl + Shift + + / - / Backspace",
+    "title": "Font Size",
+    "description": "Increase, decrease, or reset terminal font size"
+  },
+  {
+    "app": "Kitty",
+    "category": "Font & Clipboard",
+    "key": "Ctrl + Shift + C / V",
+    "title": "Copy / Paste",
+    "description": "Copy selection or paste from system clipboard"
+  }
+]

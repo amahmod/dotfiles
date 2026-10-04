@@ -52,11 +52,14 @@ A minimal, high-performance, and beautifully crafted Arch Linux desktop environm
 │   ├── .bash_profile              # Shell launch profile
 │   ├── .local/
 │   │   └── bin/
+│   │       ├── keymaps            # Unified keybinding search & cheatsheet CLI
+│   │       ├── keymap-report      # Auto-generate cheatsheet report (KEYMAPS.md)
 │   │       ├── phone-transfer     # High-speed phone transfer suite & CLI
 │   │       ├── phone-mount        # Mounts phone to ~/Phone for Yazi/terminal
 │   │       └── phone-webserver    # Instant QR code web transfer server
 │   ├── .zshrc                     # Zsh configuration (Starship, Vi mode, zoxide)
 │   └── .config/
+│       ├── keymaps/               # Extracted JSON keybinding registries for all apps
 │       ├── Thunar/
 │       │   └── uca.xml            # Thunar custom right-click actions (ADB Push/Pull)
 │       ├── dunst/                 # Notification daemon config
@@ -114,6 +117,7 @@ chmod +x install.sh
 | :--- | :--- |
 | `SUPER + Return` | Open Terminal (**WezTerm**) |
 | `SUPER + SPACE` | Open Application Launcher (**Wofi**) |
+| `SUPER + /` | Open Keybindings Cheatsheet (**Wofi**) |
 | `SUPER + I` | Open Emoji Picker (**wofi-emoji**) |
 | `SUPER + E` | Open Terminal File Manager (**Yazi**) |
 | `SUPER + SHIFT + E` | Open GUI File Manager (**Thunar**) |
@@ -215,6 +219,26 @@ Seamlessly transfer files between your Arch Linux machine and mobile devices (An
 | `K` | Hover Documentation |
 | `<leader>rn` | Rename Symbol |
 | `<leader>ca` | Code Action |
+
+---
+
+## ⌨️ Universal Keybindings Cheatsheet & Report Generator
+
+Instant search and cheatsheet generator covering **Hyprland**, **WezTerm**, **Neovim**, **Yazi**, **Thunar**, **IMV**, **Zathura**, and **Kitty**:
+
+### 1. Interactive GUI Finder (`SUPER + /`)
+- Press `SUPER + /` anywhere to pop up an interactive **Wofi** search menu.
+- **Search by Key, Title, or Description**: Type `nvim` to filter Neovim keys, `format` to find code formatting, `opacity` to find terminal toggles, or `phone` to find mobile transfers.
+- **Copy to Clipboard**: Selecting any entry automatically copies the shortcut to your clipboard (`wl-copy`) and sends a notification.
+
+### 2. Terminal Interactive Finder (`keymaps --fzf`)
+- Run `keymaps --fzf` in terminal for a two-pane interactive browser with live description preview.
+- Run `keymaps list` or `keymaps list -a <app>` to print keymaps directly.
+
+### 3. Automated Report Generator (`keymap-report` or `keymaps report`)
+- Automatically scrapes your actual config files (`hyprland.lua`, `keybindings.lua`, `mappings.lua`, `keymap.toml`, `imv/config`, `zathurarc`, `uca.xml`) using comments (`--`, `#`) and native `desc` metadata.
+- Run `keymap-report` to generate or refresh [KEYMAPS.md](file:///home/amahmod/.arch_setup/KEYMAPS.md) with comprehensive categorized tables.
+- Run `keymaps sync` to update the JSON databases in `~/.config/keymaps/`.
 
 ---
 

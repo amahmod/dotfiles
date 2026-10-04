@@ -1,0 +1,807 @@
+[
+  {
+    "app": "Neovim",
+    "category": "File Operations",
+    "key": "<leader>w",
+    "title": "Save",
+    "description": "Save"
+  },
+  {
+    "app": "Neovim",
+    "category": "File Operations",
+    "key": "<leader>q",
+    "title": "Quit",
+    "description": "Quit"
+  },
+  {
+    "app": "Neovim",
+    "category": "File Operations",
+    "key": "<C-s>",
+    "title": "Save",
+    "description": "Save"
+  },
+  {
+    "app": "Neovim",
+    "category": "Buffer Operations",
+    "key": "<leader>x",
+    "title": "Delete buffer",
+    "description": "Delete buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Buffer Operations",
+    "key": "<leader>ba",
+    "title": "Delete all buffers",
+    "description": "Delete all buffers"
+  },
+  {
+    "app": "Neovim",
+    "category": "Buffer Operations",
+    "key": "<leader>bo",
+    "title": "Delete other buffers",
+    "description": "Delete other buffers"
+  },
+  {
+    "app": "Neovim",
+    "category": "Buffer Operations",
+    "key": "<S-l>",
+    "title": "Go to next buffer",
+    "description": "Go to next buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Buffer Operations",
+    "key": "<S-h>",
+    "title": "Go to previous buffer",
+    "description": "Go to previous buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-h>",
+    "title": "Focus left split",
+    "description": "Focus left split"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-j>",
+    "title": "Focus down split",
+    "description": "Focus down split"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-k>",
+    "title": "Focus up split",
+    "description": "Focus up split"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-l>",
+    "title": "Focus right split",
+    "description": "Focus right split"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<A-h>",
+    "title": "Previous buffer",
+    "description": "Previous buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<A-l>",
+    "title": "Next buffer",
+    "description": "Next buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "j",
+    "title": "Move down by visual line",
+    "description": "Move down by visual line"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "k",
+    "title": "Move up by visual line",
+    "description": "Move up by visual line"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-d>",
+    "title": "Scroll down and center",
+    "description": "Scroll down and center"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "<C-u>",
+    "title": "Scroll up and center",
+    "description": "Scroll up and center"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "*",
+    "title": "Search word under cursor and center",
+    "description": "Search word under cursor and center"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "#",
+    "title": "Search word under cursor backwards and center",
+    "description": "Search word under cursor backwards and center"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "n",
+    "title": "Next search result",
+    "description": "Next search result"
+  },
+  {
+    "app": "Neovim",
+    "category": "Core Navigation",
+    "key": "N",
+    "title": "Prev search result",
+    "description": "Prev search result"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": "<",
+    "title": "Indent left and reselect",
+    "description": "Indent left and reselect"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": ">",
+    "title": "Indent right and reselect",
+    "description": "Indent right and reselect"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": "<Tab>",
+    "title": "Indent right",
+    "description": "Indent right"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": "<S-Tab>",
+    "title": "Indent left",
+    "description": "Indent left"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": "J",
+    "title": "Join lines and keep cursor",
+    "description": "Join lines and keep cursor"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": ",",
+    "title": "Break undo at comma",
+    "description": "Break undo at comma"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": ".",
+    "title": "Break undo at period",
+    "description": "Break undo at period"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": ";",
+    "title": "Break undo at semicolon",
+    "description": "Break undo at semicolon"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing Operations",
+    "key": "U",
+    "title": "Redo",
+    "description": "Redo"
+  },
+  {
+    "app": "Neovim",
+    "category": "Clipboard Operations",
+    "key": "<leader>y",
+    "title": "Copy to system clipboard",
+    "description": "Copy to system clipboard"
+  },
+  {
+    "app": "Neovim",
+    "category": "Clipboard Operations",
+    "key": "<leader>Y",
+    "title": "Copy line to system clipboard",
+    "description": "Copy line to system clipboard"
+  },
+  {
+    "app": "Neovim",
+    "category": "Clipboard Operations",
+    "key": "<leader>p",
+    "title": "Paste from system clipboard",
+    "description": "Paste from system clipboard"
+  },
+  {
+    "app": "Neovim",
+    "category": "Clipboard Operations",
+    "key": "<leader>P",
+    "title": "Paste from system clipboard before",
+    "description": "Paste from system clipboard before"
+  },
+  {
+    "app": "Neovim",
+    "category": "Keep Cursor At Bottom Of Visual Selection",
+    "key": "y",
+    "title": "Yank and keep cursor position",
+    "description": "Yank and keep cursor position"
+  },
+  {
+    "app": "Neovim",
+    "category": "Keep Cursor At Bottom Of Visual Selection",
+    "key": "p",
+    "title": "Paste over selection without copying",
+    "description": "Paste over selection without copying"
+  },
+  {
+    "app": "Neovim",
+    "category": "Path Operations",
+    "key": "<leader>yp",
+    "title": "Copy relative path",
+    "description": "Copy relative path"
+  },
+  {
+    "app": "Neovim",
+    "category": "Path Operations",
+    "key": "<leader>yP",
+    "title": "Copy absolute path",
+    "description": "Copy absolute path"
+  },
+  {
+    "app": "Neovim",
+    "category": "Toggle Operations",
+    "key": "<leader>tb",
+    "title": "Toggle background",
+    "description": "Toggle background"
+  },
+  {
+    "app": "Neovim",
+    "category": "Toggle Operations",
+    "key": "<leader>tw",
+    "title": "Toggle word wrap",
+    "description": "Toggle word wrap"
+  },
+  {
+    "app": "Neovim",
+    "category": "Toggle Operations",
+    "key": "<leader>ts",
+    "title": "Toggle spell check",
+    "description": "Toggle spell check"
+  },
+  {
+    "app": "Neovim",
+    "category": "Toggle Operations",
+    "key": "<leader>ti",
+    "title": "Toggle invisible characters",
+    "description": "Toggle invisible characters"
+  },
+  {
+    "app": "Neovim",
+    "category": "Toggle Operations",
+    "key": "<leader>tc",
+    "title": "Toggle cursor line",
+    "description": "Toggle cursor line"
+  },
+  {
+    "app": "Neovim",
+    "category": "Diagnostics (Neovim 0.12 Api)",
+    "key": "<leader>td",
+    "title": "Toggle diagnostics",
+    "description": "Toggle diagnostics"
+  },
+  {
+    "app": "Neovim",
+    "category": "Editing & Comments",
+    "key": "<leader>cb",
+    "title": "Comment box",
+    "description": "Comment box"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Fugitive)",
+    "key": "<leader>gg",
+    "title": "Vim Fugitive",
+    "description": "Vim Fugitive"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<C-p>",
+    "title": "Find files",
+    "description": "Find files"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>ff",
+    "title": "Find files",
+    "description": "Find files"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>fo",
+    "title": "Recent files",
+    "description": "Recent files"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>fd",
+    "title": "Find dotfiles",
+    "description": "Find dotfiles"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>fs",
+    "title": "Find files in cwd",
+    "description": "Find files in cwd"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>fz",
+    "title": "Resume last search",
+    "description": "Resume last search"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>sf",
+    "title": "Live grep",
+    "description": "Live grep"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>sb",
+    "title": "Find buffers",
+    "description": "Find buffers"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>st",
+    "title": "Find tabs",
+    "description": "Find tabs"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>sw",
+    "title": "Grep current word",
+    "description": "Grep current word"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>sl",
+    "title": "Search in current buffer",
+    "description": "Search in current buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>gf",
+    "title": "Git files",
+    "description": "Git files"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>gb",
+    "title": "Git branches",
+    "description": "Git branches"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>gc",
+    "title": "Git commits",
+    "description": "Git commits"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>gs",
+    "title": "Git status",
+    "description": "Git status"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>gl",
+    "title": "Git stash",
+    "description": "Git stash"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>vm",
+    "title": "Find marks",
+    "description": "Find marks"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>vr",
+    "title": "Find registers",
+    "description": "Find registers"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>vk",
+    "title": "Find keymaps",
+    "description": "Find keymaps"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>vc",
+    "title": "Find commands",
+    "description": "Find commands"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>/",
+    "title": "Search history",
+    "description": "Search history"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>:",
+    "title": "Command history",
+    "description": "Command history"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>dd",
+    "title": "Document diagnostics",
+    "description": "Document diagnostics"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>dw",
+    "title": "Workspace diagnostics",
+    "description": "Workspace diagnostics"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>dl",
+    "title": "Location list",
+    "description": "Location list"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>dq",
+    "title": "Quickfix list",
+    "description": "Quickfix list"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>hh",
+    "title": "Find help tags",
+    "description": "Find help tags"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>hs",
+    "title": "Spell suggestions",
+    "description": "Spell suggestions"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>ht",
+    "title": "Find colorschemes",
+    "description": "Find colorschemes"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>hm",
+    "title": "Find man pages",
+    "description": "Find man pages"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>ls",
+    "title": "Document symbols",
+    "description": "Document symbols"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>lw",
+    "title": "Workspace symbols",
+    "description": "Workspace symbols"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>lr",
+    "title": "Find references",
+    "description": "Find references"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>ld",
+    "title": "Find definitions",
+    "description": "Find definitions"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>li",
+    "title": "Find implementations",
+    "description": "Find implementations"
+  },
+  {
+    "app": "Neovim",
+    "category": "Fzf-Lua (Fuzzy Search)",
+    "key": "<leader>lI",
+    "title": "Incoming calls",
+    "description": "Incoming calls"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "]c",
+    "title": "Next Hunk",
+    "description": "Next Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "[c",
+    "title": "Prev Hunk",
+    "description": "Prev Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>hr",
+    "title": "Reset Hunk",
+    "description": "Reset Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>bs",
+    "title": "Stage Buffer",
+    "description": "Stage Buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>hu",
+    "title": "Undo Stage Hunk",
+    "description": "Undo Stage Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>br",
+    "title": "Reset Buffer",
+    "description": "Reset Buffer"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>hp",
+    "title": "Preview Hunk",
+    "description": "Preview Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>bL",
+    "title": "Blame Line",
+    "description": "Blame Line"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>bl",
+    "title": "Toggle Line Blame",
+    "description": "Toggle Line Blame"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>db",
+    "title": "Diff This",
+    "description": "Diff This"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "<leader>dB",
+    "title": "Diff This ~",
+    "description": "Diff This ~"
+  },
+  {
+    "app": "Neovim",
+    "category": "Git (Gitsigns)",
+    "key": "ih",
+    "title": "Select Hunk",
+    "description": "Select Hunk"
+  },
+  {
+    "app": "Neovim",
+    "category": "Harpoon",
+    "key": "<C-S-M>",
+    "title": "Harpoon Quick Menu",
+    "description": "Harpoon Quick Menu"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "gd",
+    "title": "LSP: Go to Definition",
+    "description": "LSP: Go to Definition"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "gD",
+    "title": "LSP: Go to Declaration",
+    "description": "LSP: Go to Declaration"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "gT",
+    "title": "LSP: Go to Type Definition",
+    "description": "LSP: Go to Type Definition"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "K",
+    "title": "LSP: Hover Documentation",
+    "description": "LSP: Hover Documentation"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "gi",
+    "title": "LSP: Go to Implementation",
+    "description": "LSP: Go to Implementation"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "gr",
+    "title": "LSP: References",
+    "description": "LSP: References"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "<leader>hd",
+    "title": "LSP: Show Line Diagnostics",
+    "description": "LSP: Show Line Diagnostics"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "<leader>rn",
+    "title": "LSP: Rename Symbol",
+    "description": "LSP: Rename Symbol"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "<leader>ca",
+    "title": "LSP: Code Action",
+    "description": "LSP: Code Action"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "[d",
+    "title": "LSP: Previous Diagnostic",
+    "description": "LSP: Previous Diagnostic"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "]d",
+    "title": "LSP: Next Diagnostic",
+    "description": "LSP: Next Diagnostic"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "[e",
+    "title": "LSP: Previous Error",
+    "description": "LSP: Previous Error"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "]e",
+    "title": "LSP: Next Error",
+    "description": "LSP: Next Error"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "[w",
+    "title": "LSP: Previous Warning",
+    "description": "LSP: Previous Warning"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "]w",
+    "title": "LSP: Next Warning",
+    "description": "LSP: Next Warning"
+  },
+  {
+    "app": "Neovim",
+    "category": "LSP & Diagnostics",
+    "key": "<leader>th",
+    "title": "LSP: Toggle Inlay Hints",
+    "description": "LSP: Toggle Inlay Hints"
+  },
+  {
+    "app": "Neovim",
+    "category": "File Explorer (Neo-tree)",
+    "key": "<leader>e",
+    "title": "NeoTree Toggle",
+    "description": "NeoTree Toggle"
+  },
+  {
+    "app": "Neovim",
+    "category": "Code Navigation",
+    "key": "]t",
+    "title": "Next todo comment",
+    "description": "Next todo comment"
+  },
+  {
+    "app": "Neovim",
+    "category": "Undo Tree",
+    "key": "<leader>tu",
+    "title": "Toggle Undo Tree",
+    "description": "Toggle Undo Tree"
+  }
+]

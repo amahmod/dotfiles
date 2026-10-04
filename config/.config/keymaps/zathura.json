@@ -1,0 +1,135 @@
+[
+  {
+    "app": "Zathura",
+    "category": "View & Display",
+    "key": "i",
+    "title": "Toggle dark mode / color inversion",
+    "description": "Toggle dark mode / color inversion (recolor)"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Display",
+    "key": "r",
+    "title": "Reload document from disk",
+    "description": "Reload document from disk (reload)"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Display",
+    "key": "R",
+    "title": "Rotate document 90 degrees clockwise",
+    "description": "Rotate document 90 degrees clockwise (rotate)"
+  },
+  {
+    "app": "Zathura",
+    "category": "Fullscreen Mode",
+    "key": "[fullscreen] a",
+    "title": "[Fullscreen] Adjust zoom to fit entire page in window",
+    "description": "[Fullscreen] Adjust zoom to fit entire page in window (adjust_window best-fit)"
+  },
+  {
+    "app": "Zathura",
+    "category": "Fullscreen Mode",
+    "key": "[fullscreen] s",
+    "title": "[Fullscreen] Adjust zoom to fit page width to window",
+    "description": "[Fullscreen] Adjust zoom to fit page width to window (adjust_window width)"
+  },
+  {
+    "app": "Zathura",
+    "category": "Navigation",
+    "key": "h / j / k / l",
+    "title": "Scroll",
+    "description": "Scroll left / down / up / right through document"
+  },
+  {
+    "app": "Zathura",
+    "category": "Navigation",
+    "key": "J / K",
+    "title": "Next / Prev Page",
+    "description": "Jump to next or previous document page"
+  },
+  {
+    "app": "Zathura",
+    "category": "Navigation",
+    "key": "g g / G",
+    "title": "First / Last Page",
+    "description": "Jump to first page or last page"
+  },
+  {
+    "app": "Zathura",
+    "category": "Navigation",
+    "key": "<PageDown> / <PageUp>",
+    "title": "Page Scroll",
+    "description": "Scroll down or up by a full page"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Zoom",
+    "key": "r / R",
+    "title": "Rotate Document",
+    "description": "Rotate document 90 degrees clockwise or counter-clockwise"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Zoom",
+    "key": "a",
+    "title": "Fit Width",
+    "description": "Adjust zoom to fit page width to window"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Zoom",
+    "key": "s",
+    "title": "Fit Page",
+    "description": "Adjust zoom to fit entire page in window"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Zoom",
+    "key": "d",
+    "title": "Dual Page Mode",
+    "description": "Toggle side-by-side two-page reading mode"
+  },
+  {
+    "app": "Zathura",
+    "category": "View & Zoom",
+    "key": "+ / - / =",
+    "title": "Zoom In / Out / Reset",
+    "description": "Increase zoom, decrease zoom, or reset to 100%"
+  },
+  {
+    "app": "Zathura",
+    "category": "Colors & Search",
+    "key": "<Ctrl-r>",
+    "title": "Invert Colors",
+    "description": "Toggle dark mode / color inversion for comfortable reading"
+  },
+  {
+    "app": "Zathura",
+    "category": "Colors & Search",
+    "key": "/",
+    "title": "Search Text",
+    "description": "Search forward for text inside PDF document"
+  },
+  {
+    "app": "Zathura",
+    "category": "Colors & Search",
+    "key": "n / N",
+    "title": "Next / Prev Match",
+    "description": "Jump to next or previous search result"
+  },
+  {
+    "app": "Zathura",
+    "category": "Navigation",
+    "key": "f",
+    "title": "Follow Link",
+    "description": "Highlight and follow clickable links using keyboard hints"
+  },
+  {
+    "app": "Zathura",
+    "category": "General",
+    "key": "q",
+    "title": "Quit Zathura",
+    "description": "Close PDF viewer"
+  }
+]

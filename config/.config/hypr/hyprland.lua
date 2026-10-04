@@ -229,30 +229,33 @@ hl.bind(main_mod .. ' + Return', hl.dsp.exec_cmd(terminal))
 -- Emoji Picker
 hl.bind(main_mod .. ' + i', hl.dsp.exec_cmd 'wofi-emoji')
 
+-- Keybindings Cheatsheet
+hl.bind(main_mod .. ' + slash', hl.dsp.exec_cmd(os.getenv 'HOME' .. '/.local/bin/keymaps --menu'))
+
 ---------------------------------
 ------ APPLICATION SUBMAP --------
 ---------------------------------
 
--- SUPER + O
+-- Enter application launcher submap
 hl.bind(main_mod .. ' + o', hl.dsp.submap 'apps')
 
 hl.define_submap('apps', 'reset', function()
-    -- SUPER + O, C
+    -- Launch Google Chrome
     hl.bind('c', hl.dsp.exec_cmd 'google-chrome-stable')
 
-    -- SUPER + O, B
+    -- Launch Brave Browser
     hl.bind('b', hl.dsp.exec_cmd 'brave')
 
-    -- SUPER + O, F
+    -- Launch Firefox
     hl.bind('f', hl.dsp.exec_cmd 'firefox')
 
-    -- SUPER + O, T
+    -- Launch Thunar File Manager
     hl.bind('t', hl.dsp.exec_cmd 'thunar')
 
-    -- SUPER + O, L
+    -- Launch LocalSend
     hl.bind('l', hl.dsp.exec_cmd 'localsend')
 
-    -- Escape
+    -- Exit submap
     hl.bind('escape', hl.dsp.submap 'reset')
 end)
 
@@ -260,26 +263,23 @@ end)
 ------ TERMINAL APP SUBMAP -------
 ---------------------------------
 
--- SUPER + T
+-- Enter terminal applications submap
 hl.bind(main_mod .. ' + t', hl.dsp.submap 'terminal_apps')
 
 hl.define_submap('terminal_apps', 'reset', function()
-    -- SUPER + T, L
+    -- Launch Yazi (terminal file manager)
     hl.bind('l', hl.dsp.exec_cmd(terminal .. ' start yazi'))
 
-    -- SUPER + T, H
+    -- Launch Htop (system monitor)
     hl.bind('h', hl.dsp.exec_cmd(terminal .. ' start htop'))
 
-    -- SUPER + T, N
+    -- Launch Neovim
     hl.bind('n', hl.dsp.exec_cmd(terminal .. ' start nvim'))
 
-    -- SUPER + T, P
+    -- Launch Phone Transfer (scrcpy / kdeconnect)
     hl.bind('p', hl.dsp.exec_cmd(terminal .. ' start phone-transfer'))
 
-    -- SUPER + T, Y
-    -- hl.bind('y', hl.dsp.exec_cmd(terminal .. ' start yazi'))
-
-    -- Escape
+    -- Exit submap
     hl.bind('escape', hl.dsp.submap 'reset')
 end)
 
@@ -308,7 +308,7 @@ hl.bind(main_mod .. ' + ALT + q', hl.dsp.exit())
 -------- FOCUS -------------------
 ---------------------------------
 
--- Vim-style directional focus
+-- Focus window left
 hl.bind(
     main_mod .. ' + h',
     hl.dsp.focus {
@@ -316,6 +316,7 @@ hl.bind(
     }
 )
 
+-- Focus window down
 hl.bind(
     main_mod .. ' + j',
     hl.dsp.focus {
@@ -323,6 +324,7 @@ hl.bind(
     }
 )
 
+-- Focus window up
 hl.bind(
     main_mod .. ' + k',
     hl.dsp.focus {
@@ -330,6 +332,7 @@ hl.bind(
     }
 )
 
+-- Focus window right
 hl.bind(
     main_mod .. ' + l',
     hl.dsp.focus {
@@ -337,7 +340,7 @@ hl.bind(
     }
 )
 
--- Arrow keys
+-- Focus window left (arrow key)
 hl.bind(
     main_mod .. ' + left',
     hl.dsp.focus {
@@ -345,6 +348,7 @@ hl.bind(
     }
 )
 
+-- Focus window down (arrow key)
 hl.bind(
     main_mod .. ' + down',
     hl.dsp.focus {
@@ -352,6 +356,7 @@ hl.bind(
     }
 )
 
+-- Focus window up (arrow key)
 hl.bind(
     main_mod .. ' + up',
     hl.dsp.focus {
@@ -359,6 +364,7 @@ hl.bind(
     }
 )
 
+-- Focus window right (arrow key)
 hl.bind(
     main_mod .. ' + right',
     hl.dsp.focus {
@@ -366,7 +372,7 @@ hl.bind(
     }
 )
 
--- Last focused window
+-- Focus last active window
 hl.bind(
     main_mod .. ' + Tab',
     hl.dsp.focus {
@@ -374,7 +380,7 @@ hl.bind(
     }
 )
 
--- Previous monitor
+-- Focus previous monitor
 hl.bind(
     main_mod .. ' + comma',
     hl.dsp.focus {
@@ -382,7 +388,7 @@ hl.bind(
     }
 )
 
--- Next monitor
+-- Focus next monitor
 hl.bind(
     main_mod .. ' + period',
     hl.dsp.focus {
@@ -394,7 +400,7 @@ hl.bind(
 -------- SWAP / MOVE -------------
 ---------------------------------
 
--- Swap left
+-- Swap with window left
 hl.bind(
     main_mod .. ' + SHIFT + h',
     hl.dsp.window.swap {
@@ -402,7 +408,7 @@ hl.bind(
     }
 )
 
--- Swap down
+-- Swap with window down
 hl.bind(
     main_mod .. ' + SHIFT + j',
     hl.dsp.window.swap {
@@ -410,7 +416,7 @@ hl.bind(
     }
 )
 
--- Swap up
+-- Swap with window up
 hl.bind(
     main_mod .. ' + SHIFT + k',
     hl.dsp.window.swap {
@@ -418,7 +424,7 @@ hl.bind(
     }
 )
 
--- Swap right
+-- Swap with window right
 hl.bind(
     main_mod .. ' + SHIFT + l',
     hl.dsp.window.swap {
@@ -426,7 +432,7 @@ hl.bind(
     }
 )
 
--- Arrow keys
+-- Swap with window left (arrow key)
 hl.bind(
     main_mod .. ' + SHIFT + left',
     hl.dsp.window.swap {
@@ -434,6 +440,7 @@ hl.bind(
     }
 )
 
+-- Swap with window down (arrow key)
 hl.bind(
     main_mod .. ' + SHIFT + down',
     hl.dsp.window.swap {
@@ -441,6 +448,7 @@ hl.bind(
     }
 )
 
+-- Swap with window up (arrow key)
 hl.bind(
     main_mod .. ' + SHIFT + up',
     hl.dsp.window.swap {
@@ -448,6 +456,7 @@ hl.bind(
     }
 )
 
+-- Swap with window right (arrow key)
 hl.bind(
     main_mod .. ' + SHIFT + right',
     hl.dsp.window.swap {
@@ -481,7 +490,7 @@ for i = 1, 10 do
     )
 end
 
--- Next/previous workspace on the current monitor (1-5 primary, 6-10 secondary)
+-- Next workspace on current monitor
 hl.bind(
     main_mod .. ' + bracketright',
     hl.dsp.focus {
@@ -489,6 +498,7 @@ hl.bind(
     }
 )
 
+-- Previous workspace on current monitor
 hl.bind(
     main_mod .. ' + bracketleft',
     hl.dsp.focus {
@@ -499,6 +509,7 @@ hl.bind(
 ---------------------------------
 -------- WINDOW MOVE -------------
 ---------------------------------
+
 -- Move window to previous/left monitor
 hl.bind(
     main_mod .. ' + SHIFT + comma',
@@ -559,7 +570,7 @@ hl.bind(
 -------- WINDOW RESIZE -----------
 ---------------------------------
 
--- Resize left
+-- Resize window left
 hl.bind(
     main_mod .. ' + ALT + h',
     hl.dsp.window.resize {
@@ -569,7 +580,7 @@ hl.bind(
     }
 )
 
--- Resize right
+-- Resize window right
 hl.bind(
     main_mod .. ' + ALT + l',
     hl.dsp.window.resize {
@@ -579,7 +590,7 @@ hl.bind(
     }
 )
 
--- Resize up
+-- Resize window up
 hl.bind(
     main_mod .. ' + ALT + k',
     hl.dsp.window.resize {
@@ -589,7 +600,7 @@ hl.bind(
     }
 )
 
--- Resize down
+-- Resize window down
 hl.bind(
     main_mod .. ' + ALT + j',
     hl.dsp.window.resize {
@@ -603,12 +614,12 @@ hl.bind(
 -------- MOUSE -------------------
 ---------------------------------
 
--- Move/drag window
+-- Move/drag floating window with mouse
 hl.bind(main_mod .. ' + mouse:272', hl.dsp.window.drag(), {
     mouse = true,
 })
 
--- Resize window
+-- Resize floating window with mouse
 hl.bind(main_mod .. ' + mouse:273', hl.dsp.window.resize(), {
     mouse = true,
 })
@@ -617,8 +628,10 @@ hl.bind(main_mod .. ' + mouse:273', hl.dsp.window.resize(), {
 -------- WAYBAR ------------------
 ---------------------------------
 
+-- Reload Waybar status bar
 hl.bind(main_mod .. ' + SHIFT + b', hl.dsp.exec_cmd(os.getenv 'HOME' .. '/.config/waybar/launch.sh'))
 
+-- Toggle Waybar module background style
 hl.bind(
     main_mod .. ' + SHIFT + g',
     hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/toggle-waybar-bg.sh')
@@ -628,11 +641,13 @@ hl.bind(
 -------- THEME -------------------
 ---------------------------------
 
+-- Open theme switcher menu
 hl.bind(
     main_mod .. ' + SHIFT + t',
     hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/theme-switch.sh menu')
 )
 
+-- Cycle to next theme
 hl.bind(
     main_mod .. ' + ALT + t',
     hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/theme-switch.sh next')
@@ -642,6 +657,7 @@ hl.bind(
 -------- OPACITY -----------------
 ---------------------------------
 
+-- Toggle active window opacity (100% / 85%)
 hl.bind(
     main_mod .. ' + SHIFT + o',
     hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/toggle-opacity.sh')
