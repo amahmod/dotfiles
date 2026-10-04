@@ -414,6 +414,20 @@
   },
   {
     "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + r",
+    "title": "Reset window size / split proportions",
+    "description": "Reset window size / split proportions"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Window Resize",
+    "key": "SUPER + ALT + 0",
+    "title": "Reset window size / split proportions",
+    "description": "Reset window size / split proportions"
+  },
+  {
+    "app": "Hyprland",
     "category": "Mouse",
     "key": "SUPER + mouse:272",
     "title": "Move/drag floating window with mouse",

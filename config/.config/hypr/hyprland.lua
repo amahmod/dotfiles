@@ -610,6 +610,30 @@ hl.bind(
     }
 )
 
+local function reset_window_size()
+    local win = hl.get_active_window()
+    if not win then
+        return
+    end
+    if win.floating then
+        hl.dispatch(hl.dsp.window.resize {
+            x = 1280,
+            y = 720,
+            exact = true,
+        })
+        hl.dispatch(hl.dsp.window.center())
+    else
+        hl.dispatch(hl.dsp.window.float { action = 'toggle' })
+        hl.dispatch(hl.dsp.window.float { action = 'toggle' })
+    end
+end
+
+-- Reset window size / split proportions
+hl.bind(main_mod .. ' + ALT + r', reset_window_size)
+
+-- Reset window size / split proportions
+hl.bind(main_mod .. ' + ALT + 0', reset_window_size)
+
 ---------------------------------
 -------- MOUSE -------------------
 ---------------------------------

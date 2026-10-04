@@ -1,14 +1,14 @@
 # ⌨️ System & Application Keybindings Cheatsheet
 
 > Complete keyboard shortcuts and quick-reference guide for all desktop environments and developer tools.
-> **Total Documented Keybindings:** `317`
+> **Total Documented Keybindings:** `321`
 
 ---
 
 ## 🧭 Table of Contents
 
-- [ **Hyprland**](#hyprland) (`68` shortcuts)
-- [ **WezTerm**](#wezterm) (`35` shortcuts)
+- [ **Hyprland**](#hyprland) (`70` shortcuts)
+- [ **WezTerm**](#wezterm) (`37` shortcuts)
 - [ **Neovim**](#neovim) (`115` shortcuts)
 - [󰇥 **Yazi**](#yazi) (`27` shortcuts)
 - [󰉋 **Thunar**](#thunar) (`16` shortcuts)
@@ -140,6 +140,8 @@
 | `SUPER + ALT + l` | **Resize window right** | Resize window right |
 | `SUPER + ALT + k` | **Resize window up** | Resize window up |
 | `SUPER + ALT + j` | **Resize window down** | Resize window down |
+| `SUPER + ALT + r` | **Reset window size / split proportions** | Reset window size / split proportions |
+| `SUPER + ALT + 0` | **Reset window size / split proportions** | Reset window size / split proportions |
 
 ### Mouse
 
@@ -206,6 +208,8 @@
 | `ALT + SHIFT + J` | **Resize pane down** | Resize pane down |
 | `ALT + SHIFT + K` | **Resize pane up** | Resize pane up |
 | `ALT + SHIFT + L` | **Resize pane right** | Resize pane right |
+| `ALT + SHIFT + R` | **Reset and balance all pane sizes** | Reset and balance all pane sizes |
+| `ALT + z` | **Toggle pane zoom (maximize/restore active pane)** | Toggle pane zoom (maximize/restore active pane) |
 
 ### Close
 

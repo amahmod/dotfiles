@@ -1,6 +1,89 @@
 local wezterm = require 'wezterm'
 local act = wezterm.action
 
+--- Walk sibling panes along the specified axis ('x' or 'y')
+local function walk_siblings(axis, tab, window, pane, do_func)
+    local initial_pane = pane
+    local siblings = { (do_func and do_func(initial_pane) or initial_pane) }
+    local prev_dir = axis == 'x' and 'Left' or 'Up'
+    local next_dir = axis == 'x' and 'Right' or 'Down'
+    local max_iter = 20
+
+    local initial_pane_idx = 1
+    local panes_info = tab:panes_with_info()
+    for _, pi in ipairs(panes_info) do
+        if pi.is_active then
+            initial_pane_idx = pi.index
+        end
+    end
+
+    for _, step_dir in ipairs { 'prev', 'next' } do
+        local last_pane = tab:active_pane()
+        window:perform_action(
+            wezterm.action.ActivatePaneDirection(step_dir == 'prev' and prev_dir or next_dir),
+            tab:active_pane()
+        )
+        local new_pane = tab:active_pane()
+        local i = 0
+        while new_pane:pane_id() ~= last_pane:pane_id() and i < max_iter do
+            if step_dir == 'prev' then
+                table.insert(siblings, 1, (do_func and do_func(new_pane) or new_pane))
+            else
+                table.insert(siblings, (do_func and do_func(new_pane) or new_pane))
+            end
+            last_pane = tab:active_pane()
+            window:perform_action(
+                wezterm.action.ActivatePaneDirection(step_dir == 'prev' and prev_dir or next_dir),
+                tab:active_pane()
+            )
+            new_pane = tab:active_pane()
+            i = i + 1
+        end
+        window:perform_action(wezterm.action.ActivatePaneByIndex(initial_pane_idx), tab:active_pane())
+    end
+    return siblings
+end
+
+--- Balance panes along an axis ('x' for width, 'y' for height)
+local function balance_panes(axis)
+    return function(window, pane)
+        local tab = window:active_tab()
+        local prev_dir = axis == 'x' and 'Left' or 'Up'
+        local next_dir = axis == 'x' and 'Right' or 'Down'
+        local siblings = walk_siblings(axis, tab, window, pane)
+        if #siblings <= 1 then
+            return
+        end
+        local tab_size = tab:get_size()[axis == 'x' and 'cols' or 'rows']
+        local balanced_size = math.floor(tab_size / #siblings)
+        local pane_size_key = axis == 'x' and 'cols' or 'viewport_rows'
+
+        walk_siblings(axis, tab, window, pane, function(p)
+            local pane_size = p:get_dimensions()[pane_size_key]
+            local adj_amount = pane_size - balanced_size
+            local adj_dir = adj_amount < 0 and next_dir or prev_dir
+            adj_amount = math.abs(adj_amount)
+            if adj_amount > 0 then
+                window:perform_action(wezterm.action.AdjustPaneSize { adj_dir, adj_amount }, p)
+            end
+        end)
+    end
+end
+
+--- Reset and equalize all pane sizes on the active tab
+local function reset_pane_sizes(window, pane)
+    local tab = window:active_tab()
+    local panes_info = tab:panes_with_info()
+    for _, pi in ipairs(panes_info) do
+        if pi.is_zoomed then
+            window:perform_action(wezterm.action.TogglePaneZoomState, pane)
+            return
+        end
+    end
+    balance_panes 'x'(window, pane)
+    balance_panes 'y'(window, pane)
+end
+
 return {
     -- {{{ COPY/PASTE (Enter for copy mode, c/v for copy/paste)
     -- Activate terminal copy mode
@@ -96,7 +179,7 @@ return {
     { key = 'l', mods = 'ALT', action = wezterm.action { ActivatePaneDirection = 'Right' } },
     -- }}}
 
-    -- {{{ PANE RESIZE (SHIFT+hjkl for resize)
+    -- {{{ PANE RESIZE (SHIFT+hjkl for resize, R for reset)
     -- Resize pane left
     { key = 'H', mods = 'ALT|SHIFT', action = wezterm.action { AdjustPaneSize = { 'Left', 5 } } },
     -- Resize pane down
@@ -105,6 +188,10 @@ return {
     { key = 'K', mods = 'ALT|SHIFT', action = wezterm.action { AdjustPaneSize = { 'Up', 5 } } },
     -- Resize pane right
     { key = 'L', mods = 'ALT|SHIFT', action = wezterm.action { AdjustPaneSize = { 'Right', 5 } } },
+    -- Reset and balance all pane sizes
+    { key = 'R', mods = 'ALT|SHIFT', action = wezterm.action_callback(reset_pane_sizes) },
+    -- Toggle pane zoom (maximize/restore active pane)
+    { key = 'z', mods = 'ALT', action = wezterm.action.TogglePaneZoomState },
     -- }}}
 
     -- {{{ CLOSE (q for quit pane, Q for quit tab)

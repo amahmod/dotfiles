@@ -106,6 +106,20 @@
   },
   {
     "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + SHIFT + R",
+    "title": "Reset and balance all pane sizes",
+    "description": "Reset and balance all pane sizes"
+  },
+  {
+    "app": "WezTerm",
+    "category": "Pane Resize",
+    "key": "ALT + z",
+    "title": "Toggle pane zoom (maximize/restore active pane)",
+    "description": "Toggle pane zoom (maximize/restore active pane)"
+  },
+  {
+    "app": "WezTerm",
     "category": "Close",
     "key": "ALT + q",
     "title": "Close active pane",

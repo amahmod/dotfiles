@@ -141,6 +141,8 @@ chmod +x install.sh
 | `SUPER + SHIFT + 1 .. 9 / 0` | Move Focused Window to Workspace 1–10 |
 | `SUPER + F` | Toggle Window Fullscreen |
 | `SUPER + SHIFT + F` | Toggle Window Floating Mode |
+| `SUPER + ALT + H / J / K / L` | Resize Window Left / Down / Up / Right |
+| `SUPER + ALT + R` / `0` | Reset Window Size & Split Proportions |
 | `SUPER + Mouse Left-Click Drag` | Move Floating Window |
 | `SUPER + Mouse Right-Click Drag` | Resize Window |
 
