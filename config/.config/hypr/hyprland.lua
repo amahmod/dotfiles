@@ -592,7 +592,8 @@ hl.bind(
         x = -20,
         y = 0,
         relative = true,
-    }
+    },
+    { repeating = true }
 )
 
 -- Resize window right
@@ -602,7 +603,8 @@ hl.bind(
         x = 20,
         y = 0,
         relative = true,
-    }
+    },
+    { repeating = true }
 )
 
 -- Resize window up
@@ -612,7 +614,8 @@ hl.bind(
         x = 0,
         y = -20,
         relative = true,
-    }
+    },
+    { repeating = true }
 )
 
 -- Resize window down
@@ -622,7 +625,8 @@ hl.bind(
         x = 0,
         y = 20,
         relative = true,
-    }
+    },
+    { repeating = true }
 )
 
 local function reset_window_size()
