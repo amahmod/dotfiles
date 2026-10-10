@@ -83,9 +83,16 @@ FONT_PACKAGES=(
     otf-font-awesome
     noto-fonts
     noto-fonts-emoji
+    noto-fonts-extra
+    ttf-scheherazade-new
+    ttf-indic-otf
 )
 
 DESKTOP_UTILS=(
+    # Input Method & Multilingual Engines
+    ibus
+    gjs
+
     # Notifications & Desktop Management
     dunst
     libnotify
@@ -191,6 +198,7 @@ AUR_PACKAGES=(
     wofi-emoji
     localsend-bin           # Cross-platform AirDrop alternative over local Wi-Fi
     simple-mtpfs            # FUSE driver for direct MTP mounting
+    ibus-avro-git           # Avro Phonetic Bangla typing for Linux
 )
 
 # --- 1. GPU Detection & Driver Selection ---
@@ -256,6 +264,13 @@ if [[ ${#AUR_PACKAGES[@]} -gt 0 ]]; then
     log_step "Installing AUR packages..."
     yay -S --needed --noconfirm "${AUR_PACKAGES[@]}"
     log_success "AUR packages installed."
+fi
+
+# Apply Avro Phonetic Left Shift & Wayland fixes
+if [[ -f "/usr/share/ibus-avro/main-gjs.js" && -f "$REPO_DIR/config/.config/hypr/scripts/patch-ibus-avro.sh" ]]; then
+    log_step "Applying Avro Phonetic Wayland fixes..."
+    bash "$REPO_DIR/config/.config/hypr/scripts/patch-ibus-avro.sh"
+    log_success "Avro Phonetic Wayland fixes applied."
 fi
 
 # Fallback setup for zsh-vi-mode if not installed via system package
@@ -325,6 +340,7 @@ fi
 
 # Ensure target directories exist as real directories to prevent tree folding
 mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.config/environment.d"
 mkdir -p "$HOME/.local/bin"
 (cd "$REPO_DIR" && stow -R --no-folding --target="$HOME" config)
 log_success "Dotfiles linked to $HOME."
@@ -366,6 +382,15 @@ if systemctl list-unit-files usbmuxd.service &>/dev/null; then
     fi
 fi
 
+# Configure IBus multilingual engines (English US, Bengali Avro, Arabic 101)
+if command -v dconf &>/dev/null; then
+    log_info "Configuring IBus keyboard engines (English US, Bengali Avro, Arabic 101)..."
+    dconf write /desktop/ibus/general/preload-engines "['xkb:us::eng', 'ibus-avro', 'xkb:ara::ara']" 2>/dev/null || true
+    dconf write /desktop/ibus/general/engines-order "['xkb:us::eng', 'ibus-avro', 'xkb:ara::ara']" 2>/dev/null || true
+fi
+systemctl --user import-environment GTK_IM_MODULE QT_IM_MODULE XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_IM_MODULE QT_IM_MODULE XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
+
 # --- Summary ---
 ELAPSED=$(($(date +%s) - START_TIME))
 echo -e "\n${BOLD}${GREEN}==========================================="
@@ -378,6 +403,10 @@ echo -e "  Core Keybindings:
     ${CYAN}SUPER + Shift + E${RESET}    : GUI File Manager (Thunar)
     ${CYAN}SUPER + Q${RESET}            : Close Window
     ${CYAN}SUPER + Alt + Q${RESET}      : Exit Hyprland
+
+  ⌨ Multilingual Keyboard Layouts:
+    ${CYAN}SUPER + Backspace${RESET}   : Toggle Layout (English / Bengali Avro / Arabic 101)
+    ${CYAN}SUPER + Shift + Space${RESET}: Toggle Layout (Alternative Shortcut)
 
   📱 Phone & Mobile File Transfer:
     ${CYAN}phone-transfer (pt)${RESET}   : High-Speed CLI Transfer & Web QR Share

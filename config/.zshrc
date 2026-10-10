@@ -8,6 +8,14 @@ export VISUAL="nvim"
 export PAGER="less"
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 
+# Input Method (IBus / Wayland IME support for Avro Phonetic & Multilingual Input)
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export SDL_IM_MODULE=ibus
+export GLFW_IM_MODULE=ibus
+export INPUT_METHOD=ibus
+
 # Catppuccin Macchiato colors for FZF
 export FZF_DEFAULT_OPTS='
   --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796

@@ -477,6 +477,20 @@
   },
   {
     "app": "Hyprland",
+    "category": "Keyboard Layout",
+    "key": "SUPER + Backspace",
+    "title": "Toggle keyboard layout (English / Bengali Avro / Arabic 101)",
+    "description": "Toggle keyboard layout (English / Bengali Avro / Arabic 101)"
+  },
+  {
+    "app": "Hyprland",
+    "category": "Keyboard Layout",
+    "key": "SUPER + SHIFT + space",
+    "title": "Toggle keyboard layout (alternative shortcut)",
+    "description": "Toggle keyboard layout (alternative shortcut)"
+  },
+  {
+    "app": "Hyprland",
     "category": "Workspaces",
     "key": "SUPER + 1 .. 9 / 0",
     "title": "Switch Workspace 1–10",

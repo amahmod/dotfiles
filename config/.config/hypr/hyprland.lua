@@ -1,3 +1,14 @@
+---------------------------------
+---- ENVIRONMENT VARIABLES ------
+---------------------------------
+
+hl.env('GTK_IM_MODULE', 'ibus')
+hl.env('QT_IM_MODULE', 'ibus')
+hl.env('XMODIFIERS', '@im=ibus')
+hl.env('SDL_IM_MODULE', 'ibus')
+hl.env('GLFW_IM_MODULE', 'ibus')
+hl.env('INPUT_METHOD', 'ibus')
+
 hl.monitor {
     output = '',
     mode = 'preferred',
@@ -13,6 +24,9 @@ hl.config {
     input = {
         repeat_delay = 200,
         repeat_rate = 50,
+        kb_layout = 'us,ara',
+        kb_variant = ',basic',
+        kb_options = 'grp:alt_shift_toggle',
     },
 
     general = {
@@ -125,6 +139,7 @@ hl.on('hyprland.start', function()
     hl.exec_cmd 'systemctl --user start hyprpolkitagent'
     hl.exec_cmd 'dunst'
     hl.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/set-wallpaper.sh --restore')
+    hl.exec_cmd 'ibus-daemon -drx --panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im'
 
     setup_monitors_and_workspaces()
 
@@ -688,8 +703,35 @@ hl.bind(
 )
 
 ---------------------------------
+------- KEYBOARD LAYOUT ---------
+---------------------------------
+
+-- Toggle keyboard layout (English / Bengali Avro / Arabic 101)
+hl.bind(
+    main_mod .. ' + Backspace',
+    hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/toggle-keyboard-layout.sh')
+)
+
+-- Toggle keyboard layout (alternative shortcut)
+hl.bind(
+    main_mod .. ' + SHIFT + space',
+    hl.dsp.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/toggle-keyboard-layout.sh')
+)
+
+---------------------------------
 -------- WINDOW RULES ------------
 ---------------------------------
+
+hl.window_rule {
+    name = 'ibus-ui-nofocus',
+
+    match = {
+        class = '^ibus-ui-gtk3$',
+    },
+
+    float = true,
+    no_focus = true,
+}
 
 hl.window_rule {
     name = 'file-roller-float',

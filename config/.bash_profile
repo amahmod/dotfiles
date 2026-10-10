@@ -13,3 +13,13 @@
 export PATH="/home/amahmod/.local/bin:$PATH"
 
 export TERMINAL="wezterm"
+
+# Input Method (IBus / Wayland IME support for Avro Phonetic & Multilingual Input)
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export SDL_IM_MODULE=ibus
+export GLFW_IM_MODULE=ibus
+export INPUT_METHOD=ibus
+
+

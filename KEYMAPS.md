@@ -1,13 +1,13 @@
 # ⌨️ System & Application Keybindings Cheatsheet
 
 > Complete keyboard shortcuts and quick-reference guide for all desktop environments and developer tools.
-> **Total Documented Keybindings:** `321`
+> **Total Documented Keybindings:** `323`
 
 ---
 
 ## 🧭 Table of Contents
 
-- [ **Hyprland**](#hyprland) (`70` shortcuts)
+- [ **Hyprland**](#hyprland) (`72` shortcuts)
 - [ **WezTerm**](#wezterm) (`37` shortcuts)
 - [ **Neovim**](#neovim) (`115` shortcuts)
 - [󰇥 **Yazi**](#yazi) (`27` shortcuts)
@@ -169,6 +169,13 @@
 | Keybinding | Title | Description |
 | :--- | :--- | :--- |
 | `SUPER + SHIFT + o` | **Toggle active window opacity (100% / 85%)** | Toggle active window opacity (100% / 85%) |
+
+### Keyboard Layout
+
+| Keybinding | Title | Description |
+| :--- | :--- | :--- |
+| `SUPER + Backspace` | **Toggle keyboard layout (English / Bengali Avro / Arabic 101)** | Toggle keyboard layout (English / Bengali Avro / Arabic 101) |
+| `SUPER + SHIFT + space` | **Toggle keyboard layout (alternative shortcut)** | Toggle keyboard layout (alternative shortcut) |
 
 ---
 

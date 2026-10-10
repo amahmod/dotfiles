@@ -11,9 +11,15 @@ pcall(function()
 end)
 
 return {
+  -- IME Support {{{
+  use_ime = true,
+  -- }}}
+
   -- Font {{{
   font = wezterm.font_with_fallback({
     'MonoLisa',
+    'Noto Sans Bengali',
+    'Noto Sans Arabic',
     'Symbola',
   }),
   font_size = 12,
