@@ -2,8 +2,6 @@
 ---- ENVIRONMENT VARIABLES ------
 ---------------------------------
 
-hl.env('GTK_IM_MODULE', 'ibus')
-hl.env('QT_IM_MODULE', 'ibus')
 hl.env('XMODIFIERS', '@im=ibus')
 hl.env('SDL_IM_MODULE', 'ibus')
 hl.env('GLFW_IM_MODULE', 'ibus')
@@ -26,7 +24,7 @@ hl.config {
         repeat_rate = 50,
         kb_layout = 'us,ara',
         kb_variant = ',basic',
-        kb_options = 'grp:alt_shift_toggle',
+        kb_options = '',
     },
 
     general = {
@@ -139,7 +137,7 @@ hl.on('hyprland.start', function()
     hl.exec_cmd 'systemctl --user start hyprpolkitagent'
     hl.exec_cmd 'dunst'
     hl.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/set-wallpaper.sh --restore')
-    hl.exec_cmd 'ibus-daemon -drx --panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im'
+    hl.exec_cmd('bash ' .. os.getenv 'HOME' .. '/.config/hypr/scripts/launch-ibus.sh')
 
     setup_monitors_and_workspaces()
 

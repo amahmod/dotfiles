@@ -66,7 +66,7 @@ EOF
 echo "[*] Restarting IBus daemon..."
 killall -9 gjs ibus-daemon ibus-ui-gtk3 2>/dev/null || true
 sleep 0.5
-ibus-daemon -drx --panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im 2>/dev/null || true
+bash "$(dirname "$0")/launch-ibus.sh" 2>/dev/null || true
 sleep 0.5
 ibus engine ibus-avro 2>/dev/null || true
 

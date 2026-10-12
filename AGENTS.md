@@ -74,16 +74,15 @@ Always adhere strictly to these rules:
   - `SUPER + Backspace` or `SUPER + SHIFT + space` calls [`toggle-keyboard-layout.sh`](config/.config/hypr/scripts/toggle-keyboard-layout.sh).
   - Cycles: English ➔ Bengali Avro ➔ Arabic ➔ English with Dunst notifications and synchronized XKB layouts.
 - **IBus Wayland Startup:**
-  - Autostarted via `hyprland.lua`:
-    ```lua
-    hl.exec_cmd 'ibus-daemon -drx --panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im'
+  - Autostarted via [`launch-ibus.sh`](config/.config/hypr/scripts/launch-ibus.sh) called from `hyprland.lua`:
+    ```bash
+    nohup /usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im --exec-daemon --daemon-args "-d -r -x --panel disable" >/dev/null 2>&1 &
     ```
-  - Using `--panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im` connects directly to Wayland's `zwp_input_method_v2` protocol and eliminates the "IBus should be called from desktop session in Wayland" warning.
+  - Running `ibus-ui-gtk3` as parent with `--enable-wayland-im` connects directly to Wayland's `zwp_input_method_v2` protocol and eliminates the "IBus should be called from desktop session in Wayland" warning.
 - **Environment Variables:**
+  - `GTK_IM_MODULE` and `QT_IM_MODULE` are intentionally unset on Wayland so applications natively utilize Wayland `text-input-v3` without legacy X11 D-Bus conflicts or popup warnings.
   - Set in [`.zshrc`](config/.zshrc), [`.bash_profile`](config/.bash_profile), and [`10-ibus.conf`](config/.config/environment.d/10-ibus.conf):
     ```sh
-    export GTK_IM_MODULE=ibus
-    export QT_IM_MODULE=ibus
     export XMODIFIERS=@im=ibus
     export INPUT_METHOD=ibus
     export SDL_IM_MODULE=ibus

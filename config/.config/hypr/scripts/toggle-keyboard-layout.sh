@@ -2,10 +2,13 @@
 # ==============================================================================
 # toggle-keyboard-layout.sh
 # Toggle between English (US), Bengali (Avro Phonetic), and Arabic (101)
-# Supports IBus IME engine switching with synchronized Hyprland XKB layouts.
+# Synchronizes Hyprland XKB layouts with IBus IME engines.
 # ==============================================================================
 
 set -eo pipefail
+
+STATE_FILE="${XDG_RUNTIME_DIR:-/tmp}/keyboard_layout_state"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 send_notification() {
     local title="$1"
@@ -22,72 +25,91 @@ send_notification() {
 set_hyprland_layout() {
     local layout_id="$1" # 0 for us, 1 for ara
     if command -v hyprctl >/dev/null; then
-        local keyboards
-        keyboards=$(hyprctl devices -j 2>/dev/null | jq -r '.keyboards[]?.name' 2>/dev/null || true)
-        if [[ -n "$keyboards" ]]; then
-            for kb in $keyboards; do
-                hyprctl switchxkblayout "$kb" "$layout_id" >/dev/null 2>&1 || true
-            done
-        fi
+        hyprctl switchxkblayout all "$layout_id" >/dev/null 2>&1 || true
     fi
 }
 
-# Ensure ibus-daemon is running if ibus is installed
-if ! pgrep -x ibus-daemon >/dev/null && command -v ibus-daemon >/dev/null; then
-    ibus-daemon -drx --panel=/usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im 2>/dev/null || true
-    sleep 0.5
+# Ensure IBus daemon is running if ibus is installed
+if ! pgrep -x ibus-daemon >/dev/null; then
+    if [[ -x "$SCRIPT_DIR/launch-ibus.sh" ]]; then
+        bash "$SCRIPT_DIR/launch-ibus.sh"
+    elif command -v ibus-daemon >/dev/null; then
+        nohup /usr/lib/ibus/ibus-ui-gtk3 --enable-wayland-im --exec-daemon --daemon-args "-d -r -x --panel disable" >/dev/null 2>&1 &
+    fi
+    sleep 0.3
 fi
 
 # Detect current state
-current_engine=""
-if command -v ibus >/dev/null && pgrep -x ibus-daemon >/dev/null; then
-    current_engine=$(ibus engine 2>/dev/null || echo "")
+current_state=""
+if [[ -f "$STATE_FILE" ]]; then
+    current_state=$(cat "$STATE_FILE" 2>/dev/null | tr -d '[:space:]')
 fi
 
-# Target selection
-case "$1" in
+if [[ -z "$current_state" ]]; then
+    # Fallback detection via ibus engine
+    if command -v ibus >/dev/null && pgrep -x ibus-daemon >/dev/null; then
+        engine=$(ibus engine 2>/dev/null || echo "")
+        if [[ "$engine" == *"avro"* ]]; then
+            current_state="avro"
+        elif [[ "$engine" == *"ara"* ]]; then
+            current_state="ara"
+        else
+            current_state="us"
+        fi
+    else
+        current_state="us"
+    fi
+fi
+
+# Determine target
+case "${1:-}" in
     "us"|"en"|"english")
-        target="xkb:us::eng"
+        target="us"
         ;;
     "avro"|"bn"|"bangla"|"bengali")
-        target="ibus-avro"
+        target="avro"
         ;;
     "ara"|"ar"|"arabic")
-        target="xkb:ara::ara"
+        target="ara"
         ;;
     *)
-        # Cycle: English -> Bengali (Avro Phonetic) -> Arabic (101) -> English
-        if [[ "$current_engine" == "ibus-avro" || "$current_engine" == *"avro"* || "$current_engine" == *"openbangla"* ]]; then
-            target="xkb:ara::ara"
-        elif [[ "$current_engine" == *"ara"* ]]; then
-            target="xkb:us::eng"
+        # Cycle: English (us) -> Bengali (avro) -> Arabic (ara) -> English (us)
+        if [[ "$current_state" == "us" ]]; then
+            target="avro"
+        elif [[ "$current_state" == "avro" ]]; then
+            target="ara"
+        elif [[ "$current_state" == "ara" ]]; then
+            target="us"
         else
-            target="ibus-avro"
+            target="avro"
         fi
         ;;
 esac
 
 # Execute switch
 case "$target" in
-    "ibus-avro"|*"avro"*)
+    "avro")
+        set_hyprland_layout 0
         if command -v ibus >/dev/null && pgrep -x ibus-daemon >/dev/null; then
             ibus engine ibus-avro 2>/dev/null || true
         fi
-        set_hyprland_layout 0
+        echo "avro" > "$STATE_FILE"
         send_notification "Keyboard Layout" "বাংলা (Avro Phonetic)"
         ;;
-    *"ara"*)
+    "ara")
+        set_hyprland_layout 1
         if command -v ibus >/dev/null && pgrep -x ibus-daemon >/dev/null; then
             ibus engine xkb:ara::ara 2>/dev/null || true
         fi
-        set_hyprland_layout 1
+        echo "ara" > "$STATE_FILE"
         send_notification "Keyboard Layout" "العربية (Arabic 101)"
         ;;
-    *)
+    "us"|*)
+        set_hyprland_layout 0
         if command -v ibus >/dev/null && pgrep -x ibus-daemon >/dev/null; then
             ibus engine xkb:us::eng 2>/dev/null || true
         fi
-        set_hyprland_layout 0
+        echo "us" > "$STATE_FILE"
         send_notification "Keyboard Layout" "English (US)"
         ;;
 esac

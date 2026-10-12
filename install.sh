@@ -388,8 +388,9 @@ if command -v dconf &>/dev/null; then
     dconf write /desktop/ibus/general/preload-engines "['xkb:us::eng', 'ibus-avro', 'xkb:ara::ara']" 2>/dev/null || true
     dconf write /desktop/ibus/general/engines-order "['xkb:us::eng', 'ibus-avro', 'xkb:ara::ara']" 2>/dev/null || true
 fi
-systemctl --user import-environment GTK_IM_MODULE QT_IM_MODULE XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
-dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP GTK_IM_MODULE QT_IM_MODULE XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
+systemctl --user import-environment XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
+systemctl --user unset-environment GTK_IM_MODULE QT_IM_MODULE 2>/dev/null || true
+dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP XMODIFIERS INPUT_METHOD SDL_IM_MODULE GLFW_IM_MODULE 2>/dev/null || true
 
 # --- Summary ---
 ELAPSED=$(($(date +%s) - START_TIME))
